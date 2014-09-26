@@ -12,3 +12,49 @@
  * is at least some specified limit. The exclusive-oring is done in such a way
  * that the result will not exceed the denominator.
  */
+
+#include <iostream>
+#include "quadlods.h"
+
+using namespace std;
+
+vector<unsigned short> primes;
+quadlods quads;
+
+void initprimes()
+{
+  int i,j;
+  bool prime;
+  primes.clear();
+  for (i=2;i<65535;i++)
+  {
+    for (j=0,prime=true;j<primes.size() && prime && (unsigned int)primes[j]*primes[j]<=i;j++)
+      if (i%primes[j]==0)
+	prime=false;
+    if (prime)
+      primes.push_back(i);
+  }
+}
+
+void quadlods::init(int dimensions,double resolution)
+{
+  if (primes.size()==0)
+    initprimes();
+}
+
+vector<mpq_class> quadlods::gen()
+{
+}
+
+int main(int argc,char **argv)
+{
+  int i;
+  quads.init(5,1e10);
+  for (i=0;i<100;i++)
+  {
+    cout<<primes[i]<<' ';
+    if (i%10==9)
+      cout<<endl;
+  }
+  return 0;
+}
