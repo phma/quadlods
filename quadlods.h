@@ -4,7 +4,7 @@
 class quadlods
 {
 public:
-  std::vector<mpz_class> num,denom,inc;
+  std::vector<mpz_class> num,denom,acc;
   void init(int dimensions,double resolution);
   std::vector<mpq_class> gen();
 };
