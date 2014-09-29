@@ -21,6 +21,19 @@ using namespace std;
 vector<unsigned short> primes;
 quadlods quads;
 
+mpz_class thuemorse(int n)
+{
+  mpz_class ret(0x69969669);
+  int i(32);
+  while (i<=n)
+  {
+    ret+=(mpz_class)(((ret&((mpz_class)1<<(i>>5)))>0)?(unsigned)0x96696996:0x69969669)<<i;
+    i+=32;
+  }
+  ret&=((mpz_class)1<<n)-1;
+  return ret;
+}
+
 void initprimes()
 {
   int i,j;
@@ -85,8 +98,32 @@ void quadlods::init(int dimensions,double resolution)
   acc.resize(dimensions);
 }
 
+vector<mpq_class> quadlods::readout()
+{
+  int i;
+  vector<mpq_class> ret;
+  for (i=0;i<num.size();i++)
+  {
+    ret.push_back(mpq_class(acc[i],denom[i]));
+    ret[i].canonicalize();
+  }
+  return ret;
+}
+
+void quadlods::advance(mpz_class n)
+{
+  int i;
+  for (i=0;i<num.size();i++)
+    if (n<0)
+      acc[i]=(acc[i]-n*(denom[i]-num[i]))%denom[i];
+    else
+      acc[i]=(acc[i]+n*num[i])%denom[i];
+}
+
 vector<mpq_class> quadlods::gen()
 {
+  advance(1);
+  return readout();
 }
 
 int main(int argc,char **argv)
@@ -99,7 +136,9 @@ int main(int argc,char **argv)
     if (i%10==9)
       cout<<endl;
   }
+  quads.advance(-1);
   for (i=0;i<5;i++)
     cout<<quads.num[i]<<'/'<<quads.denom[i]<<' '<<quads.acc[i]<<endl;
+  cout<<hex<<thuemorse(307)<<endl;
   return 0;
 }
