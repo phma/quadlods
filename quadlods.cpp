@@ -47,33 +47,38 @@ void quadlods::init(int dimensions,double resolution)
  * 13: p²-p-3=0 p-1=3/p
  * 17: p²-p-4=0 p-1=4/p
  * Then sets num=num%denom.
+ * (99/70)²-99/70=99²/70²-99*70/70²
  */
 {
   int i,p;
-  mpz_class n,d,ntmp,dtmp;
+  mpz_class nhi,dhi,nmid,dmid,nlo,dlo,comp;
   if (primes.size()==0)
     initprimes();
   for (i=denom.size();i<dimensions;i++)
   {
     p=primes[i];
-    for (n=d=1;d<resolution;)
+    for (nhi=dlo=1,nlo=dhi=dmid=0;dmid<resolution;)
     {
+      dmid=dhi+dlo;
+      nmid=nhi+nlo;
       if ((p-1)&3)
+	comp=nmid*nmid-p*dmid*dmid;
+      else
+	comp=nmid*(nmid-dmid)-(p/4)*dmid*dmid;
+      if (comp>0)
       {
-	ntmp=d*p+n;
-	dtmp=n+d;
+	dhi=dmid;
+	nhi=nmid;
       }
       else
       {
-	ntmp=(p/4)*d+n;
-	dtmp=n;
+	dlo=dmid;
+	nlo=nmid;
       }
-      n=ntmp;
-      d=dtmp;
     }
-    n%=d;
-    denom.push_back(d);
-    num.push_back(n);
+    nmid%=dmid;
+    denom.push_back(dmid);
+    num.push_back(nmid);
   }
   num.resize(dimensions);
   denom.resize(dimensions);
