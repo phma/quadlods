@@ -19,19 +19,28 @@
 using namespace std;
 
 vector<unsigned short> primes;
-quadlods quads;
+mpz_class thue(0x69969669);
+int morse(32);
 
 mpz_class thuemorse(int n)
 {
-  mpz_class ret(0x69969669);
-  int i(32);
-  while (i<=n)
+  while (morse<=n)
   {
-    ret+=(mpz_class)(((ret&((mpz_class)1<<(i>>5)))>0)?(unsigned)0x96696996:0x69969669)<<i;
-    i+=32;
+    thue+=(mpz_class)(((thue&((mpz_class)1<<(morse>>5)))>0)?(unsigned)0x96696996:0x69969669)<<morse;
+    morse+=32;
   }
-  ret&=((mpz_class)1<<n)-1;
-  return ret;
+  return thue&(((mpz_class)1<<n)-1);
+}
+
+mpz_class jumble(mpz_class acc,mpz_class denom)
+{
+  int i;
+  mpz_class bitdiff;
+  bitdiff=denom&~acc;
+  //for (i=0;(bitdiff>>i)>0;i+=16);
+  //for (;(bitdiff>>i)==0;i--);
+  i=mpz_sizeinbase(bitdiff.get_mpz_t(),2)-1;
+  return acc^thuemorse(i);
 }
 
 void initprimes()
@@ -104,8 +113,19 @@ vector<mpq_class> quadlods::readout()
   vector<mpq_class> ret;
   for (i=0;i<num.size();i++)
   {
-    ret.push_back(mpq_class(acc[i],denom[i]));
+    ret.push_back(mpq_class(jumble(acc[i],denom[i]),denom[i]));
     ret[i].canonicalize();
+  }
+  return ret;
+}
+
+vector<double> quadlods::dreadout()
+{
+  int i;
+  vector<double> ret;
+  for (i=0;i<num.size();i++)
+  {
+    ret.push_back(mpq_class(jumble(acc[i],denom[i]),denom[i]).get_d());
   }
   return ret;
 }
@@ -126,19 +146,8 @@ vector<mpq_class> quadlods::gen()
   return readout();
 }
 
-int main(int argc,char **argv)
+vector<double> quadlods::dgen()
 {
-  int i;
-  quads.init(5,1e10);
-  for (i=0;i<100;i++)
-  {
-    cout<<primes[i]<<' ';
-    if (i%10==9)
-      cout<<endl;
-  }
-  quads.advance(-1);
-  for (i=0;i<5;i++)
-    cout<<quads.num[i]<<'/'<<quads.denom[i]<<' '<<quads.acc[i]<<endl;
-  cout<<hex<<thuemorse(307)<<endl;
-  return 0;
+  advance(1);
+  return dreadout();
 }

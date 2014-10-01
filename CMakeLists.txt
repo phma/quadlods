@@ -1,5 +1,5 @@
 project(quadlods)
-add_executable(quadlods quadlods.cpp)
+add_executable(quadlods quadlods.cpp main.cpp)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(GMPXX REQUIRED)

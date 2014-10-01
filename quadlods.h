@@ -9,4 +9,6 @@ public:
   std::vector<mpq_class> readout();
   void advance(mpz_class n);
   std::vector<mpq_class> gen();
+  std::vector<double> dreadout();
+  std::vector<double> dgen();
 };
