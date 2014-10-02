@@ -37,8 +37,6 @@ mpz_class jumble(mpz_class acc,mpz_class denom)
   int i;
   mpz_class bitdiff;
   bitdiff=denom&~acc;
-  //for (i=0;(bitdiff>>i)>0;i+=16);
-  //for (;(bitdiff>>i)==0;i--);
   i=mpz_sizeinbase(bitdiff.get_mpz_t(),2)-1;
   return acc^thuemorse(i);
 }
@@ -113,7 +111,7 @@ vector<mpq_class> quadlods::readout()
   vector<mpq_class> ret;
   for (i=0;i<num.size();i++)
   {
-    ret.push_back(mpq_class(jumble(acc[i],denom[i]),denom[i]));
+    ret.push_back(mpq_class((jumble(acc[i],denom[i])<<1)|1,denom[i]<<1));
     ret[i].canonicalize();
   }
   return ret;
@@ -125,7 +123,7 @@ vector<double> quadlods::dreadout()
   vector<double> ret;
   for (i=0;i<num.size();i++)
   {
-    ret.push_back(mpq_class(jumble(acc[i],denom[i]),denom[i]).get_d());
+    ret.push_back(mpq_class((jumble(acc[i],denom[i])<<1)|1,denom[i]<<1).get_d());
   }
   return ret;
 }
