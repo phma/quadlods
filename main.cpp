@@ -3,10 +3,28 @@
 #include <iomanip>
 #include <bitset>
 #include "quadlods.h"
+#include "ps.h"
 
 using namespace std;
 
 quadlods quads;
+
+void plotxy(quadlods& quad,int xdim,int ydim)
+{
+  int i;
+  double x,y;
+  vector<double> point;
+  startpage();
+  setscale(0,0,1,1);
+  for (i=0;i<30000;i++)
+  {
+    point=quad.dgen();
+    x=point[xdim];
+    y=point[ydim];
+    dot(x,y);
+  }
+  endpage();
+}
 
 void testcoverage()
 /* Cycle sizes: 408, 571, 377.
@@ -44,6 +62,8 @@ int main(int argc,char **argv)
 {
   int i,j;
   vector<double> point;
+  psopen("quadlods.ps");
+  psprolog();
   quads.init(5,1e10);
   quads.advance(-1);
   for (i=0;i<5;i++)
@@ -55,6 +75,11 @@ int main(int argc,char **argv)
       cout<<point[j]<<' ';
     cout<<endl;
   }
-  testcoverage();
+  //testcoverage();
+  plotxy(quads,0,1);
+  plotxy(quads,1,2);
+  plotxy(quads,2,0);
+  pstrailer();
+  psclose();
   return 0;
 }

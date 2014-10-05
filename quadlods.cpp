@@ -19,8 +19,8 @@
 using namespace std;
 
 vector<unsigned short> primes;
-mpz_class thue(0x69969669);
-int morse(32);
+mpz_class thue(0x69969669),third(0x55555555);
+int morse(32),b2adic(32);
 
 mpz_class thuemorse(int n)
 {
@@ -30,6 +30,16 @@ mpz_class thuemorse(int n)
     morse+=32;
   }
   return thue&(((mpz_class)1<<n)-1);
+}
+
+mpz_class minusthird(int n)
+{
+  while (b2adic<=n)
+  {
+    third+=(mpz_class)0x55555555<<b2adic;
+    b2adic+=32;
+  }
+  return third&(((mpz_class)1<<n)-1);
 }
 
 mpz_class jumble(mpz_class acc,mpz_class denom)
