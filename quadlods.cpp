@@ -42,13 +42,30 @@ mpz_class minusthird(int n)
   return third&(((mpz_class)1<<n)-1);
 }
 
+mpz_class graydecode(mpz_class n)
+{
+  int i;
+  i=mpz_sizeinbase(n.get_mpz_t(),2);
+  while (i&(i-1))
+    i+=i&-i;
+  while (i)
+  {
+    n^=n>>i;
+    i/=2;
+  }
+  return n;
+}
+
 mpz_class jumble(mpz_class acc,mpz_class denom)
 {
   int i;
-  mpz_class bitdiff;
+  mpz_class bitdiff,hibits,lobits;
   bitdiff=denom&~acc;
   i=mpz_sizeinbase(bitdiff.get_mpz_t(),2)-1;
-  return acc^thuemorse(i);
+  //return acc^thuemorse(i);
+  lobits=acc&(((mpz_class)1<<i)-1);
+  hibits=acc-lobits;
+  return hibits+graydecode(lobits);
 }
 
 void initprimes()
