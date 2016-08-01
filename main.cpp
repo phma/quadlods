@@ -67,7 +67,7 @@ int main(int argc,char **argv)
   quads.init(5,1e10);
   quads.advance(-1);
   for (i=0;i<5;i++)
-    cout<<quads.num[i]<<'/'<<quads.denom[i]<<' '<<quads.acc[i]<<endl;
+    cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
   for (i=0;i<30;i++)
   {
     point=quads.dgen();
