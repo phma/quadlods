@@ -56,16 +56,29 @@ mpz_class graydecode(mpz_class n)
   return n;
 }
 
-mpz_class jumble(mpz_class acc,mpz_class denom)
+mpz_class jumble(mpz_class acc,mpz_class denom,int jumbletype)
 {
   int i;
-  mpz_class bitdiff,hibits,lobits;
+  mpz_class bitdiff,hibits,lobits,ret;
   bitdiff=denom&~acc;
   i=mpz_sizeinbase(bitdiff.get_mpz_t(),2)-1;
-  //return acc^thuemorse(i);
-  lobits=acc&(((mpz_class)1<<i)-1);
-  hibits=acc-lobits;
-  return hibits+graydecode(lobits);
+  switch (jumbletype)
+  {
+    case QL_JUMBLE_THIRD:
+      ret=acc^minusthird(i);
+      break;
+    case QL_JUMBLE_THUEMORSE:
+      ret=acc^thuemorse(i);
+      break;
+    case QL_JUMBLE_GRAY:
+      lobits=acc&(((mpz_class)1<<i)-1);
+      hibits=acc-lobits;
+      ret=hibits+graydecode(lobits);
+      break;
+    default:
+      ret=acc;
+  }
+  return ret;
 }
 
 void initprimes()
@@ -83,7 +96,7 @@ void initprimes()
   }
 }
 
-void quadlods::init(int dimensions,double resolution)
+void quadlods::init(int dimensions,double resolution,int j)
 /* Sets num[i]/denom[i] to a rational approximation of an integer in Q(sqrt(primes[i])).
  * If p mod 4 is 1, q=(sqrt(p)+1)/2, else q=sqrt(p).
  * 2: p²-2=0
@@ -127,6 +140,10 @@ void quadlods::init(int dimensions,double resolution)
     denom.push_back(dmid);
     num.push_back(nmid);
   }
+  if (j>=0)
+    jumbletype=j;
+  if (jumbletype<0 || jumbletype>QL_JUMBLE_GRAY)
+    jumbletype=QL_JUMBLE_GRAY;
   num.resize(dimensions);
   denom.resize(dimensions);
   acc.resize(dimensions);
@@ -138,7 +155,7 @@ vector<mpq_class> quadlods::readout()
   vector<mpq_class> ret;
   for (i=0;i<num.size();i++)
   {
-    ret.push_back(mpq_class((jumble(acc[i],denom[i])<<1)|1,denom[i]<<1));
+    ret.push_back(mpq_class((jumble(acc[i],denom[i],jumbletype)<<1)|1,denom[i]<<1));
     ret[i].canonicalize();
   }
   return ret;
@@ -150,7 +167,7 @@ vector<double> quadlods::dreadout()
   vector<double> ret;
   for (i=0;i<num.size();i++)
   {
-    ret.push_back(mpq_class((jumble(acc[i],denom[i])<<1)|1,denom[i]<<1).get_d());
+    ret.push_back(mpq_class((jumble(acc[i],denom[i],jumbletype)<<1)|1,denom[i]<<1).get_d());
   }
   return ret;
 }

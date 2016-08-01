@@ -65,6 +65,7 @@ int main(int argc,char **argv)
   psopen("quadlods.ps");
   psprolog();
   quads.init(5,1e10);
+  //quads.setjumble(QL_JUMBLE_GRAY);
   quads.advance(-1);
   for (i=0;i<5;i++)
     cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
