@@ -155,6 +155,16 @@ vector<double> quadlods::dreadout()
   return ret;
 }
 
+void quadlods::setmiddle()
+/* Set the point to the middle of the square/cube/etc. This is used in testing
+ * to find the successively smaller distances between q[n] and q[n+h].
+ */
+{
+  int i;
+  for (i=0;i<num.size();i++)
+    acc[i]=denom[i]>>1;
+}
+
 void quadlods::advance(mpz_class n)
 {
   int i;

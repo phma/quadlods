@@ -20,6 +20,7 @@ public:
     return acc[n];
   }
   std::vector<mpq_class> readout();
+  void setmiddle();
   void advance(mpz_class n);
   std::vector<mpq_class> gen();
   std::vector<double> dreadout();
