@@ -12,7 +12,8 @@
  * QL_JUMBLE_THUEMORSE: 0101011010110111 (xor with the Thue-Morse word)
  * QL_JUMBLE_GRAY:      1000000010010100 (inverse Gray code).
  * Of these, Gray code is the best, as it leaves no tendency to slope
- * one way or the other. It is therefore the default.
+ * one way or the other. It is therefore the default. However, Gray code
+ * takes about 5/3 times as much time as the others.
  */
 
 class quadlods

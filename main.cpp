@@ -16,6 +16,7 @@ void plotxy(quadlods& quad,int xdim,int ydim)
   vector<double> point;
   startpage();
   setscale(0,0,1,1);
+  // (2,0) and (3,0) look splotchy at 30000, but fill in well at 100000.
   for (i=0;i<30000;i++)
   {
     point=quad.dgen();
@@ -65,7 +66,7 @@ int main(int argc,char **argv)
   psopen("quadlods.ps");
   psprolog();
   quads.init(5,1e10);
-  //quads.setjumble(QL_JUMBLE_GRAY);
+  quads.setjumble(QL_JUMBLE_GRAY);
   quads.advance(-1);
   for (i=0;i<5;i++)
     cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
@@ -77,9 +78,9 @@ int main(int argc,char **argv)
     cout<<endl;
   }
   //testcoverage();
-  plotxy(quads,0,1);
-  plotxy(quads,1,2);
-  plotxy(quads,2,0);
+  for (i=0;i<5;i++)
+    for (j=0;j<i;j++)
+      plotxy(quads,i,j);
   pstrailer();
   psclose();
   return 0;
