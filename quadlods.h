@@ -16,6 +16,15 @@
  * takes about 5/3 times as much time as the others.
  */
 
+class quadirr
+/* Represents the quadratic irrational a/b+c*sqrt(p)/d.
+ * Used for computing the continued fraction representation of sqrt(p) or
+ * (sqrt(p)+1)/2 and, thus, order the numbers by their discrepancy constant.
+ */
+{
+  int a,b,c,d,p;
+}
+
 class quadlods
 {
 protected:
