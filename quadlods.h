@@ -69,6 +69,8 @@ public:
     jumbletype=j;
   }
   void advance(mpz_class n);
+  unsigned int seedsize();
+  void seed(char *s,unsigned int n);
   std::vector<mpq_class> gen();
   std::vector<double> dreadout();
   std::vector<double> dgen();

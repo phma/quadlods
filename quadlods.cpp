@@ -210,6 +210,26 @@ void quadlods::advance(mpz_class n)
       acc[i]=(acc[i]+n*num[i])%denom[i];
 }
 
+unsigned int quadlods::seedsize()
+{
+  unsigned i,maxlen,len;
+  for (i=maxlen=0;i<denom.size();i++)
+  {
+    len=(mpz_sizeinbase(denom[i].get_mpz_t(),2)+7)/8;
+    if (len>maxlen)
+      maxlen=len;
+  }
+  return maxlen*denom.size();
+}
+
+void quadlods::seed(char *s,unsigned int n)
+{
+  unsigned i,sz;
+  sz=denom.size();
+  for (i=0;i<n;i++)
+    acc[i%sz]=((acc[i%sz]<<8)+(s[i]&0xff))%denom[i%sz];
+}
+
 vector<mpq_class> quadlods::gen()
 {
   advance(1);

@@ -20,6 +20,7 @@
 #include <iostream>
 #include <iomanip>
 #include <bitset>
+#include <ctime>
 #include "quadlods.h"
 #include "ps.h"
 
@@ -79,7 +80,9 @@ void testcoverage()
 
 int main(int argc,char **argv)
 {
-  int i,j;
+  int i,j,seedlen;
+  char *seedbuf;
+  time_t now;
   vector<double> point;
   psopen("quadlods.ps");
   psprolog();
@@ -88,6 +91,15 @@ int main(int argc,char **argv)
   quads.advance(-1);
   for (i=0;i<5;i++)
     cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
+  seedlen=quads.seedsize();
+  cout<<seedlen<<" bytes needed to seed"<<endl;
+  seedbuf=new char[seedlen];
+  now=time(NULL);
+  for (i=0;i<sizeof(time_t) && i<seedlen;i++)
+    seedbuf[i]=now>>(8*i);
+  for (;i<seedlen;i++)
+    seedbuf[i]=seedbuf[i-1]+seedbuf[i-sizeof(time_t)];
+  quads.seed(seedbuf,seedlen);
   for (i=0;i<30;i++)
   {
     point=quads.dgen();
@@ -101,5 +113,6 @@ int main(int argc,char **argv)
       plotxy(quads,i,j);
   pstrailer();
   psclose();
+  delete[] seedbuf;
   return 0;
 }
