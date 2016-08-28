@@ -1,15 +1,25 @@
 project(quadlods)
-add_executable(quadlods quadlods.cpp main.cpp discrepancy.cpp ps.cpp)
+cmake_minimum_required(VERSION 2.8)
+
+add_executable(quadlods main.cpp discrepancy.cpp ps.cpp)
+add_library(quadlib0 STATIC quadlods.cpp)
+add_library(quadlib1 SHARED quadlods.cpp)
+install(TARGETS quadlods DESTINATION bin)
+install(TARGETS quadlib0 quadlib1 DESTINATION lib)
+install(FILES quadlods.h DESTINATION include)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(GMPXX REQUIRED)
 set(LIBS ${LIBS} ${GMP_LIBRARY} ${GMPXX_LIBRARIES})
-target_link_libraries(quadlods ${LIBS})
+target_link_libraries(quadlods ${LIBS} quadlib1)
 
 set(QUADLODS_MAJOR_VERSION 0)
 set(QUADLODS_MINOR_VERSION 1)
 set(QUADLODS_PATCH_VERSION 0)
 set(QUADLODS_VERSION ${QUADLODS_MAJOR_VERSION}.${QUADLODS_MINOR_VERSION}.${QUADLODS_PATCH_VERSION})
+
+set_target_properties(quadlib0 PROPERTIES OUTPUT_NAME "quadlods" VERSION ${QUADLODS_VERSION})
+set_target_properties(quadlib1 PROPERTIES OUTPUT_NAME "quadlods" VERSION ${QUADLODS_VERSION})
 
 set(CPACK_PACKAGE_VERSION_MAJOR ${QUADLODS_MAJOR_VERSION})
 set(CPACK_PACKAGE_VERSION_MINOR ${QUADLODS_MINOR_VERSION})
