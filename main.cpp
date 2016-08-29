@@ -20,9 +20,12 @@
 #include <iostream>
 #include <iomanip>
 #include <bitset>
+#include <set>
 #include <ctime>
+#include <cmath>
 #include "quadlods.h"
 #include "ps.h"
+#include "discrepancy.h"
 
 using namespace std;
 
@@ -78,6 +81,29 @@ void testcoverage()
   delete histo;
 }
 
+void testdiscrepancy(int dims,double res,int npoints)
+{
+  int i;
+  quadlods q;
+  double star;
+  set<int> plotpoints;
+  vector<vector<double> > seq;
+  if (npoints<1)
+    npoints=1;
+  for (i=0;i<=300;i++)
+    plotpoints.insert(rint(pow(npoints,i/300.))+1);
+  q.init(dims,res);
+  for (i=0;i<npoints;i++)
+  {
+    seq.push_back(q.dgen());
+  }
+  for (i=0;i<10;i++)
+  {
+    star=stardiscrepancy(seq);
+    cout<<"Trial "<<i<<" discrepancy "<<star<<endl;
+  }
+}
+
 int main(int argc,char **argv)
 {
   int i,j,seedlen;
@@ -112,6 +138,7 @@ int main(int argc,char **argv)
     for (j=0;j<i;j++)
       plotxy(quads,i,j);
   pstrailer();
+  testdiscrepancy(5,1e10,100000);
   psclose();
   delete[] seedbuf;
   return 0;
