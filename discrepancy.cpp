@@ -36,6 +36,7 @@
 #include <cstdlib>
 #include <set>
 #include <iostream>
+#include <cmath>
 #include "discrepancy.h"
 using namespace std;
 
@@ -54,6 +55,39 @@ void remove(int n,vector<int> &v)
   v.resize(i);
 }
 
+int isin(vector<double> point,vector<double> corner)
+{
+  int ret,i;
+  for (i=0,ret=2;ret>0 && i<point.size();i++)
+  {
+    if (point[i]==corner[i])
+      ret=1;
+    if (point[i]>corner[i])
+      ret=0;
+  }
+  return ret;
+}
+
+double boxdiscrepancy(const vector<vector<double> > &sequence,vector<double> corner)
+{
+  int i,in,interior,closure;
+  double volume,disci,discc;
+  for (i=interior=closure=0;i<sequence.size();i++)
+  {
+    in=isin(sequence[i],corner);
+    interior+=in>1;
+    closure+=in>0;
+  }
+  for (i=0,volume=1;i<corner.size();i++)
+    volume*=corner[i];
+  disci=fabs(volume-interior/(double)sequence.size());
+  discc=fabs(volume-closure/(double)sequence.size());
+  if (disci>discc)
+    return disci;
+  else
+    return discc;
+}
+
 double stardiscrepancy(const vector<vector<double> > &sequence)
 {
   int i,j,dbl,n=0;
@@ -62,6 +96,7 @@ double stardiscrepancy(const vector<vector<double> > &sequence)
   vector<double> corner;
   vector<int> dim;
   bool x;
+  double box,ret=0;
   if (sequence.size())
   {
     ordaxes.resize(sequence[0].size());
@@ -83,13 +118,16 @@ double stardiscrepancy(const vector<vector<double> > &sequence)
     dim.push_back(dbl);
     while (dim.size())
     {
-      for (i=0;i<corner.size();i++)
+      /*for (i=0;i<corner.size();i++)
       {
 	if (i)
 	  cout<<',';
 	cout<<corner[i];
       }
-      cout<<endl;
+      cout<<endl;*/
+      box=boxdiscrepancy(sequence,corner);
+      if (box>ret)
+	ret=box;
       x=true;
       while (x)
       {
@@ -109,5 +147,5 @@ double stardiscrepancy(const vector<vector<double> > &sequence)
       }
     }
   }
-  return 0;
+  return ret;
 }
