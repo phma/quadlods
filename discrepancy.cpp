@@ -35,17 +35,79 @@
  */
 #include <cstdlib>
 #include <set>
+#include <iostream>
 #include "discrepancy.h"
 using namespace std;
 
-double stardiscrepancy(const vector<vector<double> > &sequence)
+void remove(int n,vector<int> &v)
 {
   int i,j;
+  for (i=0,j=v.size()-1;i<j;i++)
+  {
+    while (j>i && v[j]==n)
+      j--;
+    while (i<j && v[i]!=n)
+      i++;
+    if (i<j)
+      swap(v[i],v[j]);
+  }
+  v.resize(i);
+}
+
+double stardiscrepancy(const vector<vector<double> > &sequence)
+{
+  int i,j,dbl,n=0;
   vector<set<double> > ordaxes;
+  vector<set<double>::iterator> axit;
+  vector<double> corner;
+  vector<int> dim;
+  bool x;
   if (sequence.size())
+  {
     ordaxes.resize(sequence[0].size());
+    axit.resize(sequence[0].size());
+    corner.resize(sequence[0].size());
+  }
   for (i=0;i<sequence.size();i++)
     for (j=0;j<sequence[i].size();j++)
       ordaxes[j].insert(sequence[i][j]);
+  for (dbl=0;dbl<ordaxes.size();dbl++)
+  {
+    dim.clear();
+    for (i=0;i<ordaxes.size();i++)
+    {
+      axit[i]=ordaxes[i].begin();
+      corner[i]=*axit[i];
+      dim.push_back(i);
+    }
+    dim.push_back(dbl);
+    while (dim.size())
+    {
+      for (i=0;i<corner.size();i++)
+      {
+	if (i)
+	  cout<<',';
+	cout<<corner[i];
+      }
+      cout<<endl;
+      x=true;
+      while (x)
+      {
+	n=(n+random()%dim.size())%dim.size();
+	axit[dim[n]]++;
+	if (axit[dim[n]]==ordaxes[dim[n]].end())
+	{
+	  remove(dim[n],dim);
+	  if (dim.size()==0)
+	    x=false;
+	}
+	else
+	{
+	  corner[dim[n]]=*axit[dim[n]];
+	  x=false;
+	}
+      }
+    }
+  }
   return 0;
 }

@@ -138,7 +138,7 @@ int main(int argc,char **argv)
     for (j=0;j<i;j++)
       plotxy(quads,i,j);
   pstrailer();
-  testdiscrepancy(5,1e10,100000);
+  testdiscrepancy(5,1e10,10);
   psclose();
   delete[] seedbuf;
   return 0;
