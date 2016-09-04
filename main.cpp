@@ -104,6 +104,13 @@ void testdiscrepancy(int dims,double res,int npoints)
   }
 }
 
+/* Commands for interactive mode, which can be used as a server:
+ * init n s res: Initialize generator #n with s dimensions and resolution res.
+ * form n dec/hex/flo/rat: Set format to decimal/hexadecimal/floating point/rational.
+ * gene n i: Generate i points from generator n.
+ * seed n: Seed generator n with random numbers.
+ */
+
 int main(int argc,char **argv)
 {
   int i,j,seedlen;
