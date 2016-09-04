@@ -132,6 +132,10 @@ void quadlods::init(int dimensions,double resolution,int j)
   mpz_class nhi,dhi,nmid,dmid,nlo,dlo,comp;
   if (primes.size()==0)
     initprimes();
+  if (dimensions>primes.size())
+    dimensions=primes.size();
+  if (dimensions<0)
+    dimensions=0;
   for (i=denom.size();i<dimensions;i++)
   {
     p=primes[i];

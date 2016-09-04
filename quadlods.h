@@ -50,6 +50,7 @@ protected:
   int jumbletype;
 public:
   void init(int dimensions,double resolution,int j=QL_JUMBLE_GRAY);
+  // If dimensions>6542, it is silently truncated to 6542.
   mpz_class getnum(int n)
   {
     return num[n];
