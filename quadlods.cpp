@@ -114,6 +114,31 @@ void initprimes()
   }
 }
 
+void compquad(int p,double resolution,mpz_class &nmid,mpz_class &dmid)
+{
+  mpz_class nhi,dhi,nlo,dlo,comp;
+  for (nhi=dlo=1,nlo=dhi=dmid=0;dmid<resolution;)
+  {
+    dmid=dhi+dlo;
+    nmid=nhi+nlo;
+    if ((p-1)&3)
+      comp=nmid*nmid-p*dmid*dmid;
+    else
+      comp=nmid*(nmid-dmid)-(p/4)*dmid*dmid;
+    if (comp>0)
+    {
+      dhi=dmid;
+      nhi=nmid;
+    }
+    else
+    {
+      dlo=dmid;
+      nlo=nmid;
+    }
+  }
+  nmid%=dmid;
+}
+
 void quadlods::init(int dimensions,double resolution,int j)
 /* Sets num[i]/denom[i] to a rational approximation of an integer in Q(sqrt(primes[i])).
  * If p mod 4 is 1, q=(sqrt(p)+1)/2, else q=sqrt(p).
@@ -129,7 +154,7 @@ void quadlods::init(int dimensions,double resolution,int j)
  */
 {
   int i,p;
-  mpz_class nhi,dhi,nmid,dmid,nlo,dlo,comp;
+  mpz_class nmid,dmid;
   if (primes.size()==0)
     initprimes();
   if (dimensions>primes.size())
@@ -139,26 +164,7 @@ void quadlods::init(int dimensions,double resolution,int j)
   for (i=denom.size();i<dimensions;i++)
   {
     p=primes[i];
-    for (nhi=dlo=1,nlo=dhi=dmid=0;dmid<resolution;)
-    {
-      dmid=dhi+dlo;
-      nmid=nhi+nlo;
-      if ((p-1)&3)
-	comp=nmid*nmid-p*dmid*dmid;
-      else
-	comp=nmid*(nmid-dmid)-(p/4)*dmid*dmid;
-      if (comp>0)
-      {
-	dhi=dmid;
-	nhi=nmid;
-      }
-      else
-      {
-	dlo=dmid;
-	nlo=nmid;
-      }
-    }
-    nmid%=dmid;
+    compquad(p,resolution,nmid,dmid);
     denom.push_back(dmid);
     num.push_back(nmid);
   }
