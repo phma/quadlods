@@ -33,6 +33,7 @@
  * one way or the other. It is therefore the default. However, Gray code
  * takes about 5/3 times as much time as the others.
  */
+#define QL_MAX_DIMS 6542
 
 class quadirr
 /* Represents the quadratic irrational a/b+c*sqrt(p)/d.
@@ -43,6 +44,9 @@ class quadirr
   int a,b,c,d,p;
 };
 
+int nthprime(int n);
+double nthquad(int n);
+
 class quadlods
 {
 protected:
@@ -51,6 +55,7 @@ protected:
 public:
   void init(int dimensions,double resolution,int j=QL_JUMBLE_GRAY);
   // If dimensions>6542, it is silently truncated to 6542.
+  void init(std::vector<int> dprimes,double resolution,int j=QL_JUMBLE_GRAY);
   mpz_class getnum(int n)
   {
     return num[n];

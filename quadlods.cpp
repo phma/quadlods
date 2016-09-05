@@ -32,6 +32,8 @@
  */
 
 #include <iostream>
+#include <cfloat>
+#include <cmath>
 #include "quadlods.h"
 
 using namespace std;
@@ -139,6 +141,26 @@ void compquad(int p,double resolution,mpz_class &nmid,mpz_class &dmid)
   nmid%=dmid;
 }
 
+int nthprime(int n)
+{
+  if (n<0 || n>=primes.size())
+    return 0;
+  else
+    return primes[n];
+}
+
+double nthquad(int n)
+{
+  mpz_class nmid,dmid;
+  if (n<0 || n>=primes.size())
+    return NAN;
+  else
+  {
+    compquad(primes[n],27/DBL_EPSILON,nmid,dmid);
+    return mpq_class(nmid,dmid).get_d();
+  }
+}
+
 void quadlods::init(int dimensions,double resolution,int j)
 /* Sets num[i]/denom[i] to a rational approximation of an integer in Q(sqrt(primes[i])).
  * If p mod 4 is 1, q=(sqrt(p)+1)/2, else q=sqrt(p).
@@ -175,6 +197,31 @@ void quadlods::init(int dimensions,double resolution,int j)
   num.resize(dimensions);
   denom.resize(dimensions);
   acc.resize(dimensions);
+}
+
+void quadlods::init(vector<int> dprimes,double resolution,int j)
+/* Used for testing, setting up a generator with a particularly
+ * bad set of primes.
+ */
+{
+  int i,p;
+  mpz_class nmid,dmid;
+  if (primes.size()==0)
+    initprimes(); // TODO check that dprimes are actually prime and distinct
+  for (i=denom.size();i<dprimes.size();i++)
+  {
+    p=dprimes[i];
+    compquad(p,resolution,nmid,dmid);
+    denom.push_back(dmid);
+    num.push_back(nmid);
+  }
+  if (j>=0)
+    jumbletype=j;
+  if (jumbletype<0 || jumbletype>QL_JUMBLE_GRAY)
+    jumbletype=QL_JUMBLE_GRAY;
+  num.resize(dprimes.size());
+  denom.resize(dprimes.size());
+  acc.resize(dprimes.size());
 }
 
 vector<mpq_class> quadlods::readout()

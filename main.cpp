@@ -21,6 +21,7 @@
 #include <iomanip>
 #include <bitset>
 #include <set>
+#include <map>
 #include <ctime>
 #include <cmath>
 #include "quadlods.h"
@@ -30,6 +31,12 @@
 using namespace std;
 
 quadlods quads;
+char rpint[][2]=
+{ // relatively prime integers whose sum of squares is less than 100
+  {1,1},{1,2},{1,3},{1,4},{2,3},{1,5},{1,6},{2,5},
+  {3,4},{1,7},{3,5},{1,8},{2,7},{4,5},{2,9},{3,8},
+  {4,7},{5,6},{5,7},{4,9},{5,8},{6,7}
+};
 
 void plotxy(quadlods& quad,int xdim,int ydim)
 {
@@ -104,6 +111,39 @@ void testdiscrepancy(int dims,double res,int npoints)
   }
 }
 
+void findclosequad()
+{
+  map<double,int> singleq;
+  map<double,int>::iterator j;
+  vector<double> qlist;
+  int i,p,lastp,closep0,closep1;
+  double q,lastq,closeness,closeq0,closeq1;
+  for (i=0;i<QL_MAX_DIMS;i++)
+  {
+    p=nthprime(i);
+    q=nthquad(i);
+    singleq[q]=p;
+  }
+  for (j=singleq.begin();j!=singleq.end();j++)
+    qlist.push_back(j->first);
+  for (lastq==-3,closeness=1,j=singleq.begin();j!=singleq.end();j++)
+  {
+    p=j->second;
+    q=j->first;
+    if (q-lastq<closeness)
+    {
+      closeness=q-lastq;
+      closep1=p;
+      closep0=lastp;
+      closeq1=q;
+      closeq0=lastq;
+    }
+    lastq=q;
+    lastp=p;
+  }
+  cout<<"The closest quads are "<<closeq0<<" ("<<closep0<<") and "<<closeq1<<" ("<<closep1<<")."<<endl;
+}
+
 /* Commands for interactive mode, which can be used as a server:
  * init n s res: Initialize generator #n with s dimensions and resolution res.
  * form n dec/hex/flo/rat: Set format to decimal/hexadecimal/floating point/rational.
@@ -117,9 +157,15 @@ int main(int argc,char **argv)
   char *seedbuf;
   time_t now;
   vector<double> point;
+  vector<int> badprimes; // none of the primes is bad per se, they just have very close q values
+  badprimes.push_back(65029);
+  badprimes.push_back(65027);
+  badprimes.push_back(64013);
+  badprimes.push_back(64007);
+  badprimes.push_back(62003);
   psopen("quadlods.ps");
   psprolog();
-  quads.init(5,1e10);
+  quads.init(badprimes,1e10);
   quads.setjumble(QL_JUMBLE_GRAY);
   quads.advance(-1);
   for (i=0;i<5;i++)
@@ -145,7 +191,8 @@ int main(int argc,char **argv)
     for (j=0;j<i;j++)
       plotxy(quads,i,j);
   pstrailer();
-  testdiscrepancy(5,1e10,1000);
+  //testdiscrepancy(5,1e10,1000);
+  findclosequad();
   psclose();
   delete[] seedbuf;
   return 0;
