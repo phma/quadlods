@@ -56,6 +56,10 @@ public:
   void init(int dimensions,double resolution,int j=QL_JUMBLE_GRAY);
   // If dimensions>6542, it is silently truncated to 6542.
   void init(std::vector<int> dprimes,double resolution,int j=QL_JUMBLE_GRAY);
+  int size()
+  {
+    return acc.size();
+  }
   mpz_class getnum(int n)
   {
     return num[n];

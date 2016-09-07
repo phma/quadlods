@@ -37,6 +37,8 @@ char rpint[][2]=
   {3,4},{1,7},{3,5},{1,8},{2,7},{4,5},{2,9},{3,8},
   {4,7},{5,6},{5,7},{4,9},{5,8},{6,7}
 };
+map<double,int> singleq;
+int minlargerp;
 
 void plotxy(quadlods& quad,int xdim,int ydim)
 {
@@ -111,13 +113,58 @@ void testdiscrepancy(int dims,double res,int npoints)
   }
 }
 
+void test2quads(double q0,double q1,double toler)
+{
+  int i,a=0,b=0;
+  int p0,p1;
+  double diff;
+  for (i=0;i<sizeof(rpint)/sizeof(rpint[0]);i++)
+  {
+    a=rpint[i][0];
+    b=rpint[i][1];
+    diff=a*q0-b*q1;
+    diff-=rint(diff);
+    if (fabs(diff)<toler)
+      break;
+    a=-a;
+    diff=a*q0-b*q1;
+    diff-=rint(diff);
+    if (fabs(diff)<toler)
+      break;
+    if (i==0)
+      continue;
+    swap(a,b);
+    diff=a*q0-b*q1;
+    diff-=rint(diff);
+    if (fabs(diff)<toler)
+      break;
+    b=-b;
+    diff=a*q0-b*q1;
+    diff-=rint(diff);
+    if (fabs(diff)<toler)
+      break;
+    a=b=0;
+  }
+  if (a)
+  {
+    p0=singleq[q0];
+    p1=singleq[q1];
+    cout<<"Close quads are "<<a<<'*'<<q0<<" ("<<p0<<") and "<<b<<'*'<<q1<<" ("<<p1<<")."<<endl;
+    if (p0<p1)
+      swap(p0,p1);
+    if (p0<minlargerp)
+      minlargerp=p0;
+  }
+}
+
 void findclosequad()
 {
-  map<double,int> singleq;
   map<double,int>::iterator j;
   vector<double> qlist;
-  int i,p,lastp,closep0,closep1;
+  int i,k,p,lastp,closep0,closep1;
   double q,lastq,closeness,closeq0,closeq1;
+  singleq.clear();
+  minlargerp=65536;
   for (i=0;i<QL_MAX_DIMS;i++)
   {
     p=nthprime(i);
@@ -126,22 +173,10 @@ void findclosequad()
   }
   for (j=singleq.begin();j!=singleq.end();j++)
     qlist.push_back(j->first);
-  for (lastq==-3,closeness=1,j=singleq.begin();j!=singleq.end();j++)
-  {
-    p=j->second;
-    q=j->first;
-    if (q-lastq<closeness)
-    {
-      closeness=q-lastq;
-      closep1=p;
-      closep0=lastp;
-      closeq1=q;
-      closeq0=lastq;
-    }
-    lastq=q;
-    lastp=p;
-  }
-  cout<<"The closest quads are "<<closeq0<<" ("<<closep0<<") and "<<closeq1<<" ("<<closep1<<")."<<endl;
+  for (i=0;i<QL_MAX_DIMS;i++)
+    for (k=0;k<i;k++)
+      test2quads(qlist[i],qlist[k],2e-9);
+  cout<<"Use primes below "<<minlargerp<<endl;
 }
 
 /* Commands for interactive mode, which can be used as a server:
@@ -160,15 +195,14 @@ int main(int argc,char **argv)
   vector<int> badprimes; // none of the primes is bad per se, they just have very close q values
   badprimes.push_back(65029);
   badprimes.push_back(65027);
-  badprimes.push_back(64013);
-  badprimes.push_back(64007);
-  badprimes.push_back(62003);
+  badprimes.push_back(28901);
+  badprimes.push_back(1327);
   psopen("quadlods.ps");
   psprolog();
   quads.init(badprimes,1e10);
   quads.setjumble(QL_JUMBLE_GRAY);
   quads.advance(-1);
-  for (i=0;i<5;i++)
+  for (i=0;i<quads.size();i++)
     cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
   seedlen=quads.seedsize();
   cout<<seedlen<<" bytes needed to seed"<<endl;
@@ -182,12 +216,12 @@ int main(int argc,char **argv)
   for (i=0;i<30;i++)
   {
     point=quads.dgen();
-    for (j=0;j<5;j++)
+    for (j=0;j<point.size();j++)
       cout<<point[j]<<' ';
     cout<<endl;
   }
   //testcoverage();
-  for (i=0;i<5;i++)
+  for (i=0;i<quads.size();i++)
     for (j=0;j<i;j++)
       plotxy(quads,i,j);
   pstrailer();
