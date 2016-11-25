@@ -42,6 +42,26 @@ vector<unsigned short> primes;
 mpz_class thue(0x69969669),third(0x55555555);
 int morse(32),b2adic(32);
 
+quadirr::quadirr()
+{
+  a=c=0;
+  b=d=p=1;
+}
+
+quadirr::quadirr(int A,int B,int C,int D,int P)
+{
+  a=A;
+  b=B;
+  c=C;
+  d=D;
+  p=P;
+}
+
+double quadirr::realval()
+{
+  return a/(double)b+c*sqrt(p)/d;
+}
+
 mpz_class thuemorse(int n)
 {
   while (morse<=n)

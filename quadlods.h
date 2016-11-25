@@ -41,7 +41,12 @@ class quadirr
  * (sqrt(p)+1)/2 and, thus, order the numbers by their discrepancy constant.
  */
 {
+private:
   int a,b,c,d,p;
+public:
+  quadirr();
+  quadirr(int A,int B,int C,int D,int P);
+  double realval();
 };
 
 int nthprime(int n);
