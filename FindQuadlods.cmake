@@ -1,0 +1,17 @@
+find_package(GMPXX QUIET)
+
+find_path(Quadlods_INCLUDE_DIR quadlods.h)
+find_library(Quadlods_LIBRARY NAMES quadlods)
+if (Quadlods_INCLUDE_DIR AND Quadlods_LIBRARY)
+  set(Quadlods_FOUND TRUE)
+endif ()
+
+if (Quadlods_FOUND)
+  if (NOT Quadlods_FIND_QUIETLY)
+    message(STATUS "Found Quadlods: ${Quadlods_LIBRARY}")
+  endif ()
+else ()
+  if (Quadlods_FIND_REQUIRED)
+    message(FATAL_ERROR "Could not find Quadlods")
+  endif ()
+endif ()

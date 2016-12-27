@@ -1,5 +1,7 @@
 Quadlods is a library for making low-discrepancy sequences using quadratic irrationals, which are approximated with multiple-precision rationals.
 
+Quadlods can generate sequences up to 6542 dimensions (the number of primes less than 65536), but some pairs of primes give particularly bad distributions with high discrepancy. Until I find all such pairs and reorder the primes (I know already that 5 will be first), I recommend not using more than 1000 dimensions or so.
+
 To compile, if you're not developing the program:
 1. Create a subdirectory build/ inside the directory where you untarred the source code.
 2. cd build
@@ -12,6 +14,12 @@ If you are developing the program:
 3. cmake <directory where the source code is>
 4. make
 
-GMP is required both to compile and to run the library. To compile your own code that uses the library, first run "make install" as root.
+GMP is required both to compile and to run the library. To compile your own code that uses the library, first run "make install" as root. If you are using CMake, put the provided file FindQuadlods.cmake in your project's cmake/Modules directory, along with the GMP and GMPXX modules, and add the following lines to your CMakeLists.txt file:
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+find_package(Quadlods REQUIRED)
+set(LIBS ${LIBS} ${Quadlods_LIBRARY} ${GMP_LIBRARY} ${GMPXX_LIBRARIES})
+target_link_libraries(<project> ${LIBS})
+include_directories(${PROJECT_BINARY_DIR} ${Quadlods_INCLUDE_DIR})
 
 A program called "quadlods" accompanies the library.
