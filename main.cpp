@@ -39,23 +39,24 @@ char rpint[][2]=
 };
 map<double,int> singleq;
 int minlargerp;
+PostScript ps;
 
 void plotxy(quadlods& quad,int xdim,int ydim)
 {
   int i;
   double x,y;
   vector<double> point;
-  startpage();
-  setscale(0,0,1,1);
+  ps.startpage();
+  ps.setscale(0,0,1,1);
   // (2,0) and (3,0) look splotchy at 30000, but fill in well at 100000.
   for (i=0;i<30000;i++)
   {
     point=quad.dgen();
     x=point[xdim];
     y=point[ydim];
-    dot(x,y);
+    ps.dot(x,y);
   }
-  endpage();
+  ps.endpage();
 }
 
 void testcoverage()
@@ -197,8 +198,8 @@ int main(int argc,char **argv)
   badprimes.push_back(65027);
   badprimes.push_back(28901);
   badprimes.push_back(1327);
-  psopen("quadlods.ps");
-  psprolog();
+  ps.open("quadlods.ps");
+  ps.prolog();
   quads.init(badprimes,1e10);
   quads.setjumble(QL_JUMBLE_GRAY);
   quads.advance(-1);
@@ -224,10 +225,10 @@ int main(int argc,char **argv)
   for (i=0;i<quads.size();i++)
     for (j=0;j<i;j++)
       plotxy(quads,i,j);
-  pstrailer();
+  ps.trailer();
   //testdiscrepancy(5,1e10,1000);
   findclosequad();
-  psclose();
+  ps.close();
   delete[] seedbuf;
   return 0;
 }

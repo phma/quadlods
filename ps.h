@@ -3,7 +3,7 @@
 /* ps.h - PostScript output                           */
 /*                                                    */
 /******************************************************/
-/* Copyright 2014 Pierre Abbat.
+/* Copyright 2014,2016 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -21,17 +21,40 @@
  * and Lesser General Public License along with Quadlods. If not, see
  * <http://www.gnu.org/licenses/>.
  */
+#include <string>
+#include <iostream>
+#include <fstream>
 
-extern FILE *psfile;
-extern int orientation;
-void psprolog();
-void startpage();
-void endpage();
-void dot(double x,double y);
-void pstrailer();
-void psopen(const char * psfname);
-void psclose();
-void line2p(double x1,double y1,double x2,double y2);
-void widen(double factor);
-void setcolor(double r,double g,double b);
-void setscale(double minx,double miny,double maxx,double maxy);
+struct papersize
+{
+  double width,height;
+};
+
+class PostScript
+{
+protected:
+  std::ostream *psfile;
+  int pages;
+  bool indocument,inpage;
+  double scale; // paper size is in millimeters
+  double paperx,papery,centerx,centery;
+  int orientation,pageorientation;
+  double oldr,oldg,oldb;
+public:
+  PostScript();
+  ~PostScript();
+  void setpaper(papersize pap,int ori);
+  double aspectRatio();
+  void open(std::string psfname);
+  void prolog();
+  void startpage();
+  void endpage();
+  void trailer();
+  void close();
+  double xscale(double x);
+  double yscale(double y);
+  void setcolor(double r,double g,double b);
+  void setscale(double minx,double miny,double maxx,double maxy,int ori=0);
+  void dot(double x,double y);
+  void comment(std::string text);
+};
