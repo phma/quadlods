@@ -1,4 +1,4 @@
-/* Copyright 2014,2016 Pierre Abbat.
+/* Copyright 2014,2016,2017 Pierre Abbat.
  * This file is part of the Quadlods library.
  * 
  * The Quadlods library is free software: you can redistribute it and/or
@@ -16,6 +16,8 @@
  * and Lesser General Public License along with Quadlods. If not, see
  * <http://www.gnu.org/licenses/>.
  */
+#ifndef QUADLODS_H
+#define QUADLODS_H
 #include <vector>
 #include <gmpxx.h>
 
@@ -90,3 +92,4 @@ public:
   std::vector<double> dreadout();
   std::vector<double> dgen();
 };
+#endif

@@ -27,10 +27,11 @@
 #include "quadlods.h"
 #include "ps.h"
 #include "discrepancy.h"
+#include "circletest.h"
 
 using namespace std;
 
-quadlods quads;
+quadlods quads,cirquads;
 char rpint[][2]=
 { // relatively prime integers whose sum of squares is less than 100
   {1,1},{1,2},{1,3},{1,4},{2,3},{1,5},{1,6},{2,5},
@@ -201,6 +202,8 @@ int main(int argc,char **argv)
   ps.open("quadlods.ps");
   ps.prolog();
   quads.init(badprimes,1e10);
+  //quads.init(5,1e10);
+  cirquads.init(badprimes,1e17,QL_JUMBLE_NONE);
   quads.setjumble(QL_JUMBLE_GRAY);
   quads.advance(-1);
   for (i=0;i<quads.size();i++)
@@ -229,6 +232,7 @@ int main(int argc,char **argv)
   //testdiscrepancy(5,1e10,1000);
   findclosequad();
   ps.close();
+  circletest(cirquads);
   delete[] seedbuf;
   return 0;
 }
