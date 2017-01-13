@@ -46,6 +46,8 @@ void circletest(quadlods &quad)
         inx=j*(j-1)/2+k;
         if (point[j]*point[j]+point[k]*point[k]<1)
           incircle[inx]++;
+        if (point[j]*point[j]+(1-point[k])*(1-point[k])<1)
+          incircle[inx]--;
       }
     now=time(nullptr);
     if (now!=then)
@@ -59,7 +61,7 @@ void circletest(quadlods &quad)
     for (k=0;k<j;k++)
     {
       inx=j*(j-1)/2+k;
-      relativeError=(incircle[inx]-i*M_PI/4)/log(i)/log(i);
+      relativeError=(incircle[inx])/log(i)/log(i);
       cout<<j<<' '<<k<<' '<<incircle[inx]<<' '<<relativeError<<endl;
     }
 }

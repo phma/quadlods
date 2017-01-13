@@ -199,6 +199,8 @@ int main(int argc,char **argv)
   badprimes.push_back(65027);
   badprimes.push_back(28901);
   badprimes.push_back(1327);
+  badprimes.push_back(41);
+  badprimes.push_back(23);
   ps.open("quadlods.ps");
   ps.prolog();
   quads.init(badprimes,1e10);
