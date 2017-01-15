@@ -35,7 +35,7 @@ class PostScript
 protected:
   std::ostream *psfile;
   int pages;
-  bool indocument,inpage;
+  bool indocument,inpage,inlin;
   double scale; // paper size is in millimeters
   double paperx,papery,centerx,centery;
   int orientation,pageorientation;
@@ -56,5 +56,8 @@ public:
   void setcolor(double r,double g,double b);
   void setscale(double minx,double miny,double maxx,double maxy,int ori=0);
   void dot(double x,double y);
+  void startline();
+  void lineto(double x,double y);
+  void endline();
   void comment(std::string text);
 };

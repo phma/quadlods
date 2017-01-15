@@ -44,8 +44,8 @@ PostScript::PostScript()
   paperx=210;
   papery=297;
   scale=1;
-  orientation=pages=0;
-  indocument=inpage=false;
+  pageorientation=orientation=pages=0;
+  indocument=inpage=inlin=false;
   psfile=nullptr;
 }
 
@@ -186,6 +186,27 @@ void PostScript::dot(double x,double y)
   assert(psfile);
   *psfile<<fixed<<setprecision(2)<<xscale(x)<<' '<<yscale(y)<<" .";
   *psfile<<endl;
+}
+
+void PostScript::startline()
+{
+  assert(psfile);
+  *psfile<<"newpath"<<endl;
+}
+
+void PostScript::lineto(double x,double y)
+{
+  assert(psfile);
+  *psfile<<fixed<<setprecision(2)<<xscale(x)<<' '<<yscale(y)<<(inlin?" lineto":" moveto");
+  *psfile<<endl;
+  inlin=true;
+}
+
+void PostScript::endline()
+{
+  assert(psfile);
+  *psfile<<"stroke"<<endl;
+  inlin=false;
 }
 
 void PostScript::comment(string text)

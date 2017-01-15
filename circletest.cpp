@@ -22,8 +22,22 @@
 #include <ctime>
 #include <cmath>
 #include "circletest.h"
+#include "ps.h"
 
 using namespace std;
+
+double halfstep[]={1,1.05946309435929526455,1.12246204830937298142};
+double minorthird[]={1,1.18920711500272106671,1.41421356237309504878,1.68179283050742908604};
+
+double hstep(int i)
+{
+  int octave,note;
+  octave=i/12;
+  if (i<octave*12)
+    --octave;
+  note=i-12*octave;
+  return ldexp(minorthird[note/3]*halfstep[note%3],octave);
+}
 
 void circletest(quadlods &quad)
 /* Find all pairs of primes (dimensions) which have high discrepancy by
@@ -31,14 +45,24 @@ void circletest(quadlods &quad)
  * The number of points in the quadrant should be (π/4)i+O(ln(i)²/i).
  */
 {
-  int i,j,k,inx,iters=1000000;
+  int i,j,k,inx,iters=1048576,logi=-1;
   time_t now,then;
-  vector<int> incircle;
+  bool recordthis;
+  vector<int> incircle,ri;
   vector<double> point;
-  double relativeError;
+  vector<vector<double> > rrelError;
+  PostScript ps;
+  double relativeError,maxError;
   incircle.resize(quad.size()*(quad.size()-1)/2);
+  rrelError.resize(quad.size()*(quad.size()-1)/2);
   for (i=0;i<iters;i++)
   {
+    recordthis=false;
+    while (hstep(logi)<i+1)
+    {
+      logi++;
+      recordthis=true;
+    }
     point=quad.dgen();
     for (j=0;j<quad.size();j++)
       for (k=0;k<j;k++)
@@ -48,7 +72,16 @@ void circletest(quadlods &quad)
           incircle[inx]++;
         if (point[j]*point[j]+(1-point[k])*(1-point[k])<1)
           incircle[inx]--;
+        if (recordthis)
+        {
+          relativeError=(incircle[inx])/log(i+1)/log(i+1);
+          if (i==0)
+            relativeError=0;
+          rrelError[inx].push_back(relativeError);
+        }
       }
+    if (recordthis)
+      ri.push_back(i+1);
     now=time(nullptr);
     if (now!=then)
     {
@@ -64,4 +97,19 @@ void circletest(quadlods &quad)
       relativeError=(incircle[inx])/log(i)/log(i);
       cout<<j<<' '<<k<<' '<<incircle[inx]<<' '<<relativeError<<endl;
     }
+  ps.open("circletest.ps");
+  ps.prolog();
+  for (i=0;i<rrelError.size();i++)
+  {
+    for (maxError=j=0;j<ri.size();j++)
+      if (fabs(rrelError[i][j])>maxError)
+        maxError=fabs(rrelError[i][j]);
+    ps.startpage();
+    ps.setscale(-1,0,1,3);
+    ps.startline();
+    for (j=0;j<ri.size();j++)
+      ps.lineto(-rrelError[i][j]/maxError,log(ri[j])/log(iters)*3);
+    ps.endline();
+    ps.endpage();
+  }
 }
