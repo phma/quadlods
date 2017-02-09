@@ -58,6 +58,7 @@ public:
   void dot(double x,double y);
   void startline();
   void lineto(double x,double y);
-  void endline();
+  void endline(bool closed=false);
+  void write(double x,double y,std::string text);
   void comment(std::string text);
 };

@@ -202,11 +202,19 @@ void PostScript::lineto(double x,double y)
   inlin=true;
 }
 
-void PostScript::endline()
+void PostScript::endline(bool closed)
 {
   assert(psfile);
+  if (closed)
+    *psfile<<"closepath ";
   *psfile<<"stroke"<<endl;
   inlin=false;
+}
+
+void PostScript::write(double x,double y,string text)
+{
+  *psfile<<fixed<<setprecision(2)<<xscale(x)<<' '<<yscale(y)
+  <<" moveto ("<<text<<") show"<<endl;
 }
 
 void PostScript::comment(string text)

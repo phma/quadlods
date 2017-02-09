@@ -28,6 +28,7 @@ using namespace std;
 
 double halfstep[]={1,1.05946309435929526455,1.12246204830937298142};
 double minorthird[]={1,1.18920711500272106671,1.41421356237309504878,1.68179283050742908604};
+papersize a4land={297,210};
 
 double hstep(int i)
 {
@@ -46,13 +47,14 @@ void circletest(quadlods &quad)
  */
 {
   int i,j,k,inx,iters=1048576,logi=-1;
+  char buf[24];
   time_t now,then;
   bool recordthis;
   vector<int> incircle,ri;
   vector<double> point;
   vector<vector<double> > rrelError;
   PostScript ps;
-  double relativeError,maxError;
+  double relativeError,maxError,scale;
   incircle.resize(quad.size()*(quad.size()-1)/2);
   rrelError.resize(quad.size()*(quad.size()-1)/2);
   for (i=0;i<iters;i++)
@@ -98,6 +100,7 @@ void circletest(quadlods &quad)
       cout<<j<<' '<<k<<' '<<incircle[inx]<<' '<<relativeError<<endl;
     }
   ps.open("circletest.ps");
+  ps.setpaper(a4land,0);
   ps.prolog();
   for (i=0;i<rrelError.size();i++)
   {
@@ -105,10 +108,19 @@ void circletest(quadlods &quad)
       if (fabs(rrelError[i][j])>maxError)
         maxError=fabs(rrelError[i][j]);
     ps.startpage();
-    ps.setscale(-1,0,1,3);
+    ps.setscale(0,-1,3,1);
+    scale=maxError;
+    ps.startline();
+    ps.lineto(0,-1);
+    ps.lineto(3,-1);
+    ps.lineto(3,1);
+    ps.lineto(0,1);
+    ps.endline(true);
+    sprintf(buf,"%g",scale);
+    ps.write(3,1,buf);
     ps.startline();
     for (j=0;j<ri.size();j++)
-      ps.lineto(-rrelError[i][j]/maxError,log(ri[j])/log(iters)*3);
+      ps.lineto(log(ri[j])/log(iters)*3,rrelError[i][j]/maxError);
     ps.endline();
     ps.endpage();
   }
