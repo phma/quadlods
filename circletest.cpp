@@ -59,10 +59,12 @@ void circletest(quadlods &quad)
   vector<int> incircle,ri;
   vector<double> point;
   vector<vector<double> > rrelError;
+  vector<vector<int> > primepairs;
   PostScript ps;
   double relativeError,maxError,scale;
   incircle.resize(quad.size()*(quad.size()-1)/2);
   rrelError.resize(quad.size()*(quad.size()-1)/2);
+  primepairs.resize(quad.size()*(quad.size()-1)/2);
   for (i=0;i<=iters;i++)
   {
     recordthis=false;
@@ -76,6 +78,8 @@ void circletest(quadlods &quad)
       for (k=0;k<j;k++)
       {
         inx=j*(j-1)/2+k;
+        primepairs[inx].push_back(quad.getprime(k));
+        primepairs[inx].push_back(quad.getprime(j));
         if (point[j]*point[j]+point[k]*point[k]<1)
           incircle[inx]++;
         if (point[j]*point[j]+(1-point[k])*(1-point[k])<1)
@@ -124,6 +128,8 @@ void circletest(quadlods &quad)
     ps.endline(true);
     sprintf(buf,"%g",scale);
     ps.write(3,1,buf);
+    sprintf(buf,"%d %d",primepairs[i][0],primepairs[i][1]);
+    ps.write(0,1,buf);
     ps.startline();
     for (j=0;j<ri.size();j++)
       ps.lineto(log(ri[j])/log(iters)*3,rrelError[i][j]/maxError);

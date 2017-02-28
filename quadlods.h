@@ -80,6 +80,17 @@ public:
   {
     return acc[n];
   }
+  int getprimeinx(int n)
+  {
+    if (n<0 || n>primeinx.size())
+      return -1;
+    else
+      return primeinx[n];
+  }
+  int getprime(int n)
+  {
+    return nthprime(getprimeinx(n));
+  }
   std::vector<mpq_class> readout();
   void setmiddle();
   void setjumble(int j)
