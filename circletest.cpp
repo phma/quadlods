@@ -29,6 +29,12 @@ using namespace std;
 double halfstep[]={1,1.05946309435929526455,1.12246204830937298142};
 double minorthird[]={1,1.18920711500272106671,1.41421356237309504878,1.68179283050742908604};
 papersize a4land={297,210};
+const double criterion=21.25;
+/* criterion is set to the geometric mean of the relative error of 28901 and
+ * 1327, which reaches 7.53 shortly before 1M and then turns back down, and
+ * the relative error of 65027 and 28901, which reaches almost -60 at 1M and
+ * keeps going down.
+ */
 
 double hstep(int i)
 {
@@ -57,7 +63,7 @@ void circletest(quadlods &quad)
   double relativeError,maxError,scale;
   incircle.resize(quad.size()*(quad.size()-1)/2);
   rrelError.resize(quad.size()*(quad.size()-1)/2);
-  for (i=0;i<iters;i++)
+  for (i=0;i<=iters;i++)
   {
     recordthis=false;
     while (hstep(logi)<i+1)
