@@ -205,6 +205,7 @@ void quadlods::init(int dimensions,double resolution,int j)
     dimensions=0;
   for (i=denom.size();i<dimensions;i++)
   {
+    primeinx.push_back(i);
     p=primes[i];
     compquad(p,resolution,nmid,dmid);
     denom.push_back(dmid);
@@ -224,13 +225,20 @@ void quadlods::init(vector<int> dprimes,double resolution,int j)
  * bad set of primes.
  */
 {
-  int i,p;
+  int i,k,p;
   mpz_class nmid,dmid;
   if (primes.size()==0)
-    initprimes(); // TODO check that dprimes are actually prime and distinct
-  for (i=denom.size();i<dprimes.size();i++)
+    initprimes(); // TODO check that dprimes are actually distinct
+  for (i=primeinx.size();i<dprimes.size();i++)
+    for (k=0;k<QL_MAX_DIMS;k++)
+      if (dprimes[i]==primes[k])
+      {
+        primeinx.push_back(k);
+        k=8191;
+      }
+  for (i=denom.size();i<primeinx.size();i++)
   {
-    p=dprimes[i];
+    p=primes[primeinx[i]];
     compquad(p,resolution,nmid,dmid);
     denom.push_back(dmid);
     num.push_back(nmid);

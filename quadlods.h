@@ -58,6 +58,7 @@ class quadlods
 {
 protected:
   std::vector<mpz_class> num,denom,acc;
+  std::vector<short> primeinx;
   int jumbletype;
 public:
   void init(int dimensions,double resolution,int j=QL_JUMBLE_GRAY);
