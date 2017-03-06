@@ -18,7 +18,6 @@
  */
 #include <iostream>
 #include <iomanip>
-#include <vector>
 #include <ctime>
 #include <cmath>
 #include "circletest.h"
@@ -60,6 +59,7 @@ void circletest(quadlods &quad)
   vector<double> point;
   vector<vector<double> > rrelError;
   vector<vector<int> > primepairs;
+  vector<errorrec> errorrecs;
   PostScript ps;
   double relativeError,maxError,scale;
   incircle.resize(quad.size()*(quad.size()-1)/2);

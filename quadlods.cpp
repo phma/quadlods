@@ -326,3 +326,23 @@ vector<double> quadlods::dgen()
   advance(1);
   return dreadout();
 }
+
+quadlods select(quadlods& b,vector<int> dimensions)
+{
+  quadlods ret;
+  int i,j;
+  ret.jumbletype=b.jumbletype;
+  for (i=0;i<dimensions.size();i++)
+    if (dimensions[i]>=0 && dimensions[i]<b.size())
+    {
+      for (j=0;j<ret.size() && ret.primeinx[j]!=b.primeinx[i];j++);
+      if (j==ret.size())
+      {
+        ret.num.     push_back(b.num     [i]);
+        ret.denom.   push_back(b.denom   [i]);
+        ret.acc.     push_back(b.acc     [i]);
+        ret.primeinx.push_back(b.primeinx[i]);
+      }
+    }
+  return ret;
+}

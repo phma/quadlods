@@ -16,6 +16,14 @@
  * and Lesser General Public License along with Quadlods. If not, see
  * <http://www.gnu.org/licenses/>.
  */
+#include <vector>
 #include "quadlods.h"
+
+struct errorrec
+{
+  int primepair[2];
+  double maxError;
+  std::vector<double> relError;
+};
 
 void circletest(quadlods &quad);

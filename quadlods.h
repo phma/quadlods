@@ -103,5 +103,6 @@ public:
   std::vector<mpq_class> gen();
   std::vector<double> dreadout();
   std::vector<double> dgen();
+  friend quadlods select(quadlods& b,std::vector<int> dimensions);
 };
 #endif
