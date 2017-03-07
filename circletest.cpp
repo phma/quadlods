@@ -55,6 +55,8 @@ void circletest(quadlods &quad)
   char buf[24];
   time_t now,then;
   bool recordthis;
+  quadlods sel2;
+  vector<int> pinx2;
   vector<int> incircle,ri;
   vector<double> point;
   vector<vector<double> > rrelError;
@@ -80,6 +82,16 @@ void circletest(quadlods &quad)
         inx=j*(j-1)/2+k;
         primepairs[inx].push_back(quad.getprime(k));
         primepairs[inx].push_back(quad.getprime(j));
+        pinx2.clear();
+        pinx2.push_back(j);
+        pinx2.push_back(k);
+        sel2=select(quad,pinx2);
+        if (inx>=errorrecs.size())
+        {
+          errorrecs.resize(inx+1);
+          errorrecs[inx].primepair[0]=sel2.getprime(0);
+          errorrecs[inx].primepair[1]=sel2.getprime(1);
+        }
         if (point[j]*point[j]+point[k]*point[k]<1)
           incircle[inx]++;
         if (point[j]*point[j]+(1-point[k])*(1-point[k])<1)
@@ -90,10 +102,11 @@ void circletest(quadlods &quad)
           if (i==0)
             relativeError=0;
           rrelError[inx].push_back(relativeError);
+          errorrecs[inx].relError.push_back(relativeError);
+          if (ri.size()==0 || ri.back()<i+1)
+            ri.push_back(i+1);
         }
       }
-    if (recordthis)
-      ri.push_back(i+1);
     now=time(nullptr);
     if (now!=then)
     {
@@ -101,6 +114,13 @@ void circletest(quadlods &quad)
       cout.flush();
       then=now;
     }
+  }
+  for (j=0;j<errorrecs.size();j++)
+  {
+    errorrecs[j].maxError=0;
+    for (i=0;i<errorrecs[j].relError.size();i++)
+      if (fabs(errorrecs[j].relError[i])>errorrecs[j].maxError)
+        errorrecs[j].maxError=fabs(errorrecs[j].relError[i]);
   }
   for (j=0;j<quad.size();j++)
     for (k=0;k<j;k++)
@@ -112,14 +132,14 @@ void circletest(quadlods &quad)
   ps.open("circletest.ps");
   ps.setpaper(a4land,0);
   ps.prolog();
-  for (i=0;i<rrelError.size();i++)
+  for (i=0;i<errorrecs.size();i++)
   {
-    for (maxError=j=0;j<ri.size();j++)
+    /*for (maxError=j=0;j<ri.size();j++)
       if (fabs(rrelError[i][j])>maxError)
-        maxError=fabs(rrelError[i][j]);
+        maxError=fabs(rrelError[i][j]);*/
     ps.startpage();
     ps.setscale(0,-1,3,1);
-    scale=maxError;
+    scale=errorrecs[i].maxError;
     ps.startline();
     ps.lineto(0,-1);
     ps.lineto(3,-1);
@@ -128,11 +148,11 @@ void circletest(quadlods &quad)
     ps.endline(true);
     sprintf(buf,"%g",scale);
     ps.write(3,1,buf);
-    sprintf(buf,"%d %d",primepairs[i][0],primepairs[i][1]);
+    sprintf(buf,"%d %d",errorrecs[i].primepair[0],errorrecs[i].primepair[1]);
     ps.write(0,1,buf);
     ps.startline();
     for (j=0;j<ri.size();j++)
-      ps.lineto(log(ri[j])/log(iters)*3,rrelError[i][j]/maxError);
+      ps.lineto(log(ri[j])/log(iters)*3,errorrecs[i].relError[j]/scale);
     ps.endline();
     ps.endpage();
   }
