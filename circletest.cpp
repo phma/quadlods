@@ -51,7 +51,7 @@ void circletest(quadlods &quad)
  * The number of points in the quadrant should be (π/4)i+O(ln(i)²/i).
  */
 {
-  int i,j,k,inx,iters=1048576,logi=-1;
+  int i,j,k,inx,iters=1048576,allinx,logi;
   char buf[24];
   time_t now,then;
   bool recordthis;
@@ -64,37 +64,39 @@ void circletest(quadlods &quad)
   vector<errorrec> errorrecs;
   PostScript ps;
   double relativeError,maxError,scale;
+  allinx=quad.size()*(quad.size()-1)/2;
   incircle.resize(quad.size()*(quad.size()-1)/2);
   rrelError.resize(quad.size()*(quad.size()-1)/2);
   primepairs.resize(quad.size()*(quad.size()-1)/2);
-  for (i=0;i<=iters;i++)
-  {
-    recordthis=false;
-    while (hstep(logi)<i+1)
+  for (j=0;j<quad.size();j++)
+    for (k=0;k<j;k++)
     {
-      logi++;
-      recordthis=true;
-    }
-    point=quad.dgen();
-    for (j=0;j<quad.size();j++)
-      for (k=0;k<j;k++)
+      inx=j*(j-1)/2+k;
+      //primepairs[inx].push_back(quad.getprime(k));
+      //primepairs[inx].push_back(quad.getprime(j));
+      pinx2.clear();
+      pinx2.push_back(j);
+      pinx2.push_back(k);
+      sel2=select(quad,pinx2);
+      logi=-1;
+      for (i=0;i<=iters;i++)
       {
-        inx=j*(j-1)/2+k;
-        primepairs[inx].push_back(quad.getprime(k));
-        primepairs[inx].push_back(quad.getprime(j));
-        pinx2.clear();
-        pinx2.push_back(j);
-        pinx2.push_back(k);
-        sel2=select(quad,pinx2);
+        recordthis=false;
+        while (hstep(logi)<i+1)
+        {
+          logi++;
+          recordthis=true;
+        }
+        point=sel2.dgen();
         if (inx>=errorrecs.size())
         {
           errorrecs.resize(inx+1);
           errorrecs[inx].primepair[0]=sel2.getprime(0);
           errorrecs[inx].primepair[1]=sel2.getprime(1);
         }
-        if (point[j]*point[j]+point[k]*point[k]<1)
+        if (point[0]*point[0]+point[1]*point[1]<1)
           incircle[inx]++;
-        if (point[j]*point[j]+(1-point[k])*(1-point[k])<1)
+        if (point[0]*point[0]+(1-point[1])*(1-point[1])<1)
           incircle[inx]--;
         if (recordthis)
         {
@@ -107,14 +109,14 @@ void circletest(quadlods &quad)
             ri.push_back(i+1);
         }
       }
-    now=time(nullptr);
-    if (now!=then)
-    {
-      cout<<rint((double)i/iters*100)<<"% \r";
-      cout.flush();
-      then=now;
+      now=time(nullptr);
+      if (now!=then)
+      {
+        cout<<rint((double)inx/allinx*100)<<"% \r";
+        cout.flush();
+        then=now;
+      }
     }
-  }
   for (j=0;j<errorrecs.size();j++)
   {
     errorrecs[j].maxError=0;
