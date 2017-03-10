@@ -116,14 +116,11 @@ void circletest(quadlods &quad)
         cout.flush();
         then=now;
       }
+      errorrecs[inx].maxError=0;
+      for (i=0;i<errorrecs[inx].relError.size();i++)
+        if (fabs(errorrecs[inx].relError[i])>errorrecs[inx].maxError)
+          errorrecs[inx].maxError=fabs(errorrecs[inx].relError[i]);
     }
-  for (j=0;j<errorrecs.size();j++)
-  {
-    errorrecs[j].maxError=0;
-    for (i=0;i<errorrecs[j].relError.size();i++)
-      if (fabs(errorrecs[j].relError[i])>errorrecs[j].maxError)
-        errorrecs[j].maxError=fabs(errorrecs[j].relError[i]);
-  }
   for (j=0;j<quad.size();j++)
     for (k=0;k<j;k++)
     {
