@@ -62,6 +62,11 @@ double quadirr::realval()
   return a/(double)b+c*sqrt(p)/d;
 }
 
+/* To compute the reciprocal of a/b+c*sqrt(p)/d:
+ * 1/(a/b+c*sqrt(p)/d)
+ * (a/b-c*sqrt(p)/d)/(a²/b²-c²*p/d²)
+ */
+
 mpz_class thuemorse(int n)
 {
   while (morse<=n)
