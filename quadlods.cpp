@@ -62,6 +62,35 @@ double quadirr::realval()
   return a/(double)b+c*sqrt(p)/d;
 }
 
+bool quadirr::operator=(const quadirr &r) const
+{
+  if (c==0 && r.c==0)
+    return a*r.b==b*r.a;
+  else
+    return a*r.b==b*r.a && p==r.p && c*r.d==d*r.c;
+}
+
+quadirr& quadirr::operator-=(int n)
+{
+  a-=b*n;
+  return *this;
+}
+
+unsigned gcd(unsigned a,unsigned b)
+{
+  while (a&&b)
+  {
+    if (a>b)
+    {
+      b^=a;
+      a^=b;
+      b^=a;
+    }
+    b%=a;
+  }
+  return a+b;
+}
+
 /* To compute the reciprocal of a/b+c*sqrt(p)/d:
  * 1/(a/b+c*sqrt(p)/d)
  * (a/b-c*sqrt(p)/d)/(a²/b²-c²*p/d²)
@@ -81,6 +110,39 @@ double quadirr::realval()
  * (255,1,1,1,65027)-510=(-255,1,1,1,65027)
  * (255;255,510,255,510,...)
  */
+
+void quadirr::recip()
+{
+  mpq_class denom,e(a,b),f(c,d);
+  int g,h,gc;
+  e.canonicalize();
+  f.canonicalize();
+  e*=e;
+  f=f*f*p;
+  denom=e-f;
+  g=denom.get_num().get_si();
+  h=denom.get_den().get_si();
+  a*=h;
+  b*=g;
+  c*=-h;
+  d*=g;
+  gc=gcd(abs(a),abs(b));
+  a/=gc;
+  b/=gc;
+  gc=gcd(abs(c),abs(d));
+  c/=gc;
+  d/=gc;
+  if (b<0)
+  {
+    a=-a;
+    b=-b;
+  }
+  if (d<0)
+  {
+    c=-c;
+    d=-d;
+  }
+}
 
 mpz_class thuemorse(int n)
 {

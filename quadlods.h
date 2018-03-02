@@ -49,6 +49,9 @@ public:
   quadirr();
   quadirr(int A,int B,int C,int D,int P);
   double realval();
+  bool operator=(const quadirr &r) const;
+  quadirr& operator-=(int n);
+  void recip();
 };
 
 int nthprime(int n);
