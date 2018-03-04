@@ -30,7 +30,10 @@ public:
   quadirr();
   quadirr(int A,int B,int C,int D,int P);
   double realval();
-  bool operator=(const quadirr &r) const;
+  bool operator==(const quadirr &r) const;
   quadirr& operator-=(int n);
   void recip();
 };
+
+quadirr nthquadQi(int n);
+ContinuedFraction contFrac(quadirr q);

@@ -40,6 +40,15 @@
 int nthprime(int n);
 double nthquad(int n);
 
+class ContinuedFraction
+// Represents a periodic continued fraction, i.e. a quadratic number.
+{
+public:
+  std::vector<int> terms;
+  int period; // 0 means it terminates
+  double averageTerm();
+};
+
 class quadlods
 {
 protected:

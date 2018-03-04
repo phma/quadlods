@@ -161,6 +161,20 @@ double nthquad(int n)
   }
 }
 
+double ContinuedFraction::averageTerm()
+{
+  int i;
+  double product=1;
+  if (period<=0 || period>terms.size())
+    return NAN;
+  else
+  {
+    for (i=0;i<period;i++)
+      product*=terms[terms.size()-i-1];
+    return pow(product,1./period);
+  }
+}
+
 void quadlods::init(int dimensions,double resolution,int j)
 /* Sets num[i]/denom[i] to a rational approximation of an integer in Q(sqrt(primes[i])).
  * If p mod 4 is 1, q=(sqrt(p)+1)/2, else q=sqrt(p).

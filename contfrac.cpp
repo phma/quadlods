@@ -21,6 +21,17 @@
 #include <cmath>
 #include "contfrac.h"
 
+using namespace std;
+
+quadirr nthquadQi(int n)
+{
+  int p=nthprime(n);
+  if ((p-1)&3)
+    return quadirr(0,1,1,1,p);
+  else
+    return quadirr(1,2,1,2,p);
+}
+
 quadirr::quadirr()
 {
   a=c=0;
@@ -41,7 +52,7 @@ double quadirr::realval()
   return a/(double)b+c*sqrt(p)/d;
 }
 
-bool quadirr::operator=(const quadirr &r) const
+bool quadirr::operator==(const quadirr &r) const
 {
   if (c==0 && r.c==0)
     return a*r.b==b*r.a;
@@ -121,4 +132,31 @@ void quadirr::recip()
     c=-c;
     d=-d;
   }
+}
+
+ContinuedFraction contFrac(quadirr q)
+{
+  ContinuedFraction ret;
+  vector<quadirr> partials;
+  int i;
+  bool done=false;
+  while (!done)
+  {
+    if (partials.size())
+    {
+      partials.push_back(partials.back());
+      partials.back()-=ret.terms.back();
+      partials.back().recip();
+    }
+    else
+      partials.push_back(q);
+    ret.terms.push_back(floor(partials.back().realval()));
+    for (i=1;!done && i<partials.size();i++)
+      if (partials[partials.size()-1]==partials[partials.size()-1-i])
+      {
+	done=true;
+	ret.period=i;
+      }
+  }
+  return ret;
 }

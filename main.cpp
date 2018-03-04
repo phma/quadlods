@@ -1,4 +1,4 @@
-/* Copyright 2014,2016 Pierre Abbat.
+/* Copyright 2014,2016,2018 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -28,6 +28,7 @@
 #include "ps.h"
 #include "discrepancy.h"
 #include "circletest.h"
+#include "contfrac.h"
 
 using namespace std;
 
@@ -194,6 +195,7 @@ int main(int argc,char **argv)
   char *seedbuf;
   time_t now;
   vector<double> point;
+  ContinuedFraction cf;
   vector<int> badprimes; // none of the primes is bad per se, they just have very close q values
   badprimes.push_back(65029);
   badprimes.push_back(65027);
@@ -235,6 +237,20 @@ int main(int argc,char **argv)
   findclosequad();
   ps.close();
   circletest(cirquads);
+  for (i=0;i<20;i++)
+  {
+    cout<<nthprime(i)<<':';
+    cf=contFrac(nthquadQi(i));
+    for (j=0;j<cf.terms.size();j++)
+    {
+      if (j+cf.period==cf.terms.size())
+	cout<<'(';
+      else
+	cout<<' ';
+      cout<<cf.terms[j];
+    }
+    cout<<')'<<cf.averageTerm()<<endl;
+  }
   delete[] seedbuf;
   return 0;
 }
