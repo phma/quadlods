@@ -1,7 +1,7 @@
 project(quadlods)
 cmake_minimum_required(VERSION 2.8)
 
-add_executable(quadlods main.cpp circletest.cpp discrepancy.cpp ps.cpp)
+add_executable(quadlods main.cpp circletest.cpp contfrac.cpp discrepancy.cpp ps.cpp)
 add_library(quadlib0 STATIC quadlods.cpp)
 add_library(quadlib1 SHARED quadlods.cpp)
 set(CMAKE_CXX_FLAGS "-std=c++11")

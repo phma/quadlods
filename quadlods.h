@@ -1,4 +1,4 @@
-/* Copyright 2014,2016,2017 Pierre Abbat.
+/* Copyright 2014,2016-2018 Pierre Abbat.
  * This file is part of the Quadlods library.
  * 
  * The Quadlods library is free software: you can redistribute it and/or
@@ -36,23 +36,6 @@
  * takes about 5/3 times as much time as the others.
  */
 #define QL_MAX_DIMS 6542
-
-class quadirr
-/* Represents the quadratic irrational a/b+c*sqrt(p)/d.
- * Used for computing the continued fraction representation of sqrt(p) or
- * (sqrt(p)+1)/2 and, thus, order the numbers by their discrepancy constant.
- */
-{
-private:
-  int a,b,c,d,p;
-public:
-  quadirr();
-  quadirr(int A,int B,int C,int D,int P);
-  double realval();
-  bool operator=(const quadirr &r) const;
-  quadirr& operator-=(int n);
-  void recip();
-};
 
 int nthprime(int n);
 double nthquad(int n);
