@@ -182,20 +182,9 @@ void findclosequad()
   cout<<"Use primes below "<<minlargerp<<endl;
 }
 
-/* Commands for interactive mode, which can be used as a server:
- * init n s res: Initialize generator #n with s dimensions and resolution res.
- * form n dec/hex/flo/rat: Set format to decimal/hexadecimal/floating point/rational.
- * gene n i: Generate i points from generator n.
- * seed n: Seed generator n with random numbers.
- */
-
-int main(int argc,char **argv)
+void testBadPrimes()
 {
-  int i,j,seedlen;
-  char *seedbuf;
-  time_t now;
-  vector<double> point;
-  ContinuedFraction cf;
+  int i,j;
   vector<int> badprimes; // none of the primes is bad per se, they just have very close q values
   badprimes.push_back(65029);
   badprimes.push_back(65027);
@@ -206,12 +195,27 @@ int main(int argc,char **argv)
   ps.open("quadlods.ps");
   ps.prolog();
   quads.init(badprimes,1e10);
-  //quads.init(5,1e10);
-  cirquads.init(badprimes,1e17,QL_JUMBLE_NONE);
   quads.setjumble(QL_JUMBLE_GRAY);
   quads.advance(-1);
   for (i=0;i<quads.size();i++)
     cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
+  for (i=0;i<quads.size();i++)
+    for (j=0;j<i;j++)
+      plotxy(quads,i,j);
+  ps.trailer();
+  //testdiscrepancy(5,1e10,1000);
+  cirquads.init(badprimes,1e17,QL_JUMBLE_NONE);
+  circletest(cirquads);
+  ps.close();
+}
+
+void testSeed()
+{
+  int i,j,seedlen;
+  vector<double> point;
+  char *seedbuf;
+  time_t now;
+  quads.init(5,1e10);
   seedlen=quads.seedsize();
   cout<<seedlen<<" bytes needed to seed"<<endl;
   seedbuf=new char[seedlen];
@@ -228,15 +232,25 @@ int main(int argc,char **argv)
       cout<<point[j]<<' ';
     cout<<endl;
   }
+  delete[] seedbuf;
+}
+
+/* Commands for interactive mode, which can be used as a server:
+ * init n s res: Initialize generator #n with s dimensions and resolution res.
+ * form n dec/hex/flo/rat: Set format to decimal/hexadecimal/floating point/rational.
+ * gene n i: Generate i points from generator n.
+ * seed n: Seed generator n with random numbers.
+ */
+
+int main(int argc,char **argv)
+{
+  int i,j;
+  ContinuedFraction cf;
+  quads.init(0,0);
   //testcoverage();
-  for (i=0;i<quads.size();i++)
-    for (j=0;j<i;j++)
-      plotxy(quads,i,j);
-  ps.trailer();
-  //testdiscrepancy(5,1e10,1000);
-  findclosequad();
-  ps.close();
-  circletest(cirquads);
+  //testBadPrimes();
+  //testSeed();
+  //findclosequad();
   for (i=0;i<20;i++)
   {
     cout<<nthprime(i)<<':';
@@ -251,6 +265,5 @@ int main(int argc,char **argv)
     }
     cout<<')'<<cf.averageTerm()<<endl;
   }
-  delete[] seedbuf;
   return 0;
 }

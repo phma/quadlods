@@ -158,5 +158,6 @@ ContinuedFraction contFrac(quadirr q)
 	ret.period=i;
       }
   }
+  ret.terms.pop_back();
   return ret;
 }
