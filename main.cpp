@@ -23,6 +23,7 @@
 #include <set>
 #include <map>
 #include <ctime>
+#include <cassert>
 #include <cmath>
 #include "quadlods.h"
 #include "ps.h"
@@ -235,11 +236,20 @@ void testSeed()
   delete[] seedbuf;
 }
 
+void writeshort(ostream &file,unsigned short i)
+{
+  char buf[2];
+  *(unsigned short *)buf=i;
+  file.write(buf,2);
+}
+
 void sortPrimes()
 {
   int i,j;
+  ofstream primeFile("primes.dat",ios::binary);
   ContinuedFraction cf;
   set<PrimeContinuedFraction> pcf;
+  set<PrimeContinuedFraction>::iterator k;
   PrimeContinuedFraction pcf0;
   for (i=0;i<QL_MAX_DIMS;i++)
   {
@@ -254,10 +264,18 @@ void sortPrimes()
       cout<<cf.terms[j];
     }
     cout<<')'<<cf.averageTerm()<<endl;
+    pcf0.prime=nthprime(i);
+    pcf0.cf=cf;
+    pcf.insert(pcf0);
   }
-  pcf0.prime=nthprime(i);
-  pcf0.cf=cf;
-  pcf.insert(pcf0);
+  for (k=pcf.begin();k!=pcf.end();k++)
+  {
+    writeshort(primeFile,k->prime);
+    writeshort(primeFile,k->cf.terms.size());
+    writeshort(primeFile,k->cf.period);
+    for (i=0;i<k->cf.terms.size();i++)
+      writeshort(primeFile,k->cf.terms[i]);
+  }
 }
 
 /* Commands for interactive mode, which can be used as a server:
