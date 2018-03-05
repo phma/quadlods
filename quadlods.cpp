@@ -39,6 +39,7 @@
 using namespace std;
 
 vector<unsigned short> primes;
+vector<PrimeContinuedFraction> primesCfSorted;
 mpz_class thue(0x69969669),third(0x55555555);
 int morse(32),b2adic(32);
 
@@ -161,7 +162,7 @@ double nthquad(int n)
   }
 }
 
-double ContinuedFraction::averageTerm()
+double ContinuedFraction::averageTerm() const
 {
   int i;
   double product=1;
@@ -173,6 +174,15 @@ double ContinuedFraction::averageTerm()
       product*=terms[terms.size()-i-1];
     return pow(product,1./period);
   }
+}
+
+bool operator<(const PrimeContinuedFraction a,const PrimeContinuedFraction b)
+{
+  double aavg=a.cf.averageTerm(),bavg=b.cf.averageTerm();
+  if (fabs(aavg-bavg)>1e-10)
+    return aavg<bavg;
+  else
+    return a.prime<b.prime;
 }
 
 void quadlods::init(int dimensions,double resolution,int j)

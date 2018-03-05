@@ -46,7 +46,15 @@ class ContinuedFraction
 public:
   std::vector<int> terms;
   int period; // 0 means it terminates
-  double averageTerm();
+  double averageTerm() const;
+};
+
+class PrimeContinuedFraction
+{
+public:
+  int prime;
+  ContinuedFraction cf;
+  friend bool operator<(const PrimeContinuedFraction a,const PrimeContinuedFraction b);
 };
 
 class quadlods

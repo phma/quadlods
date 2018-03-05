@@ -235,23 +235,13 @@ void testSeed()
   delete[] seedbuf;
 }
 
-/* Commands for interactive mode, which can be used as a server:
- * init n s res: Initialize generator #n with s dimensions and resolution res.
- * form n dec/hex/flo/rat: Set format to decimal/hexadecimal/floating point/rational.
- * gene n i: Generate i points from generator n.
- * seed n: Seed generator n with random numbers.
- */
-
-int main(int argc,char **argv)
+void sortPrimes()
 {
   int i,j;
   ContinuedFraction cf;
-  quads.init(0,0);
-  //testcoverage();
-  //testBadPrimes();
-  //testSeed();
-  //findclosequad();
-  for (i=0;i<20;i++)
+  set<PrimeContinuedFraction> pcf;
+  PrimeContinuedFraction pcf0;
+  for (i=0;i<QL_MAX_DIMS;i++)
   {
     cout<<nthprime(i)<<':';
     cf=contFrac(nthquadQi(i));
@@ -265,5 +255,25 @@ int main(int argc,char **argv)
     }
     cout<<')'<<cf.averageTerm()<<endl;
   }
+  pcf0.prime=nthprime(i);
+  pcf0.cf=cf;
+  pcf.insert(pcf0);
+}
+
+/* Commands for interactive mode, which can be used as a server:
+ * init n s res: Initialize generator #n with s dimensions and resolution res.
+ * form n dec/hex/flo/rat: Set format to decimal/hexadecimal/floating point/rational.
+ * gene n i: Generate i points from generator n.
+ * seed n: Seed generator n with random numbers.
+ */
+
+int main(int argc,char **argv)
+{
+  quads.init(0,0);
+  //testcoverage();
+  //testBadPrimes();
+  //testSeed();
+  //findclosequad();
+  sortPrimes();
   return 0;
 }
