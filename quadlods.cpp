@@ -35,6 +35,7 @@
 #include <cfloat>
 #include <cmath>
 #include "quadlods.h"
+#include "config.h"
 
 using namespace std;
 
