@@ -253,9 +253,9 @@ void sortPrimes()
   PrimeContinuedFraction pcf0;
   for (i=0;i<QL_MAX_DIMS;i++)
   {
-    cout<<nthprime(i)<<':';
+    //cout<<nthprime(i)<<':';
     cf=contFrac(nthquadQi(i));
-    for (j=0;j<cf.terms.size();j++)
+    for (j=0;false && j<cf.terms.size();j++)
     {
       if (j+cf.period==cf.terms.size())
 	cout<<'(';
@@ -263,7 +263,7 @@ void sortPrimes()
 	cout<<' ';
       cout<<cf.terms[j];
     }
-    cout<<')'<<cf.averageTerm()<<endl;
+    //cout<<')'<<cf.averageTerm()<<endl;
     pcf0.prime=nthprime(i);
     pcf0.cf=cf;
     pcf.insert(pcf0);
