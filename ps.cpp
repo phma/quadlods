@@ -33,7 +33,10 @@
 #include <unistd.h>
 #include <iomanip>
 #include "ps.h"
+#include "ldecimal.h"
 using namespace std;
+
+#define PAPERRES 0.004
 
 char rscales[]={10,12,15,20,25,30,40,50,60,80};
 const double PSPoint=25.4/72;
@@ -150,6 +153,21 @@ double PostScript::yscale(double y)
   return scale*(y-centery)+papery/2;
 }
 
+string PostScript::escape(string text)
+{
+  string ret;
+  int ch;
+  while (text.length())
+  {
+    ch=text[0];
+    if (ch=='(' || ch==')')
+      ret+='\\';
+    ret+=ch;
+    text.erase(0,1);
+  }
+  return ret;
+}
+
 void PostScript::setcolor(double r,double g,double b)
 {
   if (r!=oldr || g!=oldg || b!=oldb)
@@ -188,6 +206,15 @@ void PostScript::dot(double x,double y)
   *psfile<<endl;
 }
 
+void PostScript::line2p(xy pnt1,xy pnt2)
+{
+  //pnt1=turn(pnt1,orientation);
+  //pnt2=turn(pnt2,orientation);
+  if (isfinite(pnt1.getx()) && isfinite(pnt1.gety()) && isfinite(pnt2.getx()) && isfinite(pnt2.gety()))
+    *psfile<<ldecimal(xscale(pnt1.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt1.gety()),PAPERRES)
+    <<' '<<ldecimal(xscale(pnt2.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt2.gety()),PAPERRES)<<" -"<<endl;
+}
+
 void PostScript::startline()
 {
   assert(psfile);
@@ -215,6 +242,13 @@ void PostScript::write(double x,double y,string text)
 {
   *psfile<<fixed<<setprecision(2)<<xscale(x)<<' '<<yscale(y)
   <<" moveto ("<<text<<") show"<<endl;
+}
+
+void PostScript::centerWrite(xy pnt,string text)
+{
+  //pnt=turn(pnt,orientation);
+  *psfile<<ldecimal(xscale(pnt.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt.gety()),PAPERRES)
+  <<" moveto ("<<escape(text)<<") c."<<endl;
 }
 
 void PostScript::comment(string text)

@@ -24,6 +24,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "xy.h"
 
 struct papersize
 {
@@ -53,12 +54,15 @@ public:
   void close();
   double xscale(double x);
   double yscale(double y);
+  std::string escape(std::string text);
   void setcolor(double r,double g,double b);
   void setscale(double minx,double miny,double maxx,double maxy,int ori=0);
   void dot(double x,double y);
+  void line2p(xy pnt1,xy pnt2);
   void startline();
   void lineto(double x,double y);
   void endline(bool closed=false);
   void write(double x,double y,std::string text);
+  void centerWrite(xy pnt,std::string text);
   void comment(std::string text);
 };
