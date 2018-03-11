@@ -5,10 +5,12 @@ add_executable(quadlods main.cpp circletest.cpp contfrac.cpp discrepancy.cpp his
                ldecimal.cpp manysum.cpp polyline.cpp ps.cpp xy.cpp)
 add_library(quadlib0 STATIC quadlods.cpp)
 add_library(quadlib1 SHARED quadlods.cpp)
+add_custom_command(OUTPUT primes.dat COMMAND quadlods ARGS sortprimes MAIN_DEPENDENCY quadlods)
 set(CMAKE_CXX_FLAGS "-std=c++11")
 install(TARGETS quadlods DESTINATION bin)
 install(TARGETS quadlib0 quadlib1 DESTINATION lib)
 install(FILES quadlods.h DESTINATION include)
+install(FILES primes.dat DESTINATION share/quadlods)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(GMPXX REQUIRED)
