@@ -33,6 +33,20 @@
 
 using namespace std;
 
+struct command
+{
+  std::string word;
+  void (*fun)();
+  std::string desc;
+  command(std::string w,void (*f)(),std::string d)
+  {
+    word=w;
+    fun=f;
+    desc=d;
+  }
+};
+
+vector<command> commands;
 quadlods quads,cirquads;
 char rpint[][2]=
 { // relatively prime integers whose sum of squares is less than 100
@@ -246,6 +260,7 @@ void writeshort(ostream &file,unsigned short i)
 void sortPrimes()
 {
   int i,j;
+  quads.init(0,0);
   ofstream primeFile("primes.dat",ios::binary);
   ContinuedFraction cf;
   set<PrimeContinuedFraction> pcf;
@@ -287,11 +302,19 @@ void sortPrimes()
 
 int main(int argc,char **argv)
 {
-  quads.init(0,0);
-  //testcoverage();
+  string arg1;
+  int cmd,i;
+  if (argc>1)
+    arg1=argv[1];
+  commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
+  commands.push_back(command("coverage",testcoverage,"Test coverage of 3D generator"));
+  for (cmd=-1,i=0;i<commands.size();i++)
+    if (commands[i].word==arg1)
+      cmd=i;
+  if (cmd>=0)
+    commands[cmd].fun();
   //testBadPrimes();
   //testSeed();
   //findclosequad();
-  sortPrimes();
   return 0;
 }
