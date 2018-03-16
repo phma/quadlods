@@ -86,7 +86,11 @@ void testcoverage()
   quadlods cov;
   bitset<87828936> *histo;
   vector<mpq_class> point;
-  cov.init(3,370);
+  vector<int> p235; // since sorting the primes, the list begins 5,3,7
+  p235.push_back(2);
+  p235.push_back(3);
+  p235.push_back(5);
+  cov.init(p235,370);
   histo=new bitset<87828936>;
   for (i=0;i<87828936;i++)
   {

@@ -130,7 +130,7 @@ void initprimes()
   primesCfSorted.clear();
   for (i=0;i<QL_MAX_DIMS;i++)
   {
-    pcf.prime=readshort(primeFile);
+    pcf.prime=(unsigned short)readshort(primeFile);
     n=readshort(primeFile);
     pcf.cf.period=readshort(primeFile);
     pcf.cf.terms.clear();
@@ -167,8 +167,12 @@ void compquad(int p,double resolution,mpz_class &nmid,mpz_class &dmid)
 
 int nthprime(int n)
 {
+  if (primes.size()==0)
+    initprimes();
   if (n<0 || n>=primes.size())
     return 0;
+  else if (primesCfSorted.size())
+    return primesCfSorted[n].prime;
   else
     return primes[n];
 }
@@ -224,16 +228,14 @@ void quadlods::init(int dimensions,double resolution,int j)
 {
   int i,p;
   mpz_class nmid,dmid;
-  if (primes.size()==0)
-    initprimes();
-  if (dimensions>primes.size())
-    dimensions=primes.size();
+  if (dimensions>QL_MAX_DIMS)
+    dimensions=QL_MAX_DIMS;
   if (dimensions<0)
     dimensions=0;
   for (i=denom.size();i<dimensions;i++)
   {
     primeinx.push_back(i);
-    p=primes[i];
+    p=nthprime(i);
     compquad(p,resolution,nmid,dmid);
     denom.push_back(dmid);
     num.push_back(nmid);
@@ -254,18 +256,17 @@ void quadlods::init(vector<int> dprimes,double resolution,int j)
 {
   int i,k,p;
   mpz_class nmid,dmid;
-  if (primes.size()==0)
-    initprimes(); // TODO check that dprimes are actually distinct
+  // TODO check that dprimes are actually distinct
   for (i=primeinx.size();i<dprimes.size();i++)
     for (k=0;k<QL_MAX_DIMS;k++)
-      if (dprimes[i]==primes[k])
+      if (dprimes[i]==nthprime(k))
       {
         primeinx.push_back(k);
         k=8191;
       }
   for (i=denom.size();i<primeinx.size();i++)
   {
-    p=primes[primeinx[i]];
+    p=nthprime(primeinx[i]);
     compquad(p,resolution,nmid,dmid);
     denom.push_back(dmid);
     num.push_back(nmid);
@@ -274,9 +275,9 @@ void quadlods::init(vector<int> dprimes,double resolution,int j)
     jumbletype=j;
   if (jumbletype<0 || jumbletype>QL_JUMBLE_GRAY)
     jumbletype=QL_JUMBLE_GRAY;
-  num.resize(dprimes.size());
-  denom.resize(dprimes.size());
-  acc.resize(dprimes.size());
+  num.resize(primeinx.size());
+  denom.resize(primeinx.size());
+  acc.resize(primeinx.size());
 }
 
 vector<mpq_class> quadlods::readout()
