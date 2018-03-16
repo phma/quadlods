@@ -32,8 +32,10 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include <cfloat>
 #include <cmath>
+#include <string>
 #include "quadlods.h"
 #include "config.h"
 
@@ -103,10 +105,19 @@ mpz_class jumble(mpz_class acc,mpz_class denom,int jumbletype)
   return ret;
 }
 
+short readshort(std::istream &file)
+{
+  char buf[2];
+  file.read(buf,2);
+  return *(short *)buf;
+}
+
 void initprimes()
 {
-  int i,j;
+  int i,j,n;
   bool prime;
+  PrimeContinuedFraction pcf;
+  ifstream primeFile(string(SHARE_DIR)+"primes.dat",ios::binary);
   primes.clear();
   for (i=2;i<65535;i++)
   {
@@ -115,6 +126,17 @@ void initprimes()
 	prime=false;
     if (prime)
       primes.push_back(i);
+  }
+  primesCfSorted.clear();
+  for (i=0;i<QL_MAX_DIMS;i++)
+  {
+    pcf.prime=readshort(primeFile);
+    n=readshort(primeFile);
+    pcf.cf.period=readshort(primeFile);
+    pcf.cf.terms.clear();
+    for (j=0;j<n;j++)
+      pcf.cf.terms.push_back(readshort(primeFile));
+    primesCfSorted.push_back(pcf);
   }
 }
 
