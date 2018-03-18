@@ -115,6 +115,7 @@ short readshort(std::istream &file)
 void initprimes()
 {
   int i,j,n;
+  int primeCheck=0;
   bool prime;
   PrimeContinuedFraction pcf;
   ifstream primeFile(string(SHARE_DIR)+"primes.dat",ios::binary);
@@ -125,18 +126,27 @@ void initprimes()
       if (i%primes[j]==0)
 	prime=false;
     if (prime)
+    {
+      primeCheck+=i;
       primes.push_back(i);
+    }
   }
   primesCfSorted.clear();
   for (i=0;i<QL_MAX_DIMS;i++)
   {
     pcf.prime=(unsigned short)readshort(primeFile);
+    primeCheck-=pcf.prime;
     n=readshort(primeFile);
     pcf.cf.period=readshort(primeFile);
     pcf.cf.terms.clear();
     for (j=0;j<n;j++)
       pcf.cf.terms.push_back(readshort(primeFile));
     primesCfSorted.push_back(pcf);
+  }
+  if (primeCheck)
+  {
+    cerr<<"Prime file is corrupt or failed to load"<<endl;
+    primesCfSorted.clear();
   }
 }
 
