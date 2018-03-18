@@ -8,11 +8,16 @@ add_library(quadlib1 SHARED quadlods.cpp)
 add_custom_command(OUTPUT primes.dat COMMAND quadlods sortprimes)
 #primes.dat does not depend on quadlods because it's just math and doesn't change.
 add_custom_target(primesdat ALL DEPENDS primes.dat)
-set(CMAKE_CXX_FLAGS "-std=c++11")
 install(TARGETS quadlods DESTINATION bin)
 install(TARGETS quadlib0 quadlib1 DESTINATION lib)
 install(FILES quadlods.h DESTINATION include)
 install(FILES ${PROJECT_BINARY_DIR}/primes.dat DESTINATION share/quadlods)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+set(SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/quadlods)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(GMPXX REQUIRED)

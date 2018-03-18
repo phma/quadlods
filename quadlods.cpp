@@ -118,7 +118,7 @@ void initprimes()
   int primeCheck=0;
   bool prime;
   PrimeContinuedFraction pcf;
-  ifstream primeFile(string(SHARE_DIR)+"primes.dat",ios::binary);
+  ifstream primeFile(string(SHARE_DIR)+"/primes.dat",ios::binary);
   primes.clear();
   for (i=2;i<65535;i++)
   {
