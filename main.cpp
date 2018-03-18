@@ -30,6 +30,7 @@
 #include "discrepancy.h"
 #include "circletest.h"
 #include "contfrac.h"
+#include "ldecimal.h"
 
 using namespace std;
 
@@ -266,6 +267,7 @@ void sortPrimes()
   int i,j;
   quads.init(0,0);
   ofstream primeFile("primes.dat",ios::binary);
+  ofstream primeText("primes.txt");
   ContinuedFraction cf;
   set<PrimeContinuedFraction> pcf;
   set<PrimeContinuedFraction>::iterator k;
@@ -294,6 +296,14 @@ void sortPrimes()
     writeshort(primeFile,k->cf.period);
     for (i=0;i<k->cf.terms.size();i++)
       writeshort(primeFile,k->cf.terms[i]);
+    primeText<<k->prime<<' '<<ldecimal(k->cf.averageTerm());
+    for (i=j=0;i<40;i++,j++)
+    {
+      if (j>=k->cf.terms.size())
+	j-=k->cf.period;
+      primeText<<' '<<k->cf.terms[j];
+    }
+    primeText<<" ...\n";
   }
 }
 
