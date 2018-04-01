@@ -229,6 +229,26 @@ void testBadPrimes()
   ps.close();
 }
 
+void testGoodPrimes()
+{
+  int i,j;
+  ps.open("quadlods.ps");
+  ps.prolog();
+  quads.init(10,1e17);
+  quads.setjumble(QL_JUMBLE_GRAY);
+  quads.advance(-1);
+  for (i=0;i<quads.size();i++)
+    cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
+  for (i=0;i<quads.size();i++)
+    for (j=0;j<i;j++)
+      plotxy(quads,i,j);
+  ps.trailer();
+  //testdiscrepancy(5,1e10,1000);
+  cirquads.init(10,1e17,QL_JUMBLE_NONE);
+  circletest(cirquads);
+  ps.close();
+}
+
 void testSeed()
 {
   int i,j,seedlen;
@@ -322,6 +342,7 @@ int main(int argc,char **argv)
     arg1=argv[1];
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
   commands.push_back(command("coverage",testcoverage,"Test coverage of 3D generator"));
+  commands.push_back(command("goodprimes",testGoodPrimes,"Test primes with low CF terms"));
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==arg1)
       cmd=i;

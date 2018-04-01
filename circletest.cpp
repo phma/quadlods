@@ -1,4 +1,4 @@
-/* Copyright 2017 Pierre Abbat.
+/* Copyright 2017-2018 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -22,11 +22,10 @@
 #include <cmath>
 #include "circletest.h"
 #include "ps.h"
+#include "hstep.h"
 
 using namespace std;
 
-double halfstep[]={1,1.05946309435929526455,1.12246204830937298142};
-double minorthird[]={1,1.18920711500272106671,1.41421356237309504878,1.68179283050742908604};
 papersize a4land={297,210};
 const double criterion=21.25;
 /* criterion is set to the geometric mean of the relative error of 28901 and
@@ -35,24 +34,15 @@ const double criterion=21.25;
  * keeps going down.
  */
 
-double hstep(int i)
-{
-  int octave,note;
-  octave=i/12;
-  if (i<octave*12)
-    --octave;
-  note=i-12*octave;
-  return ldexp(minorthird[note/3]*halfstep[note%3],octave);
-}
-
 void circletest(quadlods &quad)
 /* Find all pairs of primes (dimensions) which have high discrepancy by
  * counting the pairs of points that fall inside a quadrant of a circle.
  * The number of points in the quadrant should be (π/4)i+O(ln(i)²/i).
  */
 {
-  int i,j,k,inx,iters=1048576,allinx,logi;
+  int i,j,k,inx,iters=1048576,allinx;
   char buf[24];
+  set<int> halfsteps=hsteps(iters);
   time_t now,then;
   bool recordthis;
   quadlods sel2;
@@ -78,15 +68,9 @@ void circletest(quadlods &quad)
       pinx2.push_back(j);
       pinx2.push_back(k);
       sel2=select(quad,pinx2);
-      logi=-1;
       for (i=0;i<=iters;i++)
       {
-        recordthis=false;
-        while (hstep(logi)<i+1)
-        {
-          logi++;
-          recordthis=true;
-        }
+        recordthis=halfsteps.count(i);
         point=sel2.dgen();
         if (inx>=errorrecs.size())
         {
