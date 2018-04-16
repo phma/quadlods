@@ -53,6 +53,8 @@ public:
   matrix(const matrix &b);
   ~matrix();
   void resize(unsigned newrows,unsigned newcolumns);
+  void appendBelow(const matrix &b);
+  void appendRight(const matrix &b);
   unsigned getrows()
   {
     return rows;

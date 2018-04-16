@@ -83,6 +83,28 @@ void matrix::resize(unsigned newrows,unsigned newcolumns)
   delete[] newentry;
 }
 
+void matrix::appendBelow(const matrix &b)
+{
+  unsigned i,origrows;
+  if (columns!=b.columns)
+    throw matrixMismatch;
+  origrows=rows;
+  resize(rows+b.rows,columns);
+  for (i=0;i<b.rows;i++)
+    memcpy(entry+(origrows+i)*columns,b.entry+i*columns,columns*sizeof(double));
+}
+
+void matrix::appendRight(const matrix &b)
+{
+  unsigned i,origcolumns;
+  if (rows!=b.rows)
+    throw matrixMismatch;
+  origcolumns=columns;
+  resize(rows,columns+b.columns);
+  for (i=0;i<b.rows;i++)
+    memcpy(entry+i*columns+origcolumns,b.entry+i*b.columns,b.columns*sizeof(double));
+}
+
 void matrix::setzero()
 {
   memset(entry,0,rows*columns*sizeof(double));
