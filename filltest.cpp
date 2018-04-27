@@ -1,6 +1,6 @@
 /******************************************************/
 /*                                                    */
-/* filltest.h - test how well numbers fill space      */
+/* filltest.cpp - test how well numbers fill space      */
 /*                                                    */
 /******************************************************/
 /* Copyright 2018 Pierre Abbat.
@@ -21,10 +21,22 @@
  * and Lesser General Public License along with Quadlods. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-#include <vector>
-/* For an n-dimensional sequence, pick n random points, and note how close
- * the quasirandom points get to the random points. Graph the determinant
- * and the average distance.
- */
 
-double dist(std::vector<double> a,std::vector<double> b);
+#include <cassert>
+#include "filltest.h"
+#include "hstep.h"
+#include "manysum.h"
+#include "matrix.h"
+#include "histogram.h"
+#include "random.h"
+using namespace std;
+
+double dist(vector<double> a,vector<double> b)
+{
+  vector<double> d;
+  int i;
+  assert(a.size()==b.size());
+  for (i=0;i<a.size();i++)
+    d.push_back(sqr(a[i]-b[i]));
+  return pairwisesum(d);
+}
