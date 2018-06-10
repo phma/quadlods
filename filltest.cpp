@@ -1,6 +1,6 @@
 /******************************************************/
 /*                                                    */
-/* filltest.cpp - test how well numbers fill space      */
+/* filltest.cpp - test how well numbers fill space    */
 /*                                                    */
 /******************************************************/
 /* Copyright 2018 Pierre Abbat.
@@ -40,3 +40,11 @@ double dist(vector<double> a,vector<double> b)
     d.push_back(sqr(a[i]-b[i]));
   return pairwisesum(d);
 }
+
+/* Filltest works like this: For an n-dimensional generator, pick n random
+ * points in n-space. (The points have coordinates equal to (c+0.5)/256, where
+ * c is a random byte.) For each of these points, remember the vector to the
+ * closest generated point so far. The n vectors form a square matrix. Its
+ * determinant should decrease at a known rate; the determinant of the
+ * normalized vectors should have a known distribution depending only on n.
+ */
