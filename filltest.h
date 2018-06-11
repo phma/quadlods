@@ -22,9 +22,11 @@
  * <http://www.gnu.org/licenses/>.
  */
 #include <vector>
+#include "quadlods.h"
 /* For an n-dimensional sequence, pick n random points, and note how close
  * the quasirandom points get to the random points. Graph the determinant
  * and the average distance.
  */
 
-double dist(std::vector<double> a,std::vector<double> b);
+double distsq(std::vector<double> a,std::vector<double> b);
+void filltest(quadlods &quad);

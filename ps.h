@@ -21,6 +21,8 @@
  * and Lesser General Public License along with Quadlods. If not, see
  * <http://www.gnu.org/licenses/>.
  */
+#ifndef PS_H
+#define PS_H
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -66,3 +68,4 @@ public:
   void centerWrite(xy pnt,std::string text);
   void comment(std::string text);
 };
+#endif

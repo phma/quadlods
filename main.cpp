@@ -29,6 +29,7 @@
 #include "ps.h"
 #include "discrepancy.h"
 #include "circletest.h"
+#include "filltest.h"
 #include "contfrac.h"
 #include "ldecimal.h"
 
@@ -226,6 +227,7 @@ void testBadPrimes()
   //testdiscrepancy(5,1e10,1000);
   cirquads.init(badprimes,1e17,QL_JUMBLE_NONE);
   circletest(cirquads);
+  filltest(cirquads);
   ps.close();
 }
 
@@ -246,6 +248,7 @@ void testGoodPrimes()
   //testdiscrepancy(5,1e10,1000);
   cirquads.init(10,1e17,QL_JUMBLE_NONE);
   circletest(cirquads);
+  filltest(cirquads);
   ps.close();
 }
 
@@ -341,7 +344,7 @@ int main(int argc,char **argv)
   if (argc>1)
     arg1=argv[1];
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
-  commands.push_back(command("coverage",testcoverage,"Test coverage of 3D generator"));
+  commands.push_back(command("coverage",testcoverage,"Test coverage of small 3D generator"));
   commands.push_back(command("goodprimes",testGoodPrimes,"Test primes with low CF terms"));
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==arg1)

@@ -29,9 +29,10 @@
 #include "matrix.h"
 #include "histogram.h"
 #include "random.h"
+#include "ps.h"
 using namespace std;
 
-double dist(vector<double> a,vector<double> b)
+double distsq(vector<double> a,vector<double> b)
 {
   vector<double> d;
   int i;
@@ -48,3 +49,24 @@ double dist(vector<double> a,vector<double> b)
  * determinant should decrease at a known rate; the determinant of the
  * normalized vectors should have a known distribution depending only on n.
  */
+void filltest(quadlods &quad)
+{
+  int i,j,k,sz=quad.size();
+  vector<vector<double> > points,disp;
+  vector<double> closedist;
+  while (points.size()<sz)
+  {
+    i=points.size();
+    points.resize(i+1);
+    for (j=0;j<sz;j++)
+      points[i].push_back((rng.ucrandom()+0.5)/256);
+    for (j=0;j<i;j++)
+      if (distsq(points[i],points[j])==0)
+      {
+	points.resize(i);
+	break;
+      }
+  }
+  for (i=0;i<sz;i++)
+    closedist.push_back(sz);
+}
