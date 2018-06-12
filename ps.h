@@ -33,6 +33,8 @@ struct papersize
   double width,height;
 };
 
+extern papersize a4land;
+
 class PostScript
 {
 protected:

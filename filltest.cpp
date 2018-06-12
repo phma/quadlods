@@ -51,9 +51,12 @@ double distsq(vector<double> a,vector<double> b)
  */
 void filltest(quadlods &quad)
 {
-  int i,j,k,sz=quad.size();
+  int i,j,k,sz=quad.size(),iters=1048576;
   vector<vector<double> > points,disp;
-  vector<double> closedist;
+  vector<double> closedist,point;
+  set<int> halfsteps=hsteps(iters);
+  time_t now,then;
+  PostScript ps;
   while (points.size()<sz)
   {
     i=points.size();
@@ -69,4 +72,18 @@ void filltest(quadlods &quad)
   }
   for (i=0;i<sz;i++)
     closedist.push_back(sz);
+  ps.open("circletest.ps");
+  ps.setpaper(a4land,0);
+  ps.prolog();
+  for (i=0;i<iters;i++)
+  {
+    now=time(nullptr);
+    if (now!=then)
+    {
+      cout<<rint((double)i/iters*100)<<"% \r";
+      cout.flush();
+      then=now;
+    }
+    point=quad.dgen();
+  }
 }

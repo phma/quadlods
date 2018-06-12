@@ -26,7 +26,6 @@
 
 using namespace std;
 
-papersize a4land={297,210};
 const double criterion=21.25;
 /* criterion is set to the geometric mean of the relative error of 28901 and
  * 1327, which reaches 7.53 shortly before 1M and then turns back down, and
