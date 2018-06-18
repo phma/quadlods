@@ -72,7 +72,7 @@ void filltest(quadlods &quad)
   }
   for (i=0;i<sz;i++)
     closedist.push_back(sz);
-  ps.open("circletest.ps");
+  ps.open("filltest.ps");
   ps.setpaper(a4land,0);
   ps.prolog();
   for (i=0;i<iters;i++)
