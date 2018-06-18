@@ -346,6 +346,7 @@ int main(int argc,char **argv)
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
   commands.push_back(command("coverage",testcoverage,"Test coverage of small 3D generator"));
   commands.push_back(command("goodprimes",testGoodPrimes,"Test primes with low CF terms"));
+  commands.push_back(command("badprimes",testBadPrimes,"Test primes with low CF terms"));
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==arg1)
       cmd=i;
