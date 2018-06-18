@@ -207,12 +207,16 @@ void testBadPrimes()
 {
   int i,j;
   vector<int> badprimes; // none of the primes is bad per se, they just have very close q values
-  badprimes.push_back(65029);
   badprimes.push_back(65027);
-  badprimes.push_back(28901);
-  badprimes.push_back(1327);
-  badprimes.push_back(41);
-  badprimes.push_back(23);
+  badprimes.push_back(62003);
+  badprimes.push_back(59051);
+  badprimes.push_back(56171);
+  badprimes.push_back(50627);
+  badprimes.push_back(47963);
+  badprimes.push_back(65029);
+  badprimes.push_back(64013);
+  badprimes.push_back(60029);
+  badprimes.push_back(59053);
   ps.open("quadlods.ps");
   ps.prolog();
   quads.init(badprimes,1e10);
