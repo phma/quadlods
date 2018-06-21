@@ -54,6 +54,9 @@ void filltest(quadlods &quad)
   int i,j,k,sz=quad.size(),iters=1048576;
   vector<vector<double> > points,disp;
   vector<double> closedist,point;
+  vector<double> detGraph;
+  double thisdist,hi=-INFINITY,lo=INFINITY;
+  matrix actualSize(sz,sz),normalized(sz,sz);
   set<int> halfsteps=hsteps(iters);
   time_t now,then;
   PostScript ps;
@@ -61,12 +64,17 @@ void filltest(quadlods &quad)
   {
     i=points.size();
     points.resize(i+1);
+    disp.resize(i+1);
     for (j=0;j<sz;j++)
+    {
       points[i].push_back((rng.ucrandom()+0.5)/256);
+      disp[i].push_back(1);
+    }
     for (j=0;j<i;j++)
       if (distsq(points[i],points[j])==0)
       {
 	points.resize(i);
+	disp.resize(i);
 	break;
       }
   }
@@ -85,5 +93,32 @@ void filltest(quadlods &quad)
       then=now;
     }
     point=quad.dgen();
+    for (j=0;j<sz;j++)
+    {
+      thisdist=distsq(point,points[j]);
+      if (thisdist<closedist[j])
+      {
+	closedist[j]=thisdist;
+	for (k=0;k<sz;k++)
+	  disp[j][k]=point[k]-points[j][k];
+      }
+    }
+    if (halfsteps.count(i))
+    {
+      for (j=0;j<sz;j++)
+	for (k=0;k<sz;k++)
+	{
+	  actualSize[j][k]=disp[j][k];
+	  normalized[j][k]=disp[j][k]*sqrt(j/closedist[j]);
+	}
+      detGraph.push_back(log(fabs(actualSize.determinant())));
+    }
+  }
+  for (i=0;i<detGraph.size();i++)
+  {
+    if (detGraph[i]>hi)
+      hi=detGraph[i];
+    if (detGraph[i]<lo)
+      lo=detGraph[i];
   }
 }
