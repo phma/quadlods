@@ -52,10 +52,11 @@ double distsq(vector<double> a,vector<double> b)
 void filltest(quadlods &quad)
 {
   int i,j,k,sz=quad.size(),iters=1048576;
+  set<int>::iterator it;
   vector<vector<double> > points,disp;
   vector<double> closedist,point;
   vector<double> detGraph;
-  double thisdist,hi=-INFINITY,lo=INFINITY;
+  double thisdist,hi=-INFINITY,lo=INFINITY,scale;
   matrix actualSize(sz,sz),normalized(sz,sz);
   set<int> halfsteps=hsteps(iters);
   time_t now,then;
@@ -83,7 +84,7 @@ void filltest(quadlods &quad)
   ps.open("filltest.ps");
   ps.setpaper(a4land,0);
   ps.prolog();
-  for (i=0;i<iters;i++)
+  for (i=0;i<=iters;i++)
   {
     now=time(nullptr);
     if (now!=then)
@@ -121,4 +122,20 @@ void filltest(quadlods &quad)
     if (detGraph[i]<lo)
       lo=detGraph[i];
   }
+  ps.startpage();
+  ps.setscale(0,-1,3,1);
+  scale=(hi-lo)/2;
+  ps.startline();
+  ps.lineto(0,-1);
+  ps.lineto(3,-1);
+  ps.lineto(3,1);
+  ps.lineto(0,1);
+  ps.endline(true);
+  cout<<"halfsteps size "<<halfsteps.size()<<" detGraph size "<<detGraph.size()<<endl;
+  ps.startline();
+  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
+    if (*it)
+      ps.lineto(log(*it)/log(iters)*3,(detGraph[i]-lo)/scale-1);
+  ps.endline();
+  ps.endpage();
 }
