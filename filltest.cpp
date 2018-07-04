@@ -51,7 +51,8 @@ double distsq(vector<double> a,vector<double> b)
  */
 void filltest(quadlods &quad)
 {
-  int i,j,k,sz=quad.size(),iters=1048576;
+  int i,j,k,sz=quad.size(),iters=1048576,decades;
+  char buf[24];
   set<int>::iterator it;
   vector<vector<double> > points,disp;
   vector<double> closedist,point;
@@ -122,6 +123,8 @@ void filltest(quadlods &quad)
     if (detGraph[i]<lo)
       lo=detGraph[i];
   }
+  hi=ceil (hi/log(10))*log(10);
+  lo=floor(lo/log(10))*log(10);
   ps.startpage();
   ps.setscale(0,-1,3,1);
   scale=(hi-lo)/2;
@@ -131,6 +134,16 @@ void filltest(quadlods &quad)
   ps.lineto(3,1);
   ps.lineto(0,1);
   ps.endline(true);
+  decades=rint((hi-lo)/log(10));
+  for (i=0;i<=decades;i++)
+  {
+    sprintf(buf,"%g",exp(lo)*pow(10,i));
+    ps.write(3.1,i*2./decades-1,buf);
+    ps.startline();
+    ps.lineto(3,i*2./decades-1);
+    ps.lineto(3.1,i*2./decades-1);
+    ps.endline();
+  }
   cout<<"halfsteps size "<<halfsteps.size()<<" detGraph size "<<detGraph.size()<<endl;
   ps.startline();
   for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
