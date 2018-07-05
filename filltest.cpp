@@ -51,37 +51,40 @@ double distsq(vector<double> a,vector<double> b)
  */
 void filltest(quadlods &quad)
 {
-  int i,j,k,sz=quad.size(),iters=1048576,decades;
+  int i,j,k,l,sz=quad.size(),iters=1048576,decades;
   char buf[24];
   set<int>::iterator it;
-  vector<vector<double> > points,disp;
-  vector<double> closedist,point;
-  vector<double> detGraph;
-  double thisdist,hi=-INFINITY,lo=INFINITY,scale;
+  array<vector<vector<double> >,3> points,disp;
+  array<vector<double>,3> closedist;
+  vector<double> point;
+  vector<double> detGraph,normGraph;
+  double thisdist,hi=-INFINITY,lo=INFINITY,scale,detsqsum,normsqsum;
   matrix actualSize(sz,sz),normalized(sz,sz);
   set<int> halfsteps=hsteps(iters);
   time_t now,then;
   PostScript ps;
-  while (points.size()<sz)
-  {
-    i=points.size();
-    points.resize(i+1);
-    disp.resize(i+1);
-    for (j=0;j<sz;j++)
+  for (k=0;k<3;k++)
+    while (points[k].size()<sz)
     {
-      points[i].push_back((rng.ucrandom()+0.5)/256);
-      disp[i].push_back(1);
-    }
-    for (j=0;j<i;j++)
-      if (distsq(points[i],points[j])==0)
+      i=points[k].size();
+      points[k].resize(i+1);
+      disp[k].resize(i+1);
+      for (j=0;j<sz;j++)
       {
-	points.resize(i);
-	disp.resize(i);
-	break;
+	points[k][i].push_back((rng.ucrandom()+0.5)/256);
+	disp[k][i].push_back(1);
       }
-  }
+      for (j=0;j<i;j++)
+	if (distsq(points[k][i],points[k][j])==0)
+	{
+	  points[k].resize(i);
+	  disp[k].resize(i);
+	  break;
+	}
+    }
   for (i=0;i<sz;i++)
-    closedist.push_back(sz);
+    for (l=0;l<3;l++)
+      closedist[l].push_back(sz);
   ps.open("filltest.ps");
   ps.setpaper(a4land,0);
   ps.prolog();
@@ -95,25 +98,33 @@ void filltest(quadlods &quad)
       then=now;
     }
     point=quad.dgen();
-    for (j=0;j<sz;j++)
-    {
-      thisdist=distsq(point,points[j]);
-      if (thisdist<closedist[j])
+    for (l=0;l<3;l++)
+      for (j=0;j<sz;j++)
       {
-	closedist[j]=thisdist;
-	for (k=0;k<sz;k++)
-	  disp[j][k]=point[k]-points[j][k];
+	thisdist=distsq(point,points[l][j]);
+	if (thisdist<closedist[l][j])
+	{
+	  closedist[l][j]=thisdist;
+	  for (k=0;k<sz;k++)
+	    disp[l][j][k]=point[k]-points[l][j][k];
+	}
       }
-    }
     if (halfsteps.count(i))
     {
-      for (j=0;j<sz;j++)
-	for (k=0;k<sz;k++)
-	{
-	  actualSize[j][k]=disp[j][k];
-	  normalized[j][k]=disp[j][k]*sqrt(j/closedist[j]);
-	}
-      detGraph.push_back(log(fabs(actualSize.determinant())));
+      detsqsum=normsqsum=0;
+      for (l=0;l<3;l++)
+      {
+	for (j=0;j<sz;j++)
+	  for (k=0;k<sz;k++)
+	  {
+	    actualSize[j][k]=disp[l][j][k];
+	    normalized[j][k]=disp[l][j][k]*sqrt(j/closedist[l][j]);
+	  }
+	detsqsum+=sqr(actualSize.determinant());
+	normsqsum+=sqr(normalized.determinant());
+      }
+      detGraph.push_back(log(detsqsum/3)/2);
+      normGraph.push_back(log(normsqsum/3)/2);
     }
   }
   for (i=0;i<detGraph.size();i++)
