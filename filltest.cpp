@@ -58,7 +58,8 @@ void filltest(quadlods &quad)
   array<vector<double>,3> closedist;
   vector<double> point;
   vector<double> detGraph,normGraph;
-  double thisdist,hi=-INFINITY,lo=INFINITY,scale,detsqsum,normsqsum;
+  double hi=-INFINITY,lo=INFINITY,nhi=-INFINITY,nlo=INFINITY;
+  double thisdist,scale,detsqsum,normsqsum;
   matrix actualSize(sz,sz),normalized(sz,sz);
   set<int> halfsteps=hsteps(iters);
   time_t now,then;
@@ -118,7 +119,7 @@ void filltest(quadlods &quad)
 	  for (k=0;k<sz;k++)
 	  {
 	    actualSize[j][k]=disp[l][j][k];
-	    normalized[j][k]=disp[l][j][k]*sqrt(j/closedist[l][j]);
+	    normalized[j][k]=disp[l][j][k]*sqrt((j+1)/closedist[l][j]);
 	  }
 	detsqsum+=sqr(actualSize.determinant());
 	normsqsum+=sqr(normalized.determinant());
@@ -136,6 +137,15 @@ void filltest(quadlods &quad)
   }
   hi=ceil (hi/log(10))*log(10);
   lo=floor(lo/log(10))*log(10);
+  for (i=0;i<normGraph.size();i++)
+  {
+    if (normGraph[i]>nhi)
+      nhi=normGraph[i];
+    if (normGraph[i]<nlo)
+      nlo=normGraph[i];
+  }
+  nhi=ceil (nhi/log(10))*log(10);
+  nlo=floor(nlo/log(10))*log(10);
   ps.startpage();
   ps.setscale(0,-1,3,1);
   scale=(hi-lo)/2;
@@ -160,6 +170,31 @@ void filltest(quadlods &quad)
   for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
     if (*it)
       ps.lineto(log(*it)/log(iters)*3,(detGraph[i]-lo)/scale-1);
+  ps.endline();
+  ps.endpage();
+  ps.startpage();
+  ps.setscale(0,-1,3,1);
+  scale=(nhi-nlo)/2;
+  ps.startline();
+  ps.lineto(0,-1);
+  ps.lineto(3,-1);
+  ps.lineto(3,1);
+  ps.lineto(0,1);
+  ps.endline(true);
+  decades=rint((nhi-nlo)/log(10));
+  for (i=0;i<=decades;i++)
+  {
+    sprintf(buf,"%g",exp(lo)*pow(10,i));
+    ps.write(3.1,i*2./decades-1,buf);
+    ps.startline();
+    ps.lineto(3,i*2./decades-1);
+    ps.lineto(3.1,i*2./decades-1);
+    ps.endline();
+  }
+  ps.startline();
+  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
+    if (*it)
+      ps.lineto(log(*it)/log(iters)*3,(normGraph[i]-nlo)/scale-1);
   ps.endline();
   ps.endpage();
 }
