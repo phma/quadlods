@@ -184,7 +184,7 @@ void filltest(quadlods &quad)
   decades=rint((nhi-nlo)/log(10));
   for (i=0;i<=decades;i++)
   {
-    sprintf(buf,"%g",exp(lo)*pow(10,i));
+    sprintf(buf,"%g",exp(nlo)*pow(10,i));
     ps.write(3.1,i*2./decades-1,buf);
     ps.startline();
     ps.lineto(3,i*2./decades-1);
