@@ -241,6 +241,24 @@ void PostScript::endline(bool closed)
   inlin=false;
 }
 
+void PostScript::plot(polyline pl,bool fill)
+{
+  int i,j,n;
+  xy pnt;
+  n=pl.size();
+  //pnt=turn(pl.getEndpoint(0),orientation);
+  pnt=pl.getEndpoint(0);
+  *psfile<<ldecimal(xscale(pnt.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt.gety()),PAPERRES)<<" moveto\n";
+  for (i=1;i<n;i++)
+  {
+    pnt=pl.getEndpoint(i);
+    *psfile<<ldecimal(xscale(pnt.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt.gety()),PAPERRES)<<" lineto\n";
+  }
+  if (!pl.isopen())
+    *psfile<<"closepath ";
+  *psfile<<(fill?"fill":"stroke")<<endl;
+}
+
 void PostScript::write(double x,double y,string text)
 {
   *psfile<<fixed<<setprecision(2)<<xscale(x)<<' '<<yscale(y)

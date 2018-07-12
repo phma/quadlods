@@ -293,6 +293,7 @@ void writeshort(ostream &file,unsigned short i)
 void sortPrimes()
 {
   int i,j;
+  const double logKhinchin=log(2.685452001065306);
   quads.init(0,0);
   ofstream primeFile("primes.dat",ios::binary);
   ofstream primeText("primes.txt");
@@ -338,9 +339,11 @@ void sortPrimes()
   }
   ps.open("primes.ps");
   ps.prolog();
-  ps.setpaper(a4land,1);
+  ps.setpaper(a4land,0);
   ps.startpage();
   hist.plot(ps,HISTO_LOG);
+  ps.setcolor(1,0,0);
+  ps.line2p(xy(logKhinchin*3/6.235,2),xy(logKhinchin*3/6.235,2.1));
 }
 
 /* Commands for interactive mode, which can be used as a server:

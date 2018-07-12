@@ -27,6 +27,7 @@
 #include <iostream>
 #include <fstream>
 #include "xy.h"
+#include "polyline.h"
 
 struct papersize
 {
@@ -66,6 +67,7 @@ public:
   void startline();
   void lineto(double x,double y);
   void endline(bool closed=false);
+  void plot(polyline pl,bool fill=false);
   void write(double x,double y,std::string text);
   void centerWrite(xy pnt,std::string text);
   void comment(std::string text);

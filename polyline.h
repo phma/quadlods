@@ -35,6 +35,7 @@ protected:
 public:
   bool isopen();
   int size();
+  xy getEndpoint(int i);
   virtual void insert(xy newpoint,int pos=-1);
   virtual void setlengths();
   virtual void open();

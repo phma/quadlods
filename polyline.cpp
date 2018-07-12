@@ -39,6 +39,14 @@ int polyline::size()
   return lengths.size();
 }
 
+xy polyline::getEndpoint(int i)
+{
+  i%=endpoints.size();
+  if (i<0)
+    i+=endpoints.size();
+  return endpoints[i];
+}
+
 void polyline::insert(xy newpoint,int pos)
 /* Inserts newpoint in position pos. E.g. insert(xy(8,5),2) does
  * {(0,0),(1,1),(2,2),(3,3)} -> {(0,0),(1,1),(8,5),(2,2),(3,3)}.
