@@ -32,6 +32,7 @@
 #include "filltest.h"
 #include "contfrac.h"
 #include "ldecimal.h"
+#include "histogram.h"
 
 using namespace std;
 
@@ -295,6 +296,8 @@ void sortPrimes()
   quads.init(0,0);
   ofstream primeFile("primes.dat",ios::binary);
   ofstream primeText("primes.txt");
+  histogram hist(0,6.235); // log scale, 1 to 510
+  PostScript ps;
   ContinuedFraction cf;
   set<PrimeContinuedFraction> pcf;
   set<PrimeContinuedFraction>::iterator k;
@@ -315,6 +318,7 @@ void sortPrimes()
     pcf0.prime=nthprime(i);
     pcf0.cf=cf;
     pcf.insert(pcf0);
+    hist<<log(pcf0.cf.averageTerm());
   }
   for (k=pcf.begin();k!=pcf.end();k++)
   {
@@ -332,6 +336,11 @@ void sortPrimes()
     }
     primeText<<" ...\n";
   }
+  ps.open("primes.ps");
+  ps.prolog();
+  ps.setpaper(a4land,1);
+  ps.startpage();
+  hist.plot(ps,HISTO_LOG);
 }
 
 /* Commands for interactive mode, which can be used as a server:
