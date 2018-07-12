@@ -3,7 +3,7 @@
 /* ps.cpp - PostScript output                         */
 /*                                                    */
 /******************************************************/
-/* Copyright 2014,2016 Pierre Abbat.
+/* Copyright 2014,2016,2018 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -94,6 +94,8 @@ void PostScript::prolog()
     *psfile<<"%%BoundingBox: 0 0 "<<rint(paperx/PSPoint)<<' '<<rint(papery/PSPoint)<<endl;
     *psfile<<"\n/. % ( x y )\n{ newpath 0.1 0 360 arc fill } bind def\n\n";
     *psfile<<"/- % ( x1 y1 x2 y2 )\n\n{ newpath moveto lineto stroke } bind def\n\n";
+    *psfile<<"/c. % ( str )\n{ dup stringwidth -2 div exch -2 div exch\n"<<
+            "3 2 roll 2 index 2 index rmoveto show rmoveto } bind def\n\n";
     *psfile<<"/mmscale { 720 254 div dup scale } bind def\n";
     *psfile<<"%%EndProlog"<<endl;
     indocument=true;
