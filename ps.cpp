@@ -211,8 +211,8 @@ void PostScript::dot(double x,double y)
 
 void PostScript::line2p(xy pnt1,xy pnt2)
 {
-  //pnt1=turn(pnt1,orientation);
-  //pnt2=turn(pnt2,orientation);
+  pnt1=turn(pnt1,orientation);
+  pnt2=turn(pnt2,orientation);
   if (isfinite(pnt1.getx()) && isfinite(pnt1.gety()) && isfinite(pnt2.getx()) && isfinite(pnt2.gety()))
     *psfile<<ldecimal(xscale(pnt1.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt1.gety()),PAPERRES)
     <<' '<<ldecimal(xscale(pnt2.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt2.gety()),PAPERRES)<<" -"<<endl;
@@ -246,8 +246,8 @@ void PostScript::plot(polyline pl,bool fill)
   int i,j,n;
   xy pnt;
   n=pl.size();
-  //pnt=turn(pl.getEndpoint(0),orientation);
-  pnt=pl.getEndpoint(0);
+  pnt=turn(pl.getEndpoint(0),orientation);
+  //pnt=pl.getEndpoint(0);
   *psfile<<ldecimal(xscale(pnt.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt.gety()),PAPERRES)<<" moveto\n";
   for (i=1;i<n;i++)
   {
@@ -267,7 +267,7 @@ void PostScript::write(double x,double y,string text)
 
 void PostScript::centerWrite(xy pnt,string text)
 {
-  //pnt=turn(pnt,orientation);
+  pnt=turn(pnt,orientation);
   *psfile<<ldecimal(xscale(pnt.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt.gety()),PAPERRES)
   <<" moveto ("<<escape(text)<<") c."<<endl;
 }

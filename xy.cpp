@@ -134,3 +134,11 @@ double dist(xy a,xy b)
 {
   return hypot(a.x-b.x,a.y-b.y);
 }
+
+xy turn(xy a,int angle)
+{
+  double s,c;
+  s=sin(angle*M_PI/128);
+  c=cos(angle*M_PI/128);
+  return xy(c*a.x-s*a.y,s*a.x+c*a.y);
+}
