@@ -338,8 +338,8 @@ void sortPrimes()
     primeText<<" ...\n";
   }
   ps.open("primes.ps");
-  ps.prolog();
   ps.setpaper(a4land,0);
+  ps.prolog();
   ps.startpage();
   hist.plot(ps,HISTO_LOG);
   ps.setcolor(1,0,0);

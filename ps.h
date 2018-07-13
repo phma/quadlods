@@ -34,7 +34,7 @@ struct papersize
   double width,height;
 };
 
-extern papersize a4land;
+extern papersize a4land,a4port;
 
 class PostScript
 {

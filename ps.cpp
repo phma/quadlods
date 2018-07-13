@@ -41,6 +41,7 @@ using namespace std;
 char rscales[]={10,12,15,20,25,30,40,50,60,80};
 const double PSPoint=25.4/72;
 papersize a4land={297,210};
+papersize a4port={210,297};
 
 PostScript::PostScript()
 {
