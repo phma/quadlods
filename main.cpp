@@ -354,6 +354,18 @@ void sortPrimes()
  */
 
 int main(int argc,char **argv)
+/* Commands:
+ * sortprimes	Write a list of primes sorted by average continued fraction term
+ * coverage	Test generator with small numbers 2, 3, 5
+ * testprimes	Do any of several graphical tests to determine the quality of a set of primes
+ * textout	Output a text file for the star_discrepancy program
+ * interact	Run interactively
+ * Options:
+ * -d n		Use the first n primes in sortprimes order (d means dimensions)
+ * -p p1,p2,p3	Use the specified primes
+ * -r n		Set the resolution to n (default 1e17)
+ * -n n		Output n lines (textout) or run n iterations (testprimes) (default 1048576)
+ */
 {
   string arg1;
   int cmd,i;
