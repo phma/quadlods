@@ -364,6 +364,7 @@ int main(int argc,char **argv)
  * -d n		Use the first n primes in sortprimes order (d means dimensions)
  * -p p1,p2,p3	Use the specified primes
  * -r n		Set the resolution to n (default 1e17)
+ * -j x		Set the jumbling option (none, third, morse, gray)
  * -n n		Output n lines (textout) or run n iterations (testprimes) (default 1048576)
  */
 {
