@@ -25,6 +25,7 @@
 #include <ctime>
 #include <cassert>
 #include <cmath>
+#include <boost/program_options.hpp>
 #include "quadlods.h"
 #include "ps.h"
 #include "discrepancy.h"
@@ -35,6 +36,7 @@
 #include "histogram.h"
 
 using namespace std;
+namespace po=boost::program_options;
 
 struct command
 {
@@ -369,7 +371,10 @@ int main(int argc,char **argv)
  */
 {
   string arg1;
-  int cmd,i;
+  int cmd,i,ndims;
+  po::options_description desc("Allowed options");
+  desc.add_options()
+    ("dimensions,d",po::value<int>(&ndims),"Number of dimensions");
   if (argc>1)
     arg1=argv[1];
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));

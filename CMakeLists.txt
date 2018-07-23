@@ -22,7 +22,8 @@ set(SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/quadlods)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(GMPXX REQUIRED)
-set(LIBS ${LIBS} ${GMP_LIBRARY} ${GMPXX_LIBRARIES})
+find_package(Boost REQUIRED COMPONENTS program_options)
+set(LIBS ${LIBS} ${GMP_LIBRARY} ${GMPXX_LIBRARIES} ${Boost_LIBRARIES})
 target_link_libraries(quadlods ${LIBS} quadlib1)
 
 set(QUADLODS_MAJOR_VERSION 0)
