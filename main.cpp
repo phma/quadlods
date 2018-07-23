@@ -368,13 +368,30 @@ int main(int argc,char **argv)
  * -r n		Set the resolution to n (default 1e17)
  * -j x		Set the jumbling option (none, third, morse, gray)
  * -n n		Output n lines (textout) or run n iterations (testprimes) (default 1048576)
+ * -o fname	Write to the specified file
  */
 {
   string arg1;
-  int cmd,i,ndims;
+  int cmd,i,ndims,niter;
+  double resolution;
+  string primestr;
+  vector<int> primelist;
+  string jumblestr;
+  string cmdstr;
+  string filename;
   po::options_description desc("Allowed options");
+  po::options_description hidden("Hidden options");
+  po::positional_options_description p;
   desc.add_options()
-    ("dimensions,d",po::value<int>(&ndims),"Number of dimensions");
+    ("dimensions,d",po::value<int>(&ndims),"Number of dimensions")
+    ("primes,p",po::value<string>(&primestr),"List of primes")
+    ("resolution,r",po::value<double>(&resolution),"Resolution")
+    ("jumble,j",po::value<string>(&jumblestr),"Jumbling: none, third, Thue-Morse, Gray")
+    ("niter,n",po::value<int>(&niter)->default_value(1048576),"Number of iterations or lines of output")
+    ("output,o",po::value<string>(&filename),"Output file");
+  hidden.add_options()
+    ("command",po::value<string>(&cmdstr),"Command");
+  p.add("command",1);
   if (argc>1)
     arg1=argv[1];
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
