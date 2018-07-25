@@ -33,7 +33,7 @@ const double criterion=21.25;
  * keeps going down.
  */
 
-void circletest(quadlods &quad,int iters)
+void circletest(quadlods &quad,int iters,PostScript &ps)
 /* Find all pairs of primes (dimensions) which have high discrepancy by
  * counting the pairs of points that fall inside a quadrant of a circle.
  * The number of points in the quadrant should be (π/4)i+O(ln(i)²/i).
@@ -51,7 +51,6 @@ void circletest(quadlods &quad,int iters)
   vector<vector<double> > rrelError;
   vector<vector<int> > primepairs;
   vector<errorrec> errorrecs;
-  PostScript ps;
   double relativeError,maxError,scale;
   allinx=quad.size()*(quad.size()-1)/2;
   incircle.resize(quad.size()*(quad.size()-1)/2);
@@ -111,7 +110,6 @@ void circletest(quadlods &quad,int iters)
       relativeError=(incircle[inx])/log(i)/log(i);
       cout<<j<<' '<<k<<' '<<incircle[inx]<<' '<<relativeError<<endl;
     }
-  ps.open("circletest.ps");
   ps.setpaper(a4land,0);
   ps.prolog();
   for (i=0;i<errorrecs.size();i++)

@@ -346,8 +346,8 @@ void testBadPrimes()
   ps.trailer();
   //testdiscrepancy(5,1e10,1000);
   cirquads.init(badprimes,1e17,QL_JUMBLE_NONE);
-  circletest(cirquads,niter);
-  filltest(cirquads,niter);
+  //circletest(cirquads,niter);
+  //filltest(cirquads,niter);
   ps.close();
 }
 
@@ -367,15 +367,29 @@ void testGoodPrimes()
   ps.trailer();
   //testdiscrepancy(5,1e10,1000);
   cirquads.init(10,1e17,QL_JUMBLE_NONE);
-  circletest(cirquads,niter);
-  filltest(cirquads,niter);
+  //circletest(cirquads,niter);
+  //filltest(cirquads,niter);
+  ps.close();
+}
+
+void testCircle()
+{
+  int i,j;
+  ps.open(filename.length()?filename:"circletest.ps");
+  ps.prolog();
+  quads.init(ndims,resolution);
+  quads.init(primelist,resolution);
+  quads.setjumble(jumble);
+  quads.advance(-1);
+  circletest(quads,niter,ps);
+  ps.trailer();
   ps.close();
 }
 
 void testScatter()
 {
   int i,j;
-  ps.open(filename.length()?filename:"scatter.ps");
+  ps.open(filename.length()?filename:"scattertest.ps");
   ps.prolog();
   quads.init(ndims,resolution);
   quads.init(primelist,resolution);
@@ -386,6 +400,20 @@ void testScatter()
   for (i=0;i<quads.size();i++)
     for (j=0;j<i;j++)
       plotxy(quads,i,j);
+  ps.trailer();
+  ps.close();
+}
+
+void testFill()
+{
+  int i,j;
+  ps.open(filename.length()?filename:"filltest.ps");
+  ps.prolog();
+  quads.init(ndims,resolution);
+  quads.init(primelist,resolution);
+  quads.setjumble(jumble);
+  quads.advance(-1);
+  filltest(quads,niter,ps);
   ps.trailer();
   ps.close();
 }
@@ -525,7 +553,8 @@ int main(int argc,char **argv)
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
   commands.push_back(command("coverage",testcoverage,"Test coverage of small 3D generator"));
   commands.push_back(command("scatter",testScatter,"Scatter plot pairs of primes"));
-  commands.push_back(command("badprimes",testBadPrimes,"Test primes with high CF terms"));
+  commands.push_back(command("circle",testCircle,"Test pairs of primes by estimating area of circle"));
+  commands.push_back(command("fill",testFill,"Graph how well sequence fills space"));
   po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
   po::notify(vm);
   parsePrimeList();

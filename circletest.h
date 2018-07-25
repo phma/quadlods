@@ -18,6 +18,7 @@
  */
 #include <vector>
 #include "quadlods.h"
+#include "ps.h"
 
 struct errorrec
 {
@@ -26,4 +27,4 @@ struct errorrec
   std::vector<double> relError;
 };
 
-void circletest(quadlods &quad,int iters);
+void circletest(quadlods &quad,int iters,PostScript &ps);

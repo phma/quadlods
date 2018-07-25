@@ -29,7 +29,6 @@
 #include "matrix.h"
 #include "histogram.h"
 #include "random.h"
-#include "ps.h"
 using namespace std;
 
 double distsq(vector<double> a,vector<double> b)
@@ -49,7 +48,7 @@ double distsq(vector<double> a,vector<double> b)
  * determinant should decrease at a known rate; the determinant of the
  * normalized vectors should have a known distribution depending only on n.
  */
-void filltest(quadlods &quad,int iters)
+void filltest(quadlods &quad,int iters,PostScript &ps)
 {
   int i,j,k,l,sz=quad.size(),decades;
   char buf[24];
@@ -63,7 +62,6 @@ void filltest(quadlods &quad,int iters)
   matrix actualSize(sz,sz),normalized(sz,sz);
   set<int> halfsteps=hsteps(iters);
   time_t now,then;
-  PostScript ps;
   for (k=0;k<3;k++)
     while (points[k].size()<sz)
     {
@@ -86,7 +84,6 @@ void filltest(quadlods &quad,int iters)
   for (i=0;i<sz;i++)
     for (l=0;l<3;l++)
       closedist[l].push_back(sz);
-  ps.open("filltest.ps");
   ps.setpaper(a4land,0);
   ps.prolog();
   for (i=0;i<=iters;i++)
