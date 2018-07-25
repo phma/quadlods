@@ -49,9 +49,9 @@ double distsq(vector<double> a,vector<double> b)
  * determinant should decrease at a known rate; the determinant of the
  * normalized vectors should have a known distribution depending only on n.
  */
-void filltest(quadlods &quad)
+void filltest(quadlods &quad,int iters)
 {
-  int i,j,k,l,sz=quad.size(),iters=1048576,decades;
+  int i,j,k,l,sz=quad.size(),decades;
   char buf[24];
   set<int>::iterator it;
   array<vector<vector<double> >,3> points,disp;

@@ -29,4 +29,4 @@
  */
 
 double distsq(std::vector<double> a,std::vector<double> b);
-void filltest(quadlods &quad);
+void filltest(quadlods &quad,int iters);

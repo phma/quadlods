@@ -33,13 +33,13 @@ const double criterion=21.25;
  * keeps going down.
  */
 
-void circletest(quadlods &quad)
+void circletest(quadlods &quad,int iters)
 /* Find all pairs of primes (dimensions) which have high discrepancy by
  * counting the pairs of points that fall inside a quadrant of a circle.
  * The number of points in the quadrant should be (π/4)i+O(ln(i)²/i).
  */
 {
-  int i,j,k,inx,iters=1048576,allinx;
+  int i,j,k,inx,allinx;
   char buf[24];
   set<int> halfsteps=hsteps(iters);
   time_t now,then;

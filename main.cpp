@@ -346,8 +346,8 @@ void testBadPrimes()
   ps.trailer();
   //testdiscrepancy(5,1e10,1000);
   cirquads.init(badprimes,1e17,QL_JUMBLE_NONE);
-  circletest(cirquads);
-  filltest(cirquads);
+  circletest(cirquads,niter);
+  filltest(cirquads,niter);
   ps.close();
 }
 
@@ -367,8 +367,8 @@ void testGoodPrimes()
   ps.trailer();
   //testdiscrepancy(5,1e10,1000);
   cirquads.init(10,1e17,QL_JUMBLE_NONE);
-  circletest(cirquads);
-  filltest(cirquads);
+  circletest(cirquads,niter);
+  filltest(cirquads,niter);
   ps.close();
 }
 

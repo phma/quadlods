@@ -26,4 +26,4 @@ struct errorrec
   std::vector<double> relError;
 };
 
-void circletest(quadlods &quad);
+void circletest(quadlods &quad,int iters);
