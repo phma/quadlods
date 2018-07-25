@@ -240,12 +240,20 @@ void quadlods::init(int dimensions,double resolution,int j)
   mpz_class nmid,dmid;
   if (dimensions>QL_MAX_DIMS)
     dimensions=QL_MAX_DIMS;
-  if (dimensions<0)
-    dimensions=0;
+  if (dimensions<-QL_MAX_DIMS)
+    dimensions=-QL_MAX_DIMS;
   for (i=denom.size();i<dimensions;i++)
   {
     primeinx.push_back(i);
     p=nthprime(i);
+    compquad(p,resolution,nmid,dmid);
+    denom.push_back(dmid);
+    num.push_back(nmid);
+  }
+  for (i=denom.size();i>dimensions;i--)
+  {
+    primeinx.push_back(QL_MAX_DIMS-i-1);
+    p=nthprime(QL_MAX_DIMS-i-1);
     compquad(p,resolution,nmid,dmid);
     denom.push_back(dmid);
     num.push_back(nmid);

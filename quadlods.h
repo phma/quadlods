@@ -66,6 +66,7 @@ protected:
 public:
   void init(int dimensions,double resolution,int j=QL_JUMBLE_GRAY);
   // If dimensions>6542, it is silently truncated to 6542.
+  // If dimensions<0, primes are taken from the end of the list.
   void init(std::vector<int> dprimes,double resolution,int j=QL_JUMBLE_GRAY);
   int size()
   {
