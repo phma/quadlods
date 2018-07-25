@@ -252,8 +252,8 @@ void quadlods::init(int dimensions,double resolution,int j)
   }
   for (i=denom.size();i>dimensions;i--)
   {
-    primeinx.push_back(QL_MAX_DIMS-i-1);
-    p=nthprime(QL_MAX_DIMS-i-1);
+    primeinx.push_back(QL_MAX_DIMS+i-1);
+    p=nthprime(QL_MAX_DIMS+i-1);
     compquad(p,resolution,nmid,dmid);
     denom.push_back(dmid);
     num.push_back(nmid);
@@ -262,6 +262,7 @@ void quadlods::init(int dimensions,double resolution,int j)
     jumbletype=j;
   if (jumbletype<0 || jumbletype>QL_JUMBLE_GRAY)
     jumbletype=QL_JUMBLE_GRAY;
+  dimensions=abs(dimensions);
   num.resize(dimensions);
   denom.resize(dimensions);
   acc.resize(dimensions);
