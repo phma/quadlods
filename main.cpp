@@ -376,7 +376,6 @@ void testCircle()
 {
   int i,j;
   ps.open(filename.length()?filename:"circletest.ps");
-  ps.prolog();
   quads.init(ndims,resolution);
   quads.init(primelist,resolution);
   quads.setjumble(jumble);
@@ -408,7 +407,6 @@ void testFill()
 {
   int i,j;
   ps.open(filename.length()?filename:"filltest.ps");
-  ps.prolog();
   quads.init(ndims,resolution);
   quads.init(primelist,resolution);
   quads.setjumble(jumble);
