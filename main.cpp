@@ -62,6 +62,19 @@ char rpint[][2]=
 map<double,int> singleq;
 int minlargerp;
 PostScript ps;
+double resolution;
+string primestr;
+vector<int> primelist;
+string jumblestr;
+int ndims,niter;
+
+void listCommands()
+{
+  int i;
+  cout<<"Commands:\n";
+  for (i=0;i<commands.size();i++)
+    cout<<setw(15)<<left<<commands[i].word<<commands[i].desc<<'\n';
+}
 
 void plotxy(quadlods& quad,int xdim,int ydim)
 {
@@ -371,40 +384,42 @@ int main(int argc,char **argv)
  * -o fname	Write to the specified file
  */
 {
-  string arg1;
-  int cmd,i,ndims,niter;
-  double resolution;
-  string primestr;
-  vector<int> primelist;
-  string jumblestr;
+  int cmd,i;
   string cmdstr;
   string filename;
-  po::options_description desc("Allowed options");
+  po::options_description generic("Options");
   po::options_description hidden("Hidden options");
+  po::options_description cmdline_options;
   po::positional_options_description p;
-  desc.add_options()
+  po::variables_map vm;
+  generic.add_options()
     ("dimensions,d",po::value<int>(&ndims),"Number of dimensions")
     ("primes,p",po::value<string>(&primestr),"List of primes")
-    ("resolution,r",po::value<double>(&resolution),"Resolution")
-    ("jumble,j",po::value<string>(&jumblestr),"Jumbling: none, third, Thue-Morse, Gray")
+    ("resolution,r",po::value<double>(&resolution)->default_value(1e17),"Resolution")
+    ("jumble,j",po::value<string>(&jumblestr)->default_value("Gray"),"Jumbling: none, third, Thue-Morse, Gray")
     ("niter,n",po::value<int>(&niter)->default_value(1048576),"Number of iterations or lines of output")
     ("output,o",po::value<string>(&filename),"Output file");
   hidden.add_options()
     ("command",po::value<string>(&cmdstr),"Command");
   p.add("command",1);
-  if (argc>1)
-    arg1=argv[1];
+  cmdline_options.add(generic).add(hidden);
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
   commands.push_back(command("coverage",testcoverage,"Test coverage of small 3D generator"));
   commands.push_back(command("goodprimes",testGoodPrimes,"Test primes with low CF terms"));
-  commands.push_back(command("badprimes",testBadPrimes,"Test primes with low CF terms"));
+  commands.push_back(command("badprimes",testBadPrimes,"Test primes with high CF terms"));
+  po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
+  po::notify(vm);
   for (cmd=-1,i=0;i<commands.size();i++)
-    if (commands[i].word==arg1)
+    if (commands[i].word==cmdstr)
       cmd=i;
   if (cmd>=0)
     commands[cmd].fun();
-  //testBadPrimes();
-  //testSeed();
-  //findclosequad();
+  else
+  {
+    if (cmdstr.length())
+      cerr<<"Unrecognized command: "<<cmdstr<<endl;
+    listCommands();
+    cout<<generic<<endl;
+  }
   return 0;
 }
