@@ -76,6 +76,39 @@ void listCommands()
     cout<<setw(15)<<left<<commands[i].word<<commands[i].desc<<'\n';
 }
 
+bool isValidPrime(int n)
+{
+  int i;
+  bool ret=n>1 && n<65522 && (n==2 || (n&1));
+  for (i=3;ret && i*i<=n;i+=2)
+    if (n>i && (n%i==0))
+      ret=false;
+  return ret;
+}
+
+void parsePrimeList()
+{
+  string numstr;
+  int num;
+  size_t pos;
+  while (primestr.length())
+  {
+    pos=primestr.find_first_of(", ");
+    numstr=primestr.substr(0,pos);
+    if (pos<=primestr.length())
+      pos++;
+    primestr.erase(0,pos);
+    if (numstr.length())
+    {
+      num=stoi(numstr);
+      if (isValidPrime(num))
+	primelist.push_back(num);
+      else
+	cerr<<num<<" is not a prime in [0..65535]\n";
+    }
+  }
+}
+
 void plotxy(quadlods& quad,int xdim,int ydim)
 {
   int i;
@@ -409,6 +442,7 @@ int main(int argc,char **argv)
   commands.push_back(command("badprimes",testBadPrimes,"Test primes with high CF terms"));
   po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
   po::notify(vm);
+  parsePrimeList();
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==cmdstr)
       cmd=i;
