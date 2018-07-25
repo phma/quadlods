@@ -319,58 +319,11 @@ void findclosequad()
   cout<<"Use primes below "<<minlargerp<<endl;
 }
 
-void testBadPrimes()
-{
-  int i,j;
-  vector<int> badprimes; // none of the primes is bad per se, they just have very close q values
-  badprimes.push_back(65027);
-  badprimes.push_back(62003);
-  badprimes.push_back(59051);
-  badprimes.push_back(56171);
-  badprimes.push_back(50627);
-  badprimes.push_back(47963);
-  badprimes.push_back(65029);
-  badprimes.push_back(64013);
-  badprimes.push_back(60029);
-  badprimes.push_back(59053);
-  ps.open("quadlods.ps");
-  ps.prolog();
-  quads.init(badprimes,1e10);
-  quads.setjumble(QL_JUMBLE_GRAY);
-  quads.advance(-1);
-  for (i=0;i<quads.size();i++)
-    cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
-  for (i=0;i<quads.size();i++)
-    for (j=0;j<i;j++)
-      plotxy(quads,i,j);
-  ps.trailer();
-  //testdiscrepancy(5,1e10,1000);
-  cirquads.init(badprimes,1e17,QL_JUMBLE_NONE);
-  //circletest(cirquads,niter);
-  //filltest(cirquads,niter);
-  ps.close();
-}
-
-void testGoodPrimes()
-{
-  int i,j;
-  ps.open("quadlods.ps");
-  ps.prolog();
-  quads.init(10,1e17);
-  quads.setjumble(QL_JUMBLE_GRAY);
-  quads.advance(-1);
-  for (i=0;i<quads.size();i++)
-    cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
-  for (i=0;i<quads.size();i++)
-    for (j=0;j<i;j++)
-      plotxy(quads,i,j);
-  ps.trailer();
-  //testdiscrepancy(5,1e10,1000);
-  cirquads.init(10,1e17,QL_JUMBLE_NONE);
-  //circletest(cirquads,niter);
-  //filltest(cirquads,niter);
-  ps.close();
-}
+/* Some bad pairs of primes:
+ * 65027,65029
+ * 59053,59051
+ * 13691,13693
+ */
 
 void testCircle()
 {
