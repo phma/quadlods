@@ -66,7 +66,7 @@ double resolution;
 string primestr;
 vector<int> primelist;
 string jumblestr;
-int ndims,niter;
+int ndims,niter,jumble;
 
 void listCommands()
 {
@@ -107,6 +107,72 @@ void parsePrimeList()
 	cerr<<num<<" is not a prime in [0..65535]\n";
     }
   }
+}
+
+array<short,676> digraphs(string word)
+{
+  int l0,l1,i;
+  array<short,676> ret;
+  for (i=0;i<676;i++)
+    ret[i]=0;
+  for (i=0;i<word.length()-1;i++)
+  {
+    l0=tolower(word[i]);
+    l1=tolower(word[i+1]);
+    if (l0>='a' && l0<='z' && l1>='a' && l1<='z')
+      ret[(l0-'a')*26+(l1-'a')]++;
+  }
+  return ret;
+}
+
+void parseJumble()
+{
+  array<short,676> dig0=digraphs("None");
+  array<short,676> dig1=digraphs("Third");
+  array<short,676> dig2=digraphs("Thue-Morse");
+  array<short,676> dig3=digraphs("Gray");
+  array<short,676> digj=digraphs(jumblestr);
+  int i,match0=0,match1=0,match2=0,match3=0,maxmatch,nmatch=0;
+  for (i=0;i<676;i++)
+  {
+    match0+=dig0[i]*digj[i];
+    match1+=dig1[i]*digj[i];
+    match2+=dig2[i]*digj[i];
+    match3+=dig3[i]*digj[i];
+  }
+  maxmatch=match0;
+  if (match1>maxmatch)
+    maxmatch=match1;
+  if (match2>maxmatch)
+    maxmatch=match2;
+  if (match3>maxmatch)
+    maxmatch=match3;
+  if (match0==maxmatch)
+  {
+    nmatch++;
+    jumble=QL_JUMBLE_NONE;
+  }
+  if (match1==maxmatch)
+  {
+    nmatch++;
+    jumble=QL_JUMBLE_THIRD;
+  }
+  if (match2==maxmatch)
+  {
+    nmatch++;
+    jumble=QL_JUMBLE_THUEMORSE;
+  }
+  if (match3==maxmatch)
+  {
+    nmatch++;
+    jumble=QL_JUMBLE_GRAY;
+  }
+  if (nmatch>1)
+  {
+    cerr<<"Unrecognized or ambiguous jumbling: "<<jumblestr<<endl;
+    jumble=-1;
+  }
+  //cout<<"Jumble "<<jumble<<endl;
 }
 
 void plotxy(quadlods& quad,int xdim,int ydim)
@@ -443,6 +509,7 @@ int main(int argc,char **argv)
   po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
   po::notify(vm);
   parsePrimeList();
+  parseJumble();
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==cmdstr)
       cmd=i;
