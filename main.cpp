@@ -67,6 +67,7 @@ string primestr;
 vector<int> primelist;
 string jumblestr;
 int ndims,niter,jumble;
+string filename;
 
 void listCommands()
 {
@@ -183,7 +184,7 @@ void plotxy(quadlods& quad,int xdim,int ydim)
   ps.startpage();
   ps.setscale(0,0,1,1);
   // (2,0) and (3,0) look splotchy at 30000, but fill in well at 100000.
-  for (i=0;i<30000;i++)
+  for (i=0;i<niter;i++)
   {
     point=quad.dgen();
     x=point[xdim];
@@ -371,6 +372,24 @@ void testGoodPrimes()
   ps.close();
 }
 
+void testScatter()
+{
+  int i,j;
+  ps.open(filename.length()?filename:"scatter.ps");
+  ps.prolog();
+  quads.init(ndims,resolution);
+  quads.init(primelist,resolution);
+  quads.setjumble(jumble);
+  quads.advance(-1);
+  for (i=0;i<quads.size();i++)
+    cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
+  for (i=0;i<quads.size();i++)
+    for (j=0;j<i;j++)
+      plotxy(quads,i,j);
+  ps.trailer();
+  ps.close();
+}
+
 void testSeed()
 {
   int i,j,seedlen;
@@ -471,7 +490,9 @@ int main(int argc,char **argv)
 /* Commands:
  * sortprimes	Write a list of primes sorted by average continued fraction term
  * coverage	Test generator with small numbers 2, 3, 5
- * testprimes	Do any of several graphical tests to determine the quality of a set of primes
+ * scatter	Draw scatterplots of pairs of dimensions of a sequence
+ * circle	Test how well pairs of dimensions estimate the area of a circle
+ * fill		Graph how well a sequence fills space
  * textout	Output a text file for the star_discrepancy program
  * interact	Run interactively
  * Options:
@@ -485,7 +506,6 @@ int main(int argc,char **argv)
 {
   int cmd,i;
   string cmdstr;
-  string filename;
   po::options_description generic("Options");
   po::options_description hidden("Hidden options");
   po::options_description cmdline_options;
@@ -496,7 +516,7 @@ int main(int argc,char **argv)
     ("primes,p",po::value<string>(&primestr),"List of primes")
     ("resolution,r",po::value<double>(&resolution)->default_value(1e17),"Resolution")
     ("jumble,j",po::value<string>(&jumblestr)->default_value("Gray"),"Jumbling: none, third, Thue-Morse, Gray")
-    ("niter,n",po::value<int>(&niter)->default_value(1048576),"Number of iterations or lines of output")
+    ("niter,n",po::value<int>(&niter),"Number of iterations or lines of output")
     ("output,o",po::value<string>(&filename),"Output file");
   hidden.add_options()
     ("command",po::value<string>(&cmdstr),"Command");
@@ -504,7 +524,7 @@ int main(int argc,char **argv)
   cmdline_options.add(generic).add(hidden);
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
   commands.push_back(command("coverage",testcoverage,"Test coverage of small 3D generator"));
-  commands.push_back(command("goodprimes",testGoodPrimes,"Test primes with low CF terms"));
+  commands.push_back(command("scatter",testScatter,"Scatter plot pairs of primes"));
   commands.push_back(command("badprimes",testBadPrimes,"Test primes with high CF terms"));
   po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
   po::notify(vm);
