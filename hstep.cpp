@@ -41,7 +41,7 @@ set<int> hsteps(int iters)
 {
   set<int> ret;
   int i,n;
-  for (i=-12;i<372;i++)
+  for (i=0;i<372;i++)
   {
     n=rint(hstep(i));
     if (n>iters)
