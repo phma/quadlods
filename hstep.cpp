@@ -34,24 +34,23 @@ double hstep(int i)
   return ldexp(minorthird[note/3]*halfstep[note%3],octave);
 }
 
-set<int> hsteps(int iters)
+set<int> hsteps(int start,int iters)
 /* Returns a set of numbers which are half steps rounded to integers.
  * The largest possible number is 2026954652.
  */
 {
   set<int> ret;
   int i,n;
-  for (i=0;i<372;i++)
+  for (i=-12;i<372;i++)
   {
     n=rint(hstep(i));
-    if (n>iters)
-      break;
-    ret.insert(n);
+    if (n>=start && n<=iters)
+      ret.insert(n);
   }
   return ret;
 }
 
-void xticks(int iters,PostScript &ps)
+void xticks(int start,int iters,PostScript &ps)
 // Draw tickmarks at every power of 10 on the log-scaled x axis.
 {
   int i;
@@ -60,7 +59,7 @@ void xticks(int iters,PostScript &ps)
   for (i=1;i<=iters && i%10!=8;i*=10)
   {
     sprintf(buf,"%g",(double)i);
-    x=log(i)/log(iters)*3;
+    x=log(i+1-start)/log(iters)*3;
     ps.write(x,-1.1,buf);
     ps.startline();
     ps.lineto(x,-1);

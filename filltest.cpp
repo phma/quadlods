@@ -60,7 +60,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
   double hi=-INFINITY,lo=INFINITY,nhi=-INFINITY,nlo=INFINITY;
   double thisdist,scale,detsqsum,normsqsum;
   matrix actualSize(sz,sz),normalized(sz,sz);
-  set<int> halfsteps=hsteps(iters);
+  set<int> halfsteps=hsteps(1,iters);
   time_t now,then;
   for (k=0;k<3;k++)
     while (points[k].size()<sz)
@@ -162,7 +162,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
     ps.lineto(3.1,i*2./decades-1);
     ps.endline();
   }
-  xticks(iters,ps);
+  xticks(1,iters,ps);
   cout<<"halfsteps size "<<halfsteps.size()<<" detGraph size "<<detGraph.size()<<endl;
   ps.startline();
   for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
@@ -189,7 +189,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
     ps.lineto(3.1,i*2./decades-1);
     ps.endline();
   }
-  xticks(iters,ps);
+  xticks(1,iters,ps);
   ps.startline();
   for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
     if (*it)

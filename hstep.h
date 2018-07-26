@@ -20,5 +20,5 @@
 #include <set>
 #include "ps.h"
 
-std::set<int> hsteps(int iters);
-void xticks(int iters,PostScript &ps);
+std::set<int> hsteps(int start,int iters);
+void xticks(int start,int iters,PostScript &ps);

@@ -41,7 +41,7 @@ void circletest(quadlods &quad,int iters,PostScript &ps)
 {
   int i,j,k,inx,allinx;
   char buf[24];
-  set<int> halfsteps=hsteps(iters);
+  set<int> halfsteps=hsteps(0,iters);
   time_t now,then;
   bool recordthis;
   quadlods sel2;
@@ -127,7 +127,7 @@ void circletest(quadlods &quad,int iters,PostScript &ps)
     ps.lineto(0,1);
     ps.endline(true);
     sprintf(buf,"%g",scale);
-    xticks(iters,ps);
+    xticks(0,iters,ps);
     ps.write(3,1,buf);
     sprintf(buf,"%d %d",errorrecs[i].primepair[0],errorrecs[i].primepair[1]);
     ps.write(0,1,buf);
