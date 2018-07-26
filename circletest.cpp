@@ -127,6 +127,7 @@ void circletest(quadlods &quad,int iters,PostScript &ps)
     ps.lineto(0,1);
     ps.endline(true);
     sprintf(buf,"%g",scale);
+    xticks(iters,ps);
     ps.write(3,1,buf);
     sprintf(buf,"%d %d",errorrecs[i].primepair[0],errorrecs[i].primepair[1]);
     ps.write(0,1,buf);

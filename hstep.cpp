@@ -50,3 +50,21 @@ set<int> hsteps(int iters)
   }
   return ret;
 }
+
+void xticks(int iters,PostScript &ps)
+// Draw tickmarks at every power of 10 on the log-scaled x axis.
+{
+  int i;
+  double x;
+  char buf[24];
+  for (i=1;i<=iters && i%10!=8;i*=10)
+  {
+    sprintf(buf,"%g",(double)i);
+    x=log(i)/log(iters)*3;
+    ps.write(x,-1.1,buf);
+    ps.startline();
+    ps.lineto(x,-1);
+    ps.lineto(x,-1.1);
+    ps.endline();
+  }
+}

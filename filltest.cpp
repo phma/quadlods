@@ -162,6 +162,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
     ps.lineto(3.1,i*2./decades-1);
     ps.endline();
   }
+  xticks(iters,ps);
   cout<<"halfsteps size "<<halfsteps.size()<<" detGraph size "<<detGraph.size()<<endl;
   ps.startline();
   for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
@@ -188,6 +189,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
     ps.lineto(3.1,i*2./decades-1);
     ps.endline();
   }
+  xticks(iters,ps);
   ps.startline();
   for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
     if (*it)
