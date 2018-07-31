@@ -87,11 +87,12 @@ bool isValidPrime(int n)
   return ret;
 }
 
-void parsePrimeList()
+bool parsePrimeList()
 {
   string numstr;
   int num;
   size_t pos;
+  bool ret=true;
   while (primestr.length())
   {
     pos=primestr.find_first_of(", ");
@@ -107,12 +108,19 @@ void parsePrimeList()
 	if (isValidPrime(num))
 	  primelist.push_back(num);
 	else
+	{
 	  cerr<<num<<" is not a prime less than 65535\n";
+	  ret=false;
+	}
       }
       else
+      {
 	cerr<<numstr<<" is not a positive integer\n";
+	ret=false;
+      }
     }
   }
+  return ret;
 }
 
 array<short,676> digraphs(string word)
@@ -131,7 +139,7 @@ array<short,676> digraphs(string word)
   return ret;
 }
 
-void parseJumble()
+bool parseJumble()
 {
   array<short,676> dig0=digraphs("None");
   array<short,676> dig1=digraphs("Third");
@@ -178,7 +186,7 @@ void parseJumble()
     cerr<<"Unrecognized or ambiguous jumbling: "<<jumblestr<<endl;
     jumble=-1;
   }
-  //cout<<"Jumble "<<jumble<<endl;
+  return jumble>=0;
 }
 
 void plotxy(quadlods& quad,int xdim,int ydim)
@@ -490,6 +498,7 @@ int main(int argc,char **argv)
 {
   int cmd,i;
   string cmdstr;
+  bool validArgs,validCmd=true;
   po::options_description generic("Options");
   po::options_description hidden("Hidden options");
   po::options_description cmdline_options;
@@ -513,19 +522,23 @@ int main(int argc,char **argv)
   commands.push_back(command("fill",testFill,"Graph how well sequence fills space"));
   po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
   po::notify(vm);
-  parsePrimeList();
-  parseJumble();
+  validArgs=parsePrimeList()&parseJumble();
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==cmdstr)
       cmd=i;
   if (cmd>=0)
-    commands[cmd].fun();
+    if (validArgs)
+      commands[cmd].fun();
+    else;
   else
   {
     if (cmdstr.length())
+    {
       cerr<<"Unrecognized command: "<<cmdstr<<endl;
+      validCmd=false;
+    }
     listCommands();
     cout<<generic<<endl;
   }
-  return 0;
+  return !validArgs || !validCmd;
 }
