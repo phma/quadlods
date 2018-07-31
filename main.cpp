@@ -520,9 +520,17 @@ int main(int argc,char **argv)
   commands.push_back(command("scatter",testScatter,"Scatter plot pairs of primes"));
   commands.push_back(command("circle",testCircle,"Test pairs of primes by estimating area of circle"));
   commands.push_back(command("fill",testFill,"Graph how well sequence fills space"));
-  po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
-  po::notify(vm);
-  validArgs=parsePrimeList()&parseJumble();
+  try
+  {
+    po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
+    po::notify(vm);
+    validArgs=parsePrimeList()&parseJumble();
+  }
+  catch (exception &e)
+  {
+    cerr<<e.what()<<endl;
+    validCmd=false;
+  }
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==cmdstr)
       cmd=i;
