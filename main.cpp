@@ -101,11 +101,16 @@ void parsePrimeList()
     primestr.erase(0,pos);
     if (numstr.length())
     {
-      num=stoi(numstr);
-      if (isValidPrime(num))
-	primelist.push_back(num);
+      if (numstr.find_first_not_of("0123456789")>numstr.length())
+      {
+	num=stoi(numstr);
+	if (isValidPrime(num))
+	  primelist.push_back(num);
+	else
+	  cerr<<num<<" is not a prime less than 65535\n";
+      }
       else
-	cerr<<num<<" is not a prime in [0..65535]\n";
+	cerr<<numstr<<" is not a positive integer\n";
     }
   }
 }
