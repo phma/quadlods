@@ -408,6 +408,27 @@ void testSeed()
   delete[] seedbuf;
 }
 
+void textOutput()
+{
+  int i,j;
+  vector<double> point;
+  quads.init(ndims,resolution);
+  quads.init(primelist,resolution);
+  quads.setjumble(jumble);
+  quads.advance(-1);
+  for (i=0;i<niter;i++)
+  {
+    point=quads.dgen();
+    for (j=0;j<point.size();j++)
+    {
+      if (j)
+	cout<<' ';
+      cout<<ldecimal(point[j]);
+    }
+    cout<<endl;
+  }
+}
+
 void writeshort(ostream &file,unsigned short i)
 {
   char buf[2];
@@ -520,6 +541,7 @@ int main(int argc,char **argv)
   commands.push_back(command("scatter",testScatter,"Scatter plot pairs of primes"));
   commands.push_back(command("circle",testCircle,"Test pairs of primes by estimating area of circle"));
   commands.push_back(command("fill",testFill,"Graph how well sequence fills space"));
+  commands.push_back(command("textout",textOutput,"Output a text stream of points"));
   try
   {
     po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
