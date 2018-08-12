@@ -34,6 +34,8 @@
 #include "contfrac.h"
 #include "ldecimal.h"
 #include "histogram.h"
+#include "manysum.h"
+#include "matrix.h"
 
 using namespace std;
 namespace po=boost::program_options;
@@ -53,6 +55,7 @@ struct command
 
 vector<command> commands;
 quadlods quads,cirquads;
+bool testfail=false;
 char rpint[][2]=
 { // relatively prime integers whose sum of squares is less than 100
   {1,1},{1,2},{1,3},{1,4},{2,3},{1,5},{1,6},{2,5},
@@ -218,10 +221,12 @@ void testcoverage()
   bitset<87828936> *histo;
   vector<mpq_class> point;
   vector<int> p235; // since sorting the primes, the list begins 5,3,7
+  cout<<"Testing coverage\n";
   p235.push_back(2);
   p235.push_back(3);
   p235.push_back(5);
   cov.init(p235,370);
+  cov.setjumble(jumble);
   histo=new bitset<87828936>;
   for (i=0;i<87828936;i++)
   {
@@ -239,7 +244,12 @@ void testcoverage()
   }
   cout<<histo->count()<<endl;
   if (histo->count()==87828936)
-    cout<<"Complete coverage"<<endl;
+    cout<<"Complete coverage\n";
+  else
+  {
+    testfail=true;
+    cout<<"Coverage test failed\n";
+  }
   delete histo;
 }
 
@@ -408,6 +418,83 @@ void testSeed()
   delete[] seedbuf;
 }
 
+array<double,3> spherePoint(double x0,double x1)
+{
+  array<double,3> ret;
+  double r;
+  ret[2]=2*x1-1;
+  r=sqrt(1-sqr(ret[2]));
+  ret[1]=r*sin(x0*2*M_PI);
+  ret[0]=r*cos(x0*2*M_PI);
+  return ret;
+}
+
+void testuvmatrix()
+// Calculate the distribution of the determinant of three unit 3-vectors
+{
+  int i,j;
+  double det,reldiff,maxreldiff=0;
+  time_t now,then;
+  manysum sumsqdet;
+  histogram hist(-1,1);
+  matrix mat(3,3);
+  array<double,3> row;
+  vector<double> point;
+  quads.init(6,resolution);
+  quads.setjumble(jumble);
+  cout<<"Calculating determinants of 3×3 unit vector matrices\n";
+  for (i=0;i<niter;i++)
+  {
+    point=quads.dgen();
+    row=spherePoint(point[0],point[1]);
+    for (j=0;j<3;j++)
+      mat[0][j]=row[j];
+    row=spherePoint(point[2],point[3]);
+    for (j=0;j<3;j++)
+      mat[1][j]=row[j];
+    row=spherePoint(point[4],point[5]);
+    for (j=0;j<3;j++)
+      mat[2][j]=row[j];
+    det=mat.determinant();
+    now=time(nullptr);
+    if (now!=then)
+    {
+      cout<<rint((double)i/niter*100)<<"% \r";
+      cout.flush();
+      reldiff=fabs(sumsqdet.total()-i*6./27.)/pow(log(i),6);
+      if (reldiff>maxreldiff)
+	maxreldiff=reldiff;
+      then=now;
+    }
+    hist<<det;
+    sumsqdet+=det*det;
+  }
+  ps.open(filename.length()?filename:"uvmatrix.ps");
+  ps.setpaper(a4land,0);
+  ps.prolog();
+  ps.startpage();
+  ps.setscale(0,-1,3,1);
+  hist.plot(ps,HISTO_LINEAR);
+  ps.endpage();
+  ps.close();
+  cout<<niter<<" iterations, average square determinant is "<<sumsqdet.total()/niter<<endl;
+  if (niter<2)
+    cout<<"Please increase the number of iterations with -i\n";
+  else if (fabs(sumsqdet.total()-niter*6./27.)>pow(log(niter),6)/3e4)
+  {
+    cout<<"Test failed, average square determinant should be 6/27\n";
+    // 6/27 is 3!/3^3
+    testfail=true;
+  }
+  //cout<<"Maximum relative difference is "<<maxreldiff<<endl;
+}
+
+void runTests()
+{
+  testcoverage();
+  testuvmatrix();
+}
+
 void textOutput()
 {
   int i,j;
@@ -502,7 +589,7 @@ void sortPrimes()
 int main(int argc,char **argv)
 /* Commands:
  * sortprimes	Write a list of primes sorted by average continued fraction term
- * coverage	Test generator with small numbers 2, 3, 5
+ * test		Test the program
  * scatter	Draw scatterplots of pairs of dimensions of a sequence
  * circle	Test how well pairs of dimensions estimate the area of a circle
  * fill		Graph how well a sequence fills space
@@ -513,7 +600,7 @@ int main(int argc,char **argv)
  * -p p1,p2,p3	Use the specified primes
  * -r n		Set the resolution to n (default 1e17)
  * -j x		Set the jumbling option (none, third, morse, gray)
- * -n n		Output n lines (textout) or run n iterations (testprimes) (default 1048576)
+ * -n n		Output n lines (textout) or run n iterations (testprimes)
  * -o fname	Write to the specified file
  */
 {
@@ -537,7 +624,7 @@ int main(int argc,char **argv)
   p.add("command",1);
   cmdline_options.add(generic).add(hidden);
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
-  commands.push_back(command("coverage",testcoverage,"Test coverage of small 3D generator"));
+  commands.push_back(command("test",runTests,"Test the program"));
   commands.push_back(command("scatter",testScatter,"Scatter plot pairs of primes"));
   commands.push_back(command("circle",testCircle,"Test pairs of primes by estimating area of circle"));
   commands.push_back(command("fill",testFill,"Graph how well sequence fills space"));
@@ -570,5 +657,5 @@ int main(int argc,char **argv)
     listCommands();
     cout<<generic<<endl;
   }
-  return !validArgs || !validCmd;
+  return !validArgs || !validCmd || testfail;
 }
