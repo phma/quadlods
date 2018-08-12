@@ -27,6 +27,7 @@
 #include <cmath>
 #include <boost/program_options.hpp>
 #include "quadlods.h"
+#include "config.h"
 #include "ps.h"
 #include "discrepancy.h"
 #include "circletest.h"
@@ -75,6 +76,10 @@ string filename;
 void listCommands()
 {
   int i;
+  cout<<"Quadlods version "<<VERSION<<" © "<<COPY_YEAR<<" Pierre Abbat\n"<<
+    "Quadratic-irrational (Richtmyer) low-discrepancy sequences\n"<<
+    "Distributed under GPL v3 or later; library distributed under LGPL.\n"<<
+    "This is free software with no warranty.\n";
   cout<<"Commands:\n";
   for (i=0;i<commands.size();i++)
     cout<<setw(15)<<left<<commands[i].word<<commands[i].desc<<'\n';
