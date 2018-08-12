@@ -1,6 +1,6 @@
 Quadlods is a library for making low-discrepancy sequences using quadratic irrationals, which are approximated with multiple-precision rationals.
 
-Quadlods can generate sequences up to 6542 dimensions (the number of primes less than 65536), but some pairs of primes give particularly bad distributions with high discrepancy. The primes are sorted by the average continued fraction term, which clusters around Khinchin's constant. Use at most 3325 dimensions if you don't want to exceed K0, or at most 6248 to not exceed 2×K0.
+Quadlods can generate sequences up to 6542 dimensions (the number of primes less than 65536), but some pairs of primes give particularly bad distributions with high discrepancy. The primes are sorted by the maximum continued fraction term. Use at most 3624 dimensions to avoid the bad pair (13691,13693).
 
 To compile, if you're not developing the program:
 1. Create a subdirectory build/ inside the directory where you untarred the source code.
