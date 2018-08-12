@@ -225,7 +225,7 @@ void testcoverage()
   quadlods cov;
   bitset<87828936> *histo;
   vector<mpq_class> point;
-  vector<int> p235; // since sorting the primes, the list begins 5,3,7
+  vector<int> p235; // since sorting the primes, the list begins 5,3,2
   cout<<"Testing coverage\n";
   p235.push_back(2);
   p235.push_back(3);
@@ -371,7 +371,9 @@ void testCircle()
 
 void testScatter()
 {
-  int i,j;
+  int i,j,inx,allinx;
+  time_t now,then;
+  allinx=ndims*(ndims-1)/2;
   ps.open(filename.length()?filename:"scattertest.ps");
   ps.prolog();
   quads.init(ndims,resolution);
@@ -382,7 +384,17 @@ void testScatter()
     cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
   for (i=0;i<quads.size();i++)
     for (j=0;j<i;j++)
+    {
+      inx=i*(i-1)/2+j;
       plotxy(quads,i,j);
+      now=time(nullptr);
+      if (now!=then)
+      {
+        cout<<rint((double)inx/allinx*100)<<"% \r";
+        cout.flush();
+        then=now;
+      }
+    }
   ps.trailer();
   ps.close();
 }
