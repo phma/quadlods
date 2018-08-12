@@ -202,14 +202,19 @@ void plotxy(quadlods& quad,int xdim,int ydim)
   int i;
   double x,y;
   vector<double> point;
+  quadlods sel2;
+  vector<int> pinx2;
+  pinx2.push_back(xdim);
+  pinx2.push_back(ydim);
+  sel2=select(quad,pinx2);
   ps.startpage();
   ps.setscale(0,0,1,1);
   // (2,0) and (3,0) look splotchy at 30000, but fill in well at 100000.
   for (i=0;i<niter;i++)
   {
-    point=quad.dgen();
-    x=point[xdim];
-    y=point[ydim];
+    point=sel2.dgen();
+    x=point[0];
+    y=point[1];
     ps.dot(x,y);
   }
   ps.endpage();
