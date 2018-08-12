@@ -16,7 +16,7 @@ If you are developing the program:
 
 It makes a file called primes.dat, which contains the primes in order of their continued fraction terms, and installs it in share/quadlods/.
 
-GMP is required both to compile and to run the library. To compile your own code that uses the library, first run "make install" as root. If you are using CMake, put the provided file FindQuadlods.cmake in your project's cmake/Modules directory, along with the GMP and GMPXX modules, and add the following lines to your CMakeLists.txt file:
+GMP is required both to compile and to run the library. Boost is required to run the program, but not the library. To compile your own code that uses the library, first run "make install" as root. If you are using CMake, put the provided file FindQuadlods.cmake in your project's cmake/Modules directory, along with the GMP and GMPXX modules, and add the following lines to your CMakeLists.txt file:
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(Quadlods REQUIRED)
