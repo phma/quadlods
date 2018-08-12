@@ -47,6 +47,7 @@ public:
   std::vector<int> terms;
   int period; // 0 means it terminates
   double averageTerm() const;
+  int maximumTerm() const;
 };
 
 class PrimeContinuedFraction

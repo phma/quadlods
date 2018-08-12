@@ -213,10 +213,22 @@ double ContinuedFraction::averageTerm() const
   }
 }
 
+int ContinuedFraction::maximumTerm() const
+{
+  int i,max=0;
+  for (i=0;i<period && i<terms.size();i++)
+    if (max<terms[terms.size()-i-1])
+      max=terms[terms.size()-i-1];
+  return max;
+}
+
 bool operator<(const PrimeContinuedFraction a,const PrimeContinuedFraction b)
 {
   double aavg=a.cf.averageTerm(),bavg=b.cf.averageTerm();
-  if (fabs(aavg-bavg)>1e-10)
+  int amax=a.cf.maximumTerm(),bmax=b.cf.maximumTerm();
+  if (amax!=bmax)
+    return amax<bmax;
+  else if (fabs(aavg-bavg)>1e-10)
     return aavg<bavg;
   else
     return a.prime<b.prime;

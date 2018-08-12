@@ -351,6 +351,9 @@ void findclosequad()
  * 65027,65029
  * 59053,59051
  * 13691,13693
+ * A set that is somewhat bad:
+ * 5,4933,42533,57713 (CF expansions all begin n;1,1.1.1.1.1.1.1)
+ * 42533,57713 is bad, but not as bad as 65027,65029.
  */
 
 void testCircle()
