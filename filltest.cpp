@@ -116,7 +116,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
 	  for (k=0;k<sz;k++)
 	  {
 	    actualSize[j][k]=disp[l][j][k];
-	    normalized[j][k]=disp[l][j][k]*sqrt((j+1)/closedist[l][j]);
+	    normalized[j][k]=disp[l][j][k]*sqrt(sz/(j+1.)/closedist[l][j]);
 	  }
 	detsqsum+=sqr(actualSize.determinant());
 	normsqsum+=sqr(normalized.determinant());
