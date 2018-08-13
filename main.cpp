@@ -210,7 +210,7 @@ void plotxy(quadlods& quad,int xdim,int ydim)
   sel2=select(quad,pinx2);
   ps.startpage();
   ps.setscale(0,0,1,1);
-  // (2,0) and (3,0) look splotchy at 30000, but fill in well at 100000.
+  // (2,5) and (7,2) ((2,0) and (5,2)) look splotchy at 30000, but fill in well at 100000.
   sprintf(buf,"%d %d",sel2.getprime(0),sel2.getprime(1));
   ps.write(0,1,buf);
   for (i=0;i<niter;i++)
