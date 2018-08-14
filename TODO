@@ -4,4 +4,5 @@ Before 0.1.0 (first public release):
 
 Before 0.2.0:
 •Investigate constructing continued fractions with long periods and small terms.
+•Investigate all equivalence classes of quadratic irrationals based on the square root of a prime, where two irrationals are equivalent if their continued fraction tails are identical, with possibly different head lengths.
 •Given a set of quadratic irrationals, compute integer coefficients which produce a result very close to an integer. This set of coefficients corresponds to a plane in the hypercube.
