@@ -1,7 +1,7 @@
 project(quadlods)
 cmake_minimum_required(VERSION 2.8)
 
-add_executable(quadlods main.cpp circletest.cpp contfrac.cpp discrepancy.cpp filltest.cpp
+add_executable(quadlods main.cpp circletest.cpp contfrac.cpp filltest.cpp
                histogram.cpp hstep.cpp ldecimal.cpp manysum.cpp matrix.cpp polyline.cpp ps.cpp
                random.cpp xy.cpp)
 add_library(quadlib0 STATIC quadlods.cpp)
