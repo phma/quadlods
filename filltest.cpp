@@ -144,6 +144,11 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
     if (normGraph[i]<nlo)
       nlo=normGraph[i];
   }
+  if (nhi==nlo)
+  {
+    nhi+=0.1;
+    nlo-=0.1;
+  }
   nhi=ceil (nhi/log(10))*log(10);
   nlo=floor(nlo/log(10))*log(10);
   ps.startpage();
