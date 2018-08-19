@@ -61,7 +61,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
   double thisdist,scale,detsqsum,normsqsum;
   matrix actualSize(sz,sz),normalized(sz,sz);
   set<int> halfsteps=hsteps(1,iters);
-  manysum weights,relvolumes;
+  manysum weights,reldets;
   time_t now,then;
   for (k=0;k<3;k++)
     while (points[k].size()<sz)
@@ -125,7 +125,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
       detGraph.push_back(log(detsqsum/3)/2);
       normGraph.push_back(log(normsqsum/3)/2);
       weights+=i;
-      relvolumes+=i*i*i*detsqsum/3;
+      reldets+=i*sqr(i)*detsqsum/3;
     }
   }
   for (i=0;i<detGraph.size();i++)
@@ -204,5 +204,5 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
       ps.lineto(log(*it)/log(iters)*3,(normGraph[i]-nlo)/scale-1);
   ps.endline();
   ps.endpage();
-  cout<<"Average relative volume "<<relvolumes.total()/weights.total()<<endl;
+  cout<<"Average relative determinant "<<reldets.total()/weights.total()<<endl;
 }
