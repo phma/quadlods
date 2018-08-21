@@ -56,9 +56,9 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
   array<vector<vector<double> >,3> points,disp;
   array<vector<double>,3> closedist;
   vector<double> point;
-  vector<double> detGraph,normGraph;
-  double hi=-INFINITY,lo=INFINITY,nhi=-INFINITY,nlo=INFINITY;
-  double thisdist,scale,detsqsum,normsqsum;
+  vector<double> detGraph,ballGraph,normGraph;
+  double hi=-INFINITY,lo=INFINITY,bhi=-INFINITY,blo=INFINITY,nhi=-INFINITY,nlo=INFINITY;
+  double thisdist,scale,ballvol,detsqsum,ballsqsum,normsqsum;
   matrix actualSize(sz,sz),normalized(sz,sz);
   set<int> halfsteps=hsteps(1,iters);
   manysum weights,reldets;
@@ -110,19 +110,24 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
       }
     if (halfsteps.count(i))
     {
-      detsqsum=normsqsum=0;
+      detsqsum=ballsqsum=normsqsum=0;
       for (l=0;l<3;l++)
       {
-	for (j=0;j<sz;j++)
+	for (j=0,ballvol=1;j<sz;j++)
+	{
 	  for (k=0;k<sz;k++)
 	  {
 	    actualSize[j][k]=disp[l][j][k];
 	    normalized[j][k]=disp[l][j][k]*sqrt(sz/(j+1.)/closedist[l][j]);
 	  }
+	  ballvol*=closedist[l][j];
+	}
 	detsqsum+=sqr(actualSize.determinant());
+	ballsqsum+=sqr(ballvol);
 	normsqsum+=sqr(normalized.determinant());
       }
       detGraph.push_back(log(detsqsum/3)/2);
+      ballGraph.push_back(log(ballsqsum/3)/2);
       normGraph.push_back(log(normsqsum/3)/2);
       weights+=i;
       reldets+=i*sqr(i)*detsqsum/3;
@@ -137,6 +142,15 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
   }
   hi=ceil (hi/log(10))*log(10);
   lo=floor(lo/log(10))*log(10);
+  for (i=0;i<ballGraph.size();i++)
+  {
+    if (ballGraph[i]>bhi)
+      bhi=ballGraph[i];
+    if (ballGraph[i]<blo)
+      blo=ballGraph[i];
+  }
+  bhi=ceil (bhi/log(10))*log(10);
+  blo=floor(blo/log(10))*log(10);
   for (i=0;i<normGraph.size();i++)
   {
     if (normGraph[i]>nhi)
@@ -176,6 +190,32 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
   for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
     if (*it)
       ps.lineto(log(*it)/log(iters)*3,(detGraph[i]-lo)/scale-1);
+  ps.endline();
+  ps.endpage();
+  ps.startpage();
+  ps.setscale(0,-1,3,1);
+  scale=(bhi-blo)/2;
+  ps.startline();
+  ps.lineto(0,-1);
+  ps.lineto(3,-1);
+  ps.lineto(3,1);
+  ps.lineto(0,1);
+  ps.endline(true);
+  decades=rint((bhi-blo)/log(10));
+  for (i=0;i<=decades;i++)
+  {
+    sprintf(buf,"%g",exp(blo)*pow(10,i));
+    ps.write(3.1,i*2./decades-1,buf);
+    ps.startline();
+    ps.lineto(3,i*2./decades-1);
+    ps.lineto(3.1,i*2./decades-1);
+    ps.endline();
+  }
+  xticks(1,iters,ps);
+  ps.startline();
+  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
+    if (*it)
+      ps.lineto(log(*it)/log(iters)*3,(ballGraph[i]-blo)/scale-1);
   ps.endline();
   ps.endpage();
   ps.startpage();
