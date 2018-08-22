@@ -113,17 +113,17 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
       detsqsum=ballsqsum=normsqsum=0;
       for (l=0;l<3;l++)
       {
-	for (j=0,ballvol=1;j<sz;j++)
+	for (j=0,ballvol=0;j<sz;j++)
 	{
 	  for (k=0;k<sz;k++)
 	  {
 	    actualSize[j][k]=disp[l][j][k];
 	    normalized[j][k]=disp[l][j][k]*sqrt(sz/(j+1.)/closedist[l][j]);
 	  }
-	  ballvol*=closedist[l][j];
+	  ballvol+=i*pow(closedist[l][j],sz*0.5);
 	}
 	detsqsum+=sqr(actualSize.determinant());
-	ballsqsum+=sqr(ballvol);
+	ballsqsum+=sqr(ballvol/sz);
 	normsqsum+=sqr(normalized.determinant());
       }
       detGraph.push_back(log(detsqsum/3)/2);
