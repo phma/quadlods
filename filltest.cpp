@@ -31,6 +31,17 @@
 #include "random.h"
 using namespace std;
 
+double rootBallVolume(int n)
+/* Returns the nth root of the volume of a unit n-ball. For n greater than 200
+ * or so, computing the volume of a ball between the LD points would naïvely
+ * consist of raising the nth power of a distance, which could be up to 14,
+ * by the volume of the unit n-ball, which underflows. This avoids the underflow
+ * as long as possible.
+ */
+{
+  return sqrt(M_PI)/exp(lgamma(n*0.5+1)/n);
+}
+
 double distsq(vector<double> a,vector<double> b)
 {
   vector<double> d;
@@ -59,6 +70,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
   vector<double> detGraph,ballGraph,normGraph;
   double hi=-INFINITY,lo=INFINITY,bhi=-INFINITY,blo=INFINITY,nhi=-INFINITY,nlo=INFINITY;
   double thisdist,scale,ballvol,detsqsum,ballsqsum,normsqsum;
+  double rbv=rootBallVolume(sz);
   matrix actualSize(sz,sz),normalized(sz,sz);
   set<int> halfsteps=hsteps(1,iters);
   manysum weights,reldets;
@@ -120,7 +132,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
 	    actualSize[j][k]=disp[l][j][k];
 	    normalized[j][k]=disp[l][j][k]*sqrt(sz/(j+1.)/closedist[l][j]);
 	  }
-	  ballvol+=i*pow(closedist[l][j],sz*0.5);
+	  ballvol+=i*pow(closedist[l][j]*rbv,sz*0.5);
 	}
 	detsqsum+=sqr(actualSize.determinant());
 	ballsqsum+=sqr(ballvol/sz);
