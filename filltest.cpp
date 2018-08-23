@@ -73,7 +73,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
   double rbv=rootBallVolume(sz);
   matrix actualSize(sz,sz),normalized(sz,sz);
   set<int> halfsteps=hsteps(1,iters);
-  manysum weights,reldets;
+  manysum weights,reldets,balls;
   time_t now,then;
   for (k=0;k<3;k++)
     while (points[k].size()<sz)
@@ -143,6 +143,7 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
       normGraph.push_back(log(normsqsum/3)/2);
       weights+=i;
       reldets+=i*sqr(i)*detsqsum/3;
+      balls+=i*sqrt(ballsqsum/3);
     }
   }
   for (i=0;i<detGraph.size();i++)
@@ -256,5 +257,6 @@ void filltest(quadlods &quad,int iters,PostScript &ps)
       ps.lineto(log(*it)/log(iters)*3,(normGraph[i]-nlo)/scale-1);
   ps.endline();
   ps.endpage();
-  cout<<"Average relative determinant "<<reldets.total()/weights.total()<<endl;
+  //cout<<"Average relative determinant "<<reldets.total()/weights.total()<<endl;
+  cout<<"Average total ball volume "<<balls.total()/weights.total()<<endl;
 }
