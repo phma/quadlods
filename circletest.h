@@ -1,3 +1,8 @@
+/******************************************************/
+/*                                                    */
+/* circletest.h - test sequence on quarter circles    */
+/*                                                    */
+/******************************************************/
 /* Copyright 2017 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 

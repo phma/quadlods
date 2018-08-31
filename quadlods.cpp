@@ -1,8 +1,10 @@
-/* quadlods.cpp
- * Quadratic low-discrepancy sequence
- * 
- * This generates sequences of vectors, up to 6542-dimensional, as follows:
- * Each prime is assigned to a dimension: 2 to the 0th, 3 to the 1st, etc.
+/******************************************************/
+/*                                                    */
+/* quadlods.cpp - quadratic low-discrepancy sequence  */
+/*                                                    */
+/******************************************************/
+/* This generates sequences of vectors, up to 6542-dimensional, as follows:
+ * Each prime is assigned to a dimension: 5 to the 0th, 3 to the 1st, etc.
  * If the prime is congruent to 1 mod 4, take (sqrt(p)+1)/2, else sqrt(p).
  * Add the quadratic number to an accumulator mod 1.
  * Copy the accumulator and exclusive-or it with 0x...9669699669969669.

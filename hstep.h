@@ -1,3 +1,8 @@
+/******************************************************/
+/*                                                    */
+/* hstep.h - half step sequences                      */
+/*                                                    */
+/******************************************************/
 /* Copyright 2018 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
