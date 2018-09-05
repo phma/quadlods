@@ -2,6 +2,10 @@ Before 0.1.0 (first public release):
 •Given the number of dimensions, number of points, and jumbling method, draw some sort of graph showing how well the points fill space. ✓
 •Sort the primes, probably by the average term in the continued fraction expansion of the quadratic irrational, so that quads which work badly together are at the end. ✓
 
+Before 0.1.1:
+•Make an interactive mode, which can be used by other programs in any language.
+•Draw flower diagrams of individual dimensions of a sequence.
+
 Before 0.2.0:
 •Investigate constructing continued fractions with long periods and small terms.
 •Investigate all equivalence classes of quadratic irrationals based on the square root of a prime, where two irrationals are equivalent if their continued fraction tails are identical, with possibly different head lengths.
