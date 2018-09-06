@@ -113,7 +113,7 @@ void circletest(quadlods &quad,int iters,PostScript &ps)
     {
       inx=j*(j-1)/2+k;
       relativeError=(incircle[inx])/log(i)/log(i);
-      cout<<j<<' '<<k<<' '<<incircle[inx]<<' '<<relativeError<<endl;
+      //cout<<j<<' '<<k<<' '<<incircle[inx]<<' '<<relativeError<<endl;
     }
   ps.setpaper(a4land,0);
   ps.prolog();
