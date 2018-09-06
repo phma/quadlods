@@ -512,7 +512,6 @@ void textOutput()
   quads.init(ndims,resolution);
   quads.init(primelist,resolution);
   quads.setjumble(jumble);
-  quads.advance(-1);
   if (filename.length())
     out=new ofstream(filename);
   else
