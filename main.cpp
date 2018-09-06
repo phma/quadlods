@@ -507,22 +507,29 @@ void runTests()
 void textOutput()
 {
   int i,j;
+  ostream *out;
   vector<double> point;
   quads.init(ndims,resolution);
   quads.init(primelist,resolution);
   quads.setjumble(jumble);
   quads.advance(-1);
+  if (filename.length())
+    out=new ofstream(filename);
+  else
+    out=&cout;
   for (i=0;i<niter;i++)
   {
     point=quads.dgen();
     for (j=0;j<point.size();j++)
     {
       if (j)
-	cout<<' ';
-      cout<<ldecimal(point[j]);
+	*out<<' ';
+      *out<<ldecimal(point[j]);
     }
-    cout<<endl;
+    *out<<endl;
   }
+  if (filename.length())
+    delete out;
 }
 
 void writeshort(ostream &file,unsigned short i)
