@@ -94,7 +94,8 @@ void PostScript::prolog()
     *psfile<<"%!PS-Adobe-3.0\n%%BeginProlog\n%%%%Pages: (atend)"<<endl;
     *psfile<<"%%BoundingBox: 0 0 "<<rint(paperx/PSPoint)<<' '<<rint(papery/PSPoint)<<endl;
     *psfile<<"\n/. % ( x y )\n{ newpath 0.1 0 360 arc fill } bind def\n\n";
-    *psfile<<"/- % ( x1 y1 x2 y2 )\n\n{ newpath moveto lineto stroke } bind def\n\n";
+    *psfile<<"/- % ( x1 y1 x2 y2 )\n{ newpath moveto lineto stroke } bind def\n\n";
+    *psfile<<"/l % ( x y )\n{ lineto } bind def\n\n";
     *psfile<<"/c. % ( str )\n{ dup stringwidth -2 div exch -2 div exch\n"<<
             "3 2 roll 2 index 2 index rmoveto show rmoveto } bind def\n\n";
     *psfile<<"/mmscale { 720 254 div dup scale } bind def\n";
@@ -228,7 +229,7 @@ void PostScript::startline()
 void PostScript::lineto(double x,double y)
 {
   assert(psfile);
-  *psfile<<fixed<<setprecision(2)<<xscale(x)<<' '<<yscale(y)<<(inlin?" lineto":" moveto");
+  *psfile<<fixed<<setprecision(2)<<xscale(x)<<' '<<yscale(y)<<(inlin?" l":" moveto");
   *psfile<<endl;
   inlin=true;
 }
@@ -253,7 +254,7 @@ void PostScript::plot(polyline pl,bool fill)
   for (i=1;i<n;i++)
   {
     pnt=pl.getEndpoint(i);
-    *psfile<<ldecimal(xscale(pnt.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt.gety()),PAPERRES)<<" lineto\n";
+    *psfile<<ldecimal(xscale(pnt.getx()),PAPERRES)<<' '<<ldecimal(yscale(pnt.gety()),PAPERRES)<<" l\n";
   }
   if (!pl.isopen())
     *psfile<<"closepath ";
