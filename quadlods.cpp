@@ -14,7 +14,7 @@
  * is at least some specified limit. The exclusive-oring is done in such a way
  * that the result will not exceed the denominator.
  */
-/* Copyright 2014,2016,2018 Pierre Abbat.
+/* Copyright 2014,2016-2018 Pierre Abbat.
  * This file is part of the Quadlods library.
  * 
  * The Quadlods library is free software: you can redistribute it and/or
