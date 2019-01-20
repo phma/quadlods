@@ -3,7 +3,7 @@
 /* main.cpp - main program                            */
 /*                                                    */
 /******************************************************/
-/* Copyright 2014,2016,2018 Pierre Abbat.
+/* Copyright 2014,2016,2018,2019 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -40,6 +40,7 @@
 #include "ldecimal.h"
 #include "histogram.h"
 #include "manysum.h"
+#include "flowertest.h"
 #include "matrix.h"
 
 using namespace std;
@@ -401,6 +402,19 @@ void testFill()
   ps.close();
 }
 
+void testFlower()
+{
+  int i,j;
+  ps.open(filename.length()?filename:"flowertest.ps");
+  quads.init(ndims,resolution);
+  quads.init(primelist,resolution);
+  quads.setjumble(jumble);
+  quads.advance(-1);
+  flowertest(quads,niter,ps);
+  ps.trailer();
+  ps.close();
+}
+
 void testSeed()
 {
   int i,j,seedlen;
@@ -488,7 +502,7 @@ void testuvmatrix()
   ps.close();
   cout<<niter<<" iterations, average square determinant is "<<sumsqdet.total()/niter<<endl;
   if (niter<2)
-    cout<<"Please increase the number of iterations with -i\n";
+    cout<<"Please increase the number of iterations with -n\n";
   else if (fabs(sumsqdet.total()-niter*6./27.)>pow(log(niter),6)/3e4)
   {
     cout<<"Test failed, average square determinant should be 6/27\n";
@@ -643,6 +657,7 @@ int main(int argc,char **argv)
   commands.push_back(command("scatter",testScatter,"Scatter plot pairs of primes"));
   commands.push_back(command("circle",testCircle,"Test pairs of primes by estimating area of circle"));
   commands.push_back(command("fill",testFill,"Graph how well sequence fills space"));
+  commands.push_back(command("flower",testFlower,"Graph each dimension separately"));
   commands.push_back(command("textout",textOutput,"Output a text stream of points"));
   try
   {

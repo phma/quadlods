@@ -1,7 +1,7 @@
 project(quadlods)
 cmake_minimum_required(VERSION 2.8)
 
-add_executable(quadlods main.cpp circletest.cpp contfrac.cpp filltest.cpp
+add_executable(quadlods main.cpp circletest.cpp contfrac.cpp filltest.cpp flowertest.cpp
                histogram.cpp hstep.cpp ldecimal.cpp manysum.cpp matrix.cpp polyline.cpp ps.cpp
                random.cpp xy.cpp)
 add_library(quadlib0 STATIC quadlods.cpp)
@@ -30,7 +30,7 @@ set(QUADLODS_MAJOR_VERSION 0)
 set(QUADLODS_MINOR_VERSION 1)
 set(QUADLODS_PATCH_VERSION 0)
 set(QUADLODS_VERSION ${QUADLODS_MAJOR_VERSION}.${QUADLODS_MINOR_VERSION}.${QUADLODS_PATCH_VERSION})
-set(COPY_YEAR 2018)
+set(COPY_YEAR 2019)
 
 include_directories(${PROJECT_BINARY_DIR})
 configure_file (config.h.in config.h)
