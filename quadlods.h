@@ -3,7 +3,7 @@
 /* quadlods.h - quadratic low-discrepancy sequence    */
 /*                                                    */
 /******************************************************/
-/* Copyright 2014,2016-2018 Pierre Abbat.
+/* Copyright 2014,2016-2019 Pierre Abbat.
  * This file is part of the Quadlods library.
  * 
  * The Quadlods library is free software: you can redistribute it and/or
@@ -26,16 +26,16 @@
 #include <vector>
 #include <gmpxx.h>
 
-#define QL_JUMBLE_NONE 0
-#define QL_JUMBLE_THIRD 1
-#define QL_JUMBLE_THUEMORSE 2
-#define QL_JUMBLE_GRAY 3
-/* The jumbletype controls how to jumble the bits of the accumulator when
+#define QL_SCRAMBLE_NONE 0
+#define QL_SCRAMBLE_THIRD 1
+#define QL_SCRAMBLE_THUEMORSE 2
+#define QL_SCRAMBLE_GRAY 3
+/* The scrambletype controls how to scramble the bits of the accumulator when
  * reading the generator. If acc is 0xc0de and denom is 0x10000, it returns:
- * QL_JUMBLE_NONE:      1100000011011110
- * QL_JUMBLE_THIRD:     1001010110001011 (xor with 5555, 1/3=0.5555... hex)
- * QL_JUMBLE_THUEMORSE: 0101011010110111 (xor with the Thue-Morse word)
- * QL_JUMBLE_GRAY:      1000000010010100 (inverse Gray code).
+ * QL_SCRAMBLE_NONE:      1100000011011110
+ * QL_SCRAMBLE_THIRD:     1001010110001011 (xor with 5555, 1/3=0.5555... hex)
+ * QL_SCRAMBLE_THUEMORSE: 0101011010110111 (xor with the Thue-Morse word)
+ * QL_SCRAMBLE_GRAY:      1000000010010100 (inverse Gray code).
  * Of these, Gray code is the best, as it leaves no tendency to slope
  * one way or the other. It is therefore the default. However, Gray code
  * takes about 5/3 times as much time as the others.
@@ -68,12 +68,12 @@ class quadlods
 protected:
   std::vector<mpz_class> num,denom,acc;
   std::vector<short> primeinx;
-  int jumbletype;
+  int scrambletype;
 public:
-  void init(int dimensions,double resolution,int j=QL_JUMBLE_GRAY);
+  void init(int dimensions,double resolution,int j=QL_SCRAMBLE_GRAY);
   // If dimensions>6542, it is silently truncated to 6542.
   // If dimensions<0, primes are taken from the end of the list.
-  void init(std::vector<int> dprimes,double resolution,int j=QL_JUMBLE_GRAY);
+  void init(std::vector<int> dprimes,double resolution,int j=QL_SCRAMBLE_GRAY);
   int size()
   {
     return acc.size();
@@ -103,9 +103,9 @@ public:
   }
   std::vector<mpq_class> readout();
   void setmiddle();
-  void setjumble(int j)
+  void setscramble(int j)
   {
-    jumbletype=j;
+    scrambletype=j;
   }
   void advance(mpz_class n);
   unsigned int seedsize();

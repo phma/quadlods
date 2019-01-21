@@ -74,8 +74,8 @@ PostScript ps;
 double resolution;
 string primestr;
 vector<int> primelist;
-string jumblestr;
-int ndims,niter,jumble;
+string scramblestr;
+int ndims,niter,scramble;
 string filename;
 
 void listCommands()
@@ -158,7 +158,7 @@ bool parseJumble()
   array<short,676> dig1=digraphs("Third");
   array<short,676> dig2=digraphs("Thue-Morse");
   array<short,676> dig3=digraphs("Gray");
-  array<short,676> digj=digraphs(jumblestr);
+  array<short,676> digj=digraphs(scramblestr);
   int i,match0=0,match1=0,match2=0,match3=0,maxmatch,nmatch=0;
   for (i=0;i<676;i++)
   {
@@ -177,29 +177,29 @@ bool parseJumble()
   if (match0==maxmatch)
   {
     nmatch++;
-    jumble=QL_JUMBLE_NONE;
+    scramble=QL_SCRAMBLE_NONE;
   }
   if (match1==maxmatch)
   {
     nmatch++;
-    jumble=QL_JUMBLE_THIRD;
+    scramble=QL_SCRAMBLE_THIRD;
   }
   if (match2==maxmatch)
   {
     nmatch++;
-    jumble=QL_JUMBLE_THUEMORSE;
+    scramble=QL_SCRAMBLE_THUEMORSE;
   }
   if (match3==maxmatch)
   {
     nmatch++;
-    jumble=QL_JUMBLE_GRAY;
+    scramble=QL_SCRAMBLE_GRAY;
   }
   if (nmatch>1)
   {
-    cerr<<"Unrecognized or ambiguous jumbling: "<<jumblestr<<endl;
-    jumble=-1;
+    cerr<<"Unrecognized or ambiguous jumbling: "<<scramblestr<<endl;
+    scramble=-1;
   }
-  return jumble>=0;
+  return scramble>=0;
 }
 
 void plotxy(quadlods& quad,int xdim,int ydim)
@@ -244,7 +244,7 @@ void testcoverage()
   p235.push_back(3);
   p235.push_back(5);
   cov.init(p235,370);
-  cov.setjumble(jumble);
+  cov.setscramble(scramble);
   histo=new bitset<87828936>;
   for (i=0;i<87828936;i++)
   {
@@ -352,7 +352,7 @@ void testCircle()
   ps.open(filename.length()?filename:"circletest.ps");
   quads.init(ndims,resolution);
   quads.init(primelist,resolution);
-  quads.setjumble(jumble);
+  quads.setscramble(scramble);
   quads.advance(-1);
   circletest(quads,niter,ps);
   ps.trailer();
@@ -368,7 +368,7 @@ void testScatter()
   ps.prolog();
   quads.init(ndims,resolution);
   quads.init(primelist,resolution);
-  quads.setjumble(jumble);
+  quads.setscramble(scramble);
   quads.advance(-1);
   for (i=0;i<quads.size();i++)
     cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
@@ -395,7 +395,7 @@ void testFill()
   ps.open(filename.length()?filename:"filltest.ps");
   quads.init(ndims,resolution);
   quads.init(primelist,resolution);
-  quads.setjumble(jumble);
+  quads.setscramble(scramble);
   quads.advance(-1);
   filltest(quads,niter,ps);
   ps.trailer();
@@ -408,7 +408,7 @@ void testFlower()
   ps.open(filename.length()?filename:"flowertest.ps");
   quads.init(ndims,resolution);
   quads.init(primelist,resolution);
-  quads.setjumble(jumble);
+  quads.setscramble(scramble);
   quads.advance(-1);
   flowertest(quads,niter,ps);
   ps.trailer();
@@ -464,7 +464,7 @@ void testuvmatrix()
   array<double,3> row;
   vector<double> point;
   quads.init(6,resolution);
-  quads.setjumble(jumble);
+  quads.setscramble(scramble);
   cout<<"Calculating determinants of 3×3 unit vector matrices\n";
   for (i=0;i<niter;i++)
   {
@@ -525,7 +525,7 @@ void textOutput()
   vector<double> point;
   quads.init(ndims,resolution);
   quads.init(primelist,resolution);
-  quads.setjumble(jumble);
+  quads.setscramble(scramble);
   if (filename.length())
     out=new ofstream(filename);
   else
@@ -645,7 +645,7 @@ int main(int argc,char **argv)
     ("dimensions,d",po::value<int>(&ndims),"Number of dimensions")
     ("primes,p",po::value<string>(&primestr),"List of primes")
     ("resolution,r",po::value<double>(&resolution)->default_value(1e17),"Resolution")
-    ("jumble,j",po::value<string>(&jumblestr)->default_value("Gray"),"Jumbling: none, third, Thue-Morse, Gray")
+    ("scramble,s",po::value<string>(&scramblestr)->default_value("Gray"),"Scrambling: none, third, Thue-Morse, Gray")
     ("niter,n",po::value<int>(&niter),"Number of iterations or lines of output")
     ("output,o",po::value<string>(&filename),"Output file");
   hidden.add_options()

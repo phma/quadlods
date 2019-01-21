@@ -14,7 +14,7 @@
  * is at least some specified limit. The exclusive-oring is done in such a way
  * that the result will not exceed the denominator.
  */
-/* Copyright 2014,2016-2018 Pierre Abbat.
+/* Copyright 2014,2016-2019 Pierre Abbat.
  * This file is part of the Quadlods library.
  * 
  * The Quadlods library is free software: you can redistribute it and/or
@@ -82,21 +82,21 @@ mpz_class graydecode(mpz_class n)
   return n;
 }
 
-mpz_class jumble(mpz_class acc,mpz_class denom,int jumbletype)
+mpz_class scramble(mpz_class acc,mpz_class denom,int scrambletype)
 {
   int i;
   mpz_class bitdiff,hibits,lobits,ret;
   bitdiff=denom&~acc;
   i=mpz_sizeinbase(bitdiff.get_mpz_t(),2)-1;
-  switch (jumbletype)
+  switch (scrambletype)
   {
-    case QL_JUMBLE_THIRD:
+    case QL_SCRAMBLE_THIRD:
       ret=acc^minusthird(i);
       break;
-    case QL_JUMBLE_THUEMORSE:
+    case QL_SCRAMBLE_THUEMORSE:
       ret=acc^thuemorse(i);
       break;
-    case QL_JUMBLE_GRAY:
+    case QL_SCRAMBLE_GRAY:
       lobits=acc&(((mpz_class)1<<i)-1);
       hibits=acc-lobits;
       ret=hibits+graydecode(lobits);
@@ -273,9 +273,9 @@ void quadlods::init(int dimensions,double resolution,int j)
     num.push_back(nmid);
   }
   if (j>=0)
-    jumbletype=j;
-  if (jumbletype<0 || jumbletype>QL_JUMBLE_GRAY)
-    jumbletype=QL_JUMBLE_GRAY;
+    scrambletype=j;
+  if (scrambletype<0 || scrambletype>QL_SCRAMBLE_GRAY)
+    scrambletype=QL_SCRAMBLE_GRAY;
   dimensions=abs(dimensions);
   num.resize(dimensions);
   denom.resize(dimensions);
@@ -305,9 +305,9 @@ void quadlods::init(vector<int> dprimes,double resolution,int j)
     num.push_back(nmid);
   }
   if (j>=0)
-    jumbletype=j;
-  if (jumbletype<0 || jumbletype>QL_JUMBLE_GRAY)
-    jumbletype=QL_JUMBLE_GRAY;
+    scrambletype=j;
+  if (scrambletype<0 || scrambletype>QL_SCRAMBLE_GRAY)
+    scrambletype=QL_SCRAMBLE_GRAY;
   num.resize(primeinx.size());
   denom.resize(primeinx.size());
   acc.resize(primeinx.size());
@@ -319,7 +319,7 @@ vector<mpq_class> quadlods::readout()
   vector<mpq_class> ret;
   for (i=0;i<num.size();i++)
   {
-    ret.push_back(mpq_class((jumble(acc[i],denom[i],jumbletype)<<1)|1,denom[i]<<1));
+    ret.push_back(mpq_class((scramble(acc[i],denom[i],scrambletype)<<1)|1,denom[i]<<1));
     ret[i].canonicalize();
   }
   return ret;
@@ -331,7 +331,7 @@ vector<double> quadlods::dreadout()
   vector<double> ret;
   for (i=0;i<num.size();i++)
   {
-    ret.push_back(mpq_class((jumble(acc[i],denom[i],jumbletype)<<1)|1,denom[i]<<1).get_d());
+    ret.push_back(mpq_class((scramble(acc[i],denom[i],scrambletype)<<1)|1,denom[i]<<1).get_d());
   }
   return ret;
 }
@@ -392,7 +392,7 @@ quadlods select(quadlods& b,vector<int> dimensions)
 {
   quadlods ret;
   int i,j;
-  ret.jumbletype=b.jumbletype;
+  ret.scrambletype=b.scrambletype;
   for (i=0;i<dimensions.size();i++)
     if (dimensions[i]>=0 && dimensions[i]<b.size())
     {
