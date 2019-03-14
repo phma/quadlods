@@ -26,10 +26,13 @@
 #include <vector>
 #include <gmpxx.h>
 
+#define QL_MODE_RICHTMYER 0
+#define QL_MODE_HALTON 1
 #define QL_SCRAMBLE_NONE 0
 #define QL_SCRAMBLE_THIRD 1
 #define QL_SCRAMBLE_THUEMORSE 2
 #define QL_SCRAMBLE_GRAY 3
+#define QL_SCRAMBLE_POWER 4
 /* The scrambletype controls how to scramble the bits of the accumulator when
  * reading the generator. If acc is 0xc0de and denom is 0x10000, it returns:
  * QL_SCRAMBLE_NONE:      1100000011011110
@@ -39,6 +42,9 @@
  * Of these, Gray code is the best, as it leaves no tendency to slope
  * one way or the other. It is therefore the default. However, Gray code
  * takes about 5/3 times as much time as the others.
+ *
+ * QL_SCRAMBLE_POWER is for Halton. It scrambles each digit by raising it to
+ * a power relatively prime to the totient, leaving -1, 0, and 1 untouched.
  */
 #define QL_MAX_DIMS 6542
 
@@ -67,9 +73,13 @@ class quadlods
 {
 protected:
   std::vector<mpz_class> num,denom,acc;
+  std::vector<std::vector<unsigned short> > hacc;
   std::vector<short> primeinx;
   int scrambletype;
+  int mode;
+  bool sign;
 public:
+  quadlods();
   void init(int dimensions,double resolution,int j=QL_SCRAMBLE_GRAY);
   // If dimensions>6542, it is silently truncated to 6542.
   // If dimensions<0, primes are taken from the end of the list.

@@ -272,6 +272,13 @@ bool operator<(const PrimeContinuedFraction a,const PrimeContinuedFraction b)
     return a.prime<b.prime;
 }
 
+quadlods::quadlods()
+{
+  mode=QL_MODE_RICHTMYER;
+  scrambletype=QL_SCRAMBLE_NONE;
+  sign=false;
+}
+
 void quadlods::init(int dimensions,double resolution,int j)
 /* Sets num[i]/denom[i] to a rational approximation of an integer in Q(sqrt(primes[i])).
  * If p mod 4 is 1, q=(sqrt(p)+1)/2, else q=sqrt(p).
