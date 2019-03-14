@@ -38,6 +38,7 @@
 #include <cfloat>
 #include <cmath>
 #include <string>
+#include <array>
 #include "quadlods.h"
 #include "config.h"
 
@@ -47,6 +48,41 @@ vector<unsigned short> primes;
 vector<PrimeContinuedFraction> primesCfSorted;
 mpz_class thue(0x69969669),third(0x55555555);
 int morse(32),b2adic(32);
+int primePowerTable[][2]=
+{
+  {16,65536},{10,59049},{8,65536},{6,15625},{6,46656},{5,16807},
+  {5,32768},{5,59049},{4,10000},{4,14641},{4,20736},{4,28561}
+};
+
+array<int,2> primePower(unsigned short p)
+/* Returns the number of digits in base p that fit in one 16-bit limb
+ * and the number of different limbs. p should be prime. If p is 0, 1,
+ * 14, 15, or 16, returns garbage.
+ */
+{
+  array<int,2> ret;
+  if (p<17)
+  {
+    ret[0]=primePowerTable[p-2][0];
+    ret[1]=primePowerTable[p-2][1];
+  }
+  else
+  {
+    ret[0]=1;
+    ret[1]=p;
+    if (p<=256)
+    {
+      ret[0]++;
+      ret[1]*=p;
+    }
+    if (p<=40)
+    {
+      ret[0]++;
+      ret[1]*=p;
+    }
+  }
+  return ret;
+}
 
 mpz_class thuemorse(int n)
 {
