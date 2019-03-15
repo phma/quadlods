@@ -81,8 +81,11 @@ protected:
 public:
   quadlods();
   void init(int dimensions,double resolution,int j=QL_SCRAMBLE_GRAY);
-  // If dimensions>6542, it is silently truncated to 6542.
-  // If dimensions<0, primes are taken from the end of the list.
+  /* If dimensions>6542, it is silently truncated to 6542.
+   * If dimensions<0, primes are taken from the end of the list.
+   * Since Halton does not use the resolution, setting the resolution to 0
+   * sets the mode to Halton.
+   */
   void init(std::vector<int> dprimes,double resolution,int j=QL_SCRAMBLE_GRAY);
   int size()
   {

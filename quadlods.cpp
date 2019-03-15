@@ -293,32 +293,58 @@ void quadlods::init(int dimensions,double resolution,int j)
  * (99/70)²-99/70=99²/70²-99*70/70²
  */
 {
-  int i,p;
+  int i,p,newmode;
   mpz_class nmid,dmid;
   if (dimensions>QL_MAX_DIMS)
     dimensions=QL_MAX_DIMS;
   if (dimensions<-QL_MAX_DIMS)
     dimensions=-QL_MAX_DIMS;
-  for (i=denom.size();i<dimensions;i++)
+  newmode=resolution?QL_MODE_RICHTMYER:QL_MODE_HALTON;
+  if (mode!=newmode)
+    primeinx.clear();
+  if (newmode==QL_MODE_HALTON)
   {
-    primeinx.push_back(i);
-    p=nthprime(i);
-    compquad(p,resolution,nmid,dmid);
-    denom.push_back(dmid);
-    num.push_back(nmid);
+    num.clear();
+    denom.clear();
+    acc.clear();
+    for (i=denom.size();i<dimensions;i++)
+    {
+      primeinx.push_back(i);
+      p=nthprime(i);
+      hacc.resize(primeinx.size()); // TODO set hacc to previous hacc value
+    }
+    for (i=denom.size();i>dimensions;i--)
+    {
+      primeinx.push_back(QL_MAX_DIMS+i-1);
+      p=nthprime(QL_MAX_DIMS+i-1);
+      hacc.resize(primeinx.size()); // TODO set hacc to previous hacc value
+    }
   }
-  for (i=denom.size();i>dimensions;i--)
+  else
   {
-    primeinx.push_back(QL_MAX_DIMS+i-1);
-    p=nthprime(QL_MAX_DIMS+i-1);
-    compquad(p,resolution,nmid,dmid);
-    denom.push_back(dmid);
-    num.push_back(nmid);
+    hacc.clear();
+    for (i=denom.size();i<dimensions;i++)
+    {
+      primeinx.push_back(i);
+      p=nthprime(i);
+      compquad(p,resolution,nmid,dmid);
+      denom.push_back(dmid);
+      num.push_back(nmid);
+    }
+    for (i=denom.size();i>dimensions;i--)
+    {
+      primeinx.push_back(QL_MAX_DIMS+i-1);
+      p=nthprime(QL_MAX_DIMS+i-1);
+      compquad(p,resolution,nmid,dmid);
+      denom.push_back(dmid);
+      num.push_back(nmid);
+    }
   }
   if (j>=0)
     scrambletype=j;
   if (scrambletype<0 || scrambletype>QL_SCRAMBLE_GRAY)
     scrambletype=QL_SCRAMBLE_GRAY;
+  mode=newmode;
   dimensions=abs(dimensions);
   num.resize(dimensions);
   denom.resize(dimensions);
