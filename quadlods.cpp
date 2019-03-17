@@ -382,6 +382,23 @@ void quadlods::init(vector<int> dprimes,double resolution,int j)
   acc.resize(primeinx.size());
 }
 
+mpz_class quadlods::gethacc(int n)
+// All Halton accumulators should have the same value, so n shouldn't matter.
+{
+  mpz_class ret=sign?-1:0;
+  int i,limbbase;
+  if (hacc.size())
+  {
+    n%=hacc.size();
+    if (n<0)
+      n+=hacc.size();
+    limbbase=primePower(nthprime(primeinx[n]))[1];
+    for (i=hacc[n].size()-1;i>=0;i--)
+      ret=ret*limbbase*hacc[n][i];
+  }
+  return ret;
+}
+
 vector<mpq_class> quadlods::readout()
 {
   int i;

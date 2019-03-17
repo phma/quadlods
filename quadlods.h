@@ -103,6 +103,7 @@ public:
   {
     return acc[n];
   }
+  mpz_class gethacc(int n=0);
   int getprimeinx(int n)
   {
     if (n<0 || n>primeinx.size())
