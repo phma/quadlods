@@ -39,12 +39,17 @@
 #include <cmath>
 #include <string>
 #include <array>
+#include <map>
 #include "quadlods.h"
 #include "config.h"
 
+#define M_1PHI 0.6180339887498948482046
+
 using namespace std;
 
+map<unsigned,unsigned> relprimes;
 vector<unsigned short> primes;
+map<unsigned,vector<unsigned short> > reverseScrambleTable;
 vector<PrimeContinuedFraction> primesCfSorted;
 mpz_class thue(0x69969669),third(0x55555555);
 int morse(32),b2adic(32);
@@ -53,6 +58,55 @@ int primePowerTable[][2]=
   {16,65536},{10,59049},{8,65536},{6,15625},{6,46656},{5,16807},
   {5,32768},{5,59049},{4,10000},{4,14641},{4,20736},{4,28561}
 };
+
+unsigned gcd(unsigned a,unsigned b)
+{
+  while (a&&b)
+  {
+    if (a>b)
+    {
+      b^=a;
+      a^=b;
+      b^=a;
+    }
+    b%=a;
+  }
+  return a+b;
+}
+
+unsigned relprime(unsigned n)
+// Returns the integer closest to n/φ of those relatively prime to n.
+{
+  unsigned ret,twice;
+  double phin;
+  ret=relprimes[n];
+  if (!ret)
+  {
+    phin=n*M_1PHI;
+    ret=rint(phin);
+    twice=2*ret-(ret>phin);
+    while (gcd(ret,n)!=1)
+      ret=twice-ret+(ret<=phin);
+    relprimes[n]=ret;
+  }
+  return ret;
+}
+
+unsigned scrambledig(unsigned dig,unsigned p)
+/* Raises dig to the power relprime(p-1) mod p. This is used for scrambling
+ * the Halton generator. -1, 0, and 1 are unaffected.
+ */
+{
+  unsigned acc=1,pow=relprime(p-1);
+  int i;
+  for (i=15;i>=0;i--)
+  {
+    acc=(acc*acc)%p;
+    if ((pow>>i)&1)
+      acc=(acc*dig)%p;
+  }
+  return acc;
+}
 
 array<int,2> primePower(unsigned short p)
 /* Returns the number of digits in base p that fit in one 16-bit limb
@@ -82,6 +136,39 @@ array<int,2> primePower(unsigned short p)
     }
   }
   return ret;
+}
+
+void fillReverseScrambleTable(int p,int scrambletype)
+/* If p=5 and scrambletype=QL_SCRAMBLE_NONE, fills reverseScrambleTable[5].
+ * Entry 320041 (base 5) is 140023 (base 5).
+ * If p=5 and scrambletype=QL_SCRAMBLE_POWER, fills reverseScrambleTable[0x40005].
+ * Entry 320041 (base 5) is 140032 (base 5).
+ * Without scrambling, there is no need to fill the table for primes >256.
+ */
+{
+  array<int,2> pp=primePower(p);
+  int i,j,dec,acc;
+  vector<unsigned short> scrambleTable;
+  int inx=scrambletype<<16+p;
+  if ((scrambletype==QL_SCRAMBLE_POWER || p<256) && reverseScrambleTable[inx].size()==0)
+  {
+    for (i=0;i<p;i++)
+      if (scrambletype==QL_SCRAMBLE_POWER)
+	scrambleTable.push_back(scrambledig(i,p));
+      else
+	scrambleTable.push_back(i);
+    for (i=0;i<pp[1];i++)
+    {
+      acc=0;
+      dec=i;
+      for (j=0;j<pp[0];j++)
+      {
+	acc=p*acc+scrambleTable[dec%p];
+	dec/=p;
+      }
+      reverseScrambleTable[inx].push_back(acc);
+    }
+  }
 }
 
 mpz_class thuemorse(int n)
