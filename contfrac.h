@@ -34,6 +34,26 @@ private:
 public:
   quadirr();
   quadirr(int A,int B,int C,int D,int P);
+  int geta()
+  {
+    return a;
+  };
+  int getb()
+  {
+    return b;
+  };
+  int getc()
+  {
+    return c;
+  };
+  int getd()
+  {
+    return d;
+  };
+  int getp()
+  {
+    return p;
+  };
   double realval();
   bool operator==(const quadirr &r) const;
   quadirr& operator-=(int n);

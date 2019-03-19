@@ -552,6 +552,47 @@ void writeshort(ostream &file,unsigned short i)
   file.write(buf,2);
 }
 
+void checkEquivClasses(int p)
+{
+  int i,j,k,l;
+  map<double,quadirr> classes;
+  map<double,quadirr>::iterator it;
+  quadirr q;
+  ContinuedFraction cf;
+  for (i=1;i<=p;i++)
+    for (j=1;j<=i;j++)
+      for (k=1;k<=p;k++)
+	for (l=0;l<k;l++)
+	{
+	  q=quadirr(l,k,j,i,p);
+	  if (q.realval())
+	  {
+	    q=equivClass(q);
+	    classes[q.realval()]=q;
+	  }
+	}
+  cout<<classes.size()<<" equivalence classes:\n";
+  for (it=classes.begin();it!=classes.end();it++)
+  {
+    cf=contFrac(q=it->second);
+    cout<<ldecimal(it->first)<<" = "<<q.geta()<<'/'<<q.getb();
+    if (q.getc()>=0)
+      cout<<'+';
+    cout<<q.getc()<<"√"<<q.getp()<<'/'<<q.getd()<<endl;
+    for (i=0;i<cf.terms.size();i++)
+    {
+      if (i==cf.terms.size()-cf.period)
+	cout<<'(';
+      else
+	cout<<' ';
+      cout<<cf.terms[i];
+    }
+    if (cf.period)
+      cout<<')';
+    cout<<endl;
+  }
+}
+
 void sortPrimes()
 {
   int i,j;
@@ -687,5 +728,6 @@ int main(int argc,char **argv)
     listCommands();
     cout<<generic<<endl;
   }
+  checkEquivClasses(5);
   return !validArgs || !validCmd || testfail;
 }
