@@ -42,3 +42,4 @@ public:
 
 quadirr nthquadQi(int n);
 ContinuedFraction contFrac(quadirr q);
+quadirr equivClass(quadirr q);

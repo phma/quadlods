@@ -166,3 +166,42 @@ ContinuedFraction contFrac(quadirr q)
   ret.terms.pop_back();
   return ret;
 }
+
+quadirr equivClass(quadirr q)
+/* There is an equivalence relation on numbers defined by ξ≡η iff ξ=(aη+b)/(cη+d)
+ * for integers a,b,c,d where ad-bc=±1. If the numbers have continued fraction
+ * expansions, this is the same as saying that the expansions have identical
+ * tails. All rational numbers are equivalent, and the representative of this
+ * equivalence class is 0. For periodic continued fractions (real quadratic
+ * irrationals), the representative can be chosen as the least or greatest
+ * number in the periodic part; this function returns the least. For numbers
+ * in general, defining a representative requires the axiom of choice.
+ */
+{
+  quadirr ret;
+  vector<quadirr> partials;
+  int i,period;
+  bool done=false;
+  while (!done)
+  {
+    if (partials.size())
+    {
+      partials.push_back(partials.back());
+      partials.back()-=floor(partials.back().realval());
+      partials.back().recip();
+    }
+    else
+      partials.push_back(q);
+    for (i=1;!done && i<partials.size();i++)
+      if (partials[partials.size()-1]==partials[partials.size()-1-i])
+      {
+	done=true;
+	period=i;
+      }
+  }
+  ret=partials.back();
+  for (i=1;i<period;i++)
+    if (partials[partials.size()-1-i].realval()<ret.realval())
+      ret=partials[partials.size()-1-i];
+  return ret;
+}
