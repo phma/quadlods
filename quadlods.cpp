@@ -300,6 +300,36 @@ void compquad(int p,double resolution,mpz_class &nmid,mpz_class &dmid)
   nmid%=dmid;
 }
 
+void compquad(ContinuedFraction cf,double resolution,mpz_class &nmid,mpz_class &dmid)
+{
+  mpz_class nhi,dhi,nlo,dlo;
+  int i=0,j=0;
+  bool comp=false;
+  for (nhi=dlo=1,nlo=dhi=dmid=0;dmid<resolution;)
+  {
+    dmid=dhi+dlo;
+    nmid=nhi+nlo;
+    if (comp>0)
+    {
+      dhi=dmid;
+      nhi=nmid;
+    }
+    else
+    {
+      dlo=dmid;
+      nlo=nmid;
+    }
+    if (++j>cf.terms[i])
+    {
+      comp=!comp;
+      j=0;
+      if (++i>cf.terms.size())
+	i-=cf.period;
+    }
+  }
+  nmid%=dmid;
+}
+
 int nthprime(int n)
 {
   if (primes.size()==0)
