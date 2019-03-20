@@ -560,6 +560,9 @@ void checkEquivClasses(int p)
   quadirr q;
   ContinuedFraction cf;
   for (i=1;i<=p;i++)
+  {
+    cout<<i<<'\r';
+    cout.flush();
     for (j=1;j<=i;j++)
       for (k=1;k<=p;k++)
 	for (l=0;l<k;l++)
@@ -571,6 +574,7 @@ void checkEquivClasses(int p)
 	    classes[q.realval()]=q;
 	  }
 	}
+  }
   cout<<classes.size()<<" equivalence classes:\n";
   for (it=classes.begin();it!=classes.end();it++)
   {
@@ -676,6 +680,7 @@ int main(int argc,char **argv)
 {
   int cmd,i;
   string cmdstr;
+  quadirr q(1,11,9,10,11);
   bool validArgs,validCmd=true;
   po::options_description generic("Options");
   po::options_description hidden("Hidden options");
@@ -728,6 +733,7 @@ int main(int argc,char **argv)
     listCommands();
     cout<<generic<<endl;
   }
-  checkEquivClasses(5);
+  //checkEquivClasses(11);
+  q=equivClass(q);
   return !validArgs || !validCmd || testfail;
 }
