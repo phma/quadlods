@@ -110,6 +110,7 @@ void quadirr::recip()
 {
   mpq_class denom,e(a,b),f(c,d);
   int g,h,gc;
+  long long A,B,C,D;
   e.canonicalize();
   f.canonicalize();
   e*=e;
@@ -117,10 +118,18 @@ void quadirr::recip()
   denom=e-f;
   g=denom.get_num().get_si();
   h=denom.get_den().get_si();
-  a*=h;
-  b*=g;
-  c*=-h;
-  d*=g;
+  if (g!=denom.get_num() || h!=denom.get_den())
+    throw OVERFLOW;
+  A=(long long)a*h;
+  B=(long long)b*g;
+  C=(long long)c*-h;
+  D=(long long)d*g;
+  a=A;
+  b=B;
+  c=C;
+  d=D;
+  if (a!=A || b!=B || c!=C || d!=D)
+    throw OVERFLOW;
   gc=gcd(abs(a),abs(b));
   a/=gc;
   b/=gc;
@@ -182,13 +191,17 @@ quadirr equivClass(quadirr q)
   vector<quadirr> partials;
   int i,period;
   bool done=false;
+  double realFrac;
   while (!done)
   {
     if (partials.size())
     {
       partials.push_back(partials.back());
       partials.back()-=floor(partials.back().realval());
+      realFrac=partials.back().realval();
       partials.back().recip();
+      if (fabs(partials.back().realval()*realFrac-1)>0.1)
+	cerr<<"Reciprocal failed\n"; // This should never happen; it should throw.
     }
     else
       partials.push_back(q);

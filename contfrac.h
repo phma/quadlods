@@ -23,6 +23,8 @@
  */
 #include "quadlods.h"
 
+#define OVERFLOW 1
+
 class quadirr
 /* Represents the quadratic irrational a/b+c*sqrt(p)/d.
  * Used for computing the continued fraction representation of sqrt(p) or

@@ -570,8 +570,14 @@ void checkEquivClasses(int p)
 	  q=quadirr(l,k,j,i,p);
 	  if (q.realval())
 	  {
-	    q=equivClass(q);
-	    classes[q.realval()]=q;
+	    try
+	    {
+	      q=equivClass(q); // can throw OVERFLOW
+	      classes[q.realval()]=q;
+	    }
+	    catch (...)
+	    {
+	    }
 	  }
 	}
   }
@@ -733,7 +739,7 @@ int main(int argc,char **argv)
     listCommands();
     cout<<generic<<endl;
   }
-  //checkEquivClasses(11);
-  q=equivClass(q);
+  checkEquivClasses(11);
+  //q=equivClass(q);
   return !validArgs || !validCmd || testfail;
 }
