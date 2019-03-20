@@ -686,7 +686,6 @@ int main(int argc,char **argv)
 {
   int cmd,i;
   string cmdstr;
-  quadirr q(1,11,9,10,11);
   bool validArgs,validCmd=true;
   po::options_description generic("Options");
   po::options_description hidden("Hidden options");
@@ -740,6 +739,5 @@ int main(int argc,char **argv)
     cout<<generic<<endl;
   }
   checkEquivClasses(11);
-  //q=equivClass(q);
   return !validArgs || !validCmd || testfail;
 }
