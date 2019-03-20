@@ -192,11 +192,11 @@ quadirr equivClass(quadirr q)
     }
     else
       partials.push_back(q);
-    for (i=1;!done && i<partials.size();i++)
-      if (partials[partials.size()-1]==partials[partials.size()-1-i])
+    for (i=0;!done && i<partials.size()-1;i=2*i+1)
+      if (partials[partials.size()-1]==partials[i])
       {
 	done=true;
-	period=i;
+	period=partials.size()-1-i;
       }
   }
   ret=partials.back();
