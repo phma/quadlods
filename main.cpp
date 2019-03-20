@@ -556,36 +556,41 @@ void checkEquivClasses(int p)
 {
   int i,j,k,l;
   map<double,quadirr> classes;
+  map<double,vector<quadirr> > originals;
   map<double,quadirr>::iterator it;
-  quadirr q;
+  quadirr q,eqc;
+  double rv;
   ContinuedFraction cf;
   for (i=1;i<=p;i++)
   {
     cout<<i<<'\r';
     cout.flush();
     for (j=1;j<=i;j++)
-      for (k=1;k<=p;k++)
-	for (l=0;l<k;l++)
-	{
-	  q=quadirr(l,k,j,i,p);
-	  if (q.realval())
-	  {
-	    try
+      if (gcd(i,j)==1)
+	for (k=1;k<=p;k++)
+	  for (l=0;l<k;l++)
+	    if (gcd(k,l)==1)
 	    {
-	      q=equivClass(q); // can throw OVERFLOW
-	      classes[q.realval()]=q;
+	      q=quadirr(l,k,j,i,p);
+	      if (q.realval())
+	      {
+		try
+		{
+		  eqc=equivClass(q); // can throw OVERFLOW
+		  classes[eqc.realval()]=eqc;
+		  originals[eqc.realval()].push_back(q);
+		}
+		catch (...)
+		{
+		}
+	      }
 	    }
-	    catch (...)
-	    {
-	    }
-	  }
-	}
   }
   cout<<classes.size()<<" equivalence classes:\n";
   for (it=classes.begin();it!=classes.end();it++)
   {
     cf=contFrac(q=it->second);
-    cout<<ldecimal(it->first)<<" = "<<q.stringval()<<endl;
+    cout<<ldecimal(rv=it->first)<<" = "<<q.stringval()<<endl;
     for (i=0;i<cf.terms.size();i++)
     {
       if (i==cf.terms.size()-cf.period)
@@ -596,6 +601,13 @@ void checkEquivClasses(int p)
     }
     if (cf.period)
       cout<<')';
+    cout<<endl;
+    for (i=0;i<originals[rv].size();i++)
+    {
+      if (i)
+	cout<<',';
+      cout<<originals[rv][i].stringval();
+    }
     cout<<endl;
   }
 }

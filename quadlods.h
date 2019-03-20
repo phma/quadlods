@@ -48,6 +48,7 @@
  */
 #define QL_MAX_DIMS 6542
 
+unsigned gcd(unsigned a,unsigned b);
 int nthprime(int n);
 double nthquad(int n);
 
