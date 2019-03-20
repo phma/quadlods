@@ -738,6 +738,6 @@ int main(int argc,char **argv)
     listCommands();
     cout<<generic<<endl;
   }
-  checkEquivClasses(11);
+  checkEquivClasses(5); // 29 runs in reasonable time
   return !validArgs || !validCmd || testfail;
 }
