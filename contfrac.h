@@ -57,6 +57,7 @@ public:
     return p;
   };
   double realval();
+  std::string stringval();
   bool operator==(const quadirr &r) const;
   quadirr& operator-=(int n);
   void recip();

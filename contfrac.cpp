@@ -57,6 +57,22 @@ double quadirr::realval()
   return a/(double)b+c*sqrt(p)/d;
 }
 
+string quadirr::stringval()
+{
+  string ratpart,quadpart;
+  if (b==1)
+    ratpart=to_string(a);
+  else
+    ratpart=to_string(a)+'/'+to_string(b);
+  quadpart="√"+to_string(p);
+  if (d!=1)
+    quadpart+='/'+to_string(d);
+  if (abs(c)!=1)
+    quadpart=to_string(abs(c))+quadpart;
+  quadpart=((c<0)?'-':'+')+quadpart;
+  return ratpart+quadpart;
+}
+
 bool quadirr::operator==(const quadirr &r) const
 {
   if (c==0 && r.c==0)

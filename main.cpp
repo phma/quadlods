@@ -585,10 +585,7 @@ void checkEquivClasses(int p)
   for (it=classes.begin();it!=classes.end();it++)
   {
     cf=contFrac(q=it->second);
-    cout<<ldecimal(it->first)<<" = "<<q.geta()<<'/'<<q.getb();
-    if (q.getc()>=0)
-      cout<<'+';
-    cout<<q.getc()<<"√"<<q.getp()<<'/'<<q.getd()<<endl;
+    cout<<ldecimal(it->first)<<" = "<<q.stringval()<<endl;
     for (i=0;i<cf.terms.size();i++)
     {
       if (i==cf.terms.size()-cf.period)
