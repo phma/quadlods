@@ -459,11 +459,18 @@ void testuvmatrix()
   int i,j;
   double det,reldiff,maxreldiff=0;
   time_t now,then;
+  bool analyze=false;
+  vector<double> allsqdet;
   manysum sumsqdet;
   histogram hist(-1,1);
   matrix mat(3,3);
   array<double,3> row;
   vector<double> point;
+  if (niter==0)
+  {
+    analyze=true;
+    niter=7776000;
+  }
   quads.init(6,resolution);
   quads.setscramble(scramble);
   cout<<"Calculating determinants of 3×3 unit vector matrices\n";
@@ -492,6 +499,8 @@ void testuvmatrix()
     }
     hist<<det;
     sumsqdet+=det*det;
+    if (analyze)
+      allsqdet.push_back(det*det);
   }
   ps.open(filename.length()?filename:"uvmatrix.ps");
   ps.setpaper(a4land,0);
@@ -512,6 +521,8 @@ void testuvmatrix()
     testfail=true;
   }
   cout<<"Maximum relative difference is "<<maxreldiff<<endl;
+  if (analyze)
+    niter=0;
 }
 
 void runTests()
