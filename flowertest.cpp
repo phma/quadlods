@@ -3,7 +3,7 @@
 /* flowertest.cpp - draw flower diagrams of sequence  */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2019 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -29,7 +29,7 @@
 
 using namespace std;
 
-void flowertest(quadlods &quad,int iters,PostScript &ps)
+void flowertest(Quadlods &quad,int iters,PostScript &ps)
 /* Draw a flower diagram of the sequence. The flower diagram of an unjumbled
  * sequence with step φ (from prime 5) is the pattern of flowers in an
  * asteraceous flower head.
@@ -38,7 +38,7 @@ void flowertest(quadlods &quad,int iters,PostScript &ps)
   int i,j,k,inx,allinx;
   char buf[24];
   time_t now,then;
-  quadlods sel1;
+  Quadlods sel1;
   vector<int> pinx1;
   vector<double> point;
   double ang,r;

@@ -3,7 +3,7 @@
 /* filltest.cpp - test how well numbers fill space    */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2019 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -59,7 +59,7 @@ double distsq(vector<double> a,vector<double> b)
  * determinant should decrease at a known rate; the determinant of the
  * normalized vectors should have a known distribution depending only on n.
  */
-void filltest(quadlods &quad,int iters,PostScript &ps)
+void filltest(Quadlods &quad,int iters,PostScript &ps)
 {
   int i,j,k,l,sz=quad.size(),decades;
   char buf[24];

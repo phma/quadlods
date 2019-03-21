@@ -389,14 +389,14 @@ bool operator<(const PrimeContinuedFraction a,const PrimeContinuedFraction b)
     return a.prime<b.prime;
 }
 
-quadlods::quadlods()
+Quadlods::Quadlods()
 {
   mode=QL_MODE_RICHTMYER;
   scrambletype=QL_SCRAMBLE_NONE;
   sign=false;
 }
 
-void quadlods::init(int dimensions,double resolution,int j)
+void Quadlods::init(int dimensions,double resolution,int j)
 /* Sets num[i]/denom[i] to a rational approximation of an integer in Q(sqrt(primes[i])).
  * If p mod 4 is 1, q=(sqrt(p)+1)/2, else q=sqrt(p).
  * 2: p²-2=0
@@ -468,7 +468,7 @@ void quadlods::init(int dimensions,double resolution,int j)
   acc.resize(dimensions);
 }
 
-void quadlods::init(vector<int> dprimes,double resolution,int j)
+void Quadlods::init(vector<int> dprimes,double resolution,int j)
 /* Used for testing, setting up a generator with a particularly
  * bad set of primes.
  */
@@ -499,7 +499,7 @@ void quadlods::init(vector<int> dprimes,double resolution,int j)
   acc.resize(primeinx.size());
 }
 
-mpz_class quadlods::gethacc(int n)
+mpz_class Quadlods::gethacc(int n)
 // All Halton accumulators should have the same value, so n shouldn't matter.
 {
   mpz_class ret=sign?-1:0;
@@ -516,7 +516,7 @@ mpz_class quadlods::gethacc(int n)
   return ret;
 }
 
-vector<mpq_class> quadlods::readout()
+vector<mpq_class> Quadlods::readout()
 {
   int i;
   vector<mpq_class> ret;
@@ -528,7 +528,7 @@ vector<mpq_class> quadlods::readout()
   return ret;
 }
 
-vector<double> quadlods::dreadout()
+vector<double> Quadlods::dreadout()
 {
   int i;
   vector<double> ret;
@@ -539,7 +539,7 @@ vector<double> quadlods::dreadout()
   return ret;
 }
 
-void quadlods::setmiddle()
+void Quadlods::setmiddle()
 /* Set the point to the middle of the square/cube/etc. This is used in testing
  * to find the successively smaller distances between q[n] and q[n+h].
  */
@@ -549,7 +549,7 @@ void quadlods::setmiddle()
     acc[i]=denom[i]>>1;
 }
 
-void quadlods::advance(mpz_class n)
+void Quadlods::advance(mpz_class n)
 {
   int i;
   for (i=0;i<num.size();i++)
@@ -559,7 +559,7 @@ void quadlods::advance(mpz_class n)
       acc[i]=(acc[i]+n*num[i])%denom[i];
 }
 
-unsigned int quadlods::seedsize()
+unsigned int Quadlods::seedsize()
 {
   unsigned i,maxlen,len;
   for (i=maxlen=0;i<denom.size();i++)
@@ -571,7 +571,7 @@ unsigned int quadlods::seedsize()
   return maxlen*denom.size();
 }
 
-void quadlods::seed(char *s,unsigned int n)
+void Quadlods::seed(char *s,unsigned int n)
 {
   unsigned i,sz;
   sz=denom.size();
@@ -579,21 +579,21 @@ void quadlods::seed(char *s,unsigned int n)
     acc[i%sz]=((acc[i%sz]<<8)+(s[i]&0xff))%denom[i%sz];
 }
 
-vector<mpq_class> quadlods::gen()
+vector<mpq_class> Quadlods::gen()
 {
   advance(1);
   return readout();
 }
 
-vector<double> quadlods::dgen()
+vector<double> Quadlods::dgen()
 {
   advance(1);
   return dreadout();
 }
 
-quadlods select(quadlods& b,vector<int> dimensions)
+Quadlods select(Quadlods& b,vector<int> dimensions)
 {
-  quadlods ret;
+  Quadlods ret;
   int i,j;
   ret.scrambletype=b.scrambletype;
   for (i=0;i<dimensions.size();i++)

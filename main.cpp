@@ -60,7 +60,7 @@ struct command
 };
 
 vector<command> commands;
-quadlods quads,cirquads;
+Quadlods quads,cirquads;
 bool testfail=false;
 char rpint[][2]=
 { // relatively prime integers whose sum of squares is less than 100
@@ -202,13 +202,13 @@ bool parseJumble()
   return scramble>=0;
 }
 
-void plotxy(quadlods& quad,int xdim,int ydim)
+void plotxy(Quadlods& quad,int xdim,int ydim)
 {
   int i;
   double x,y;
   char buf[24];
   vector<double> point;
-  quadlods sel2;
+  Quadlods sel2;
   vector<int> pinx2;
   pinx2.push_back(xdim);
   pinx2.push_back(ydim);
@@ -235,7 +235,7 @@ void testcoverage()
  */
 {
   int i,j,x,y,z,inx;
-  quadlods cov;
+  Quadlods cov;
   bitset<87828936> *histo;
   vector<mpq_class> point;
   vector<int> p235; // since sorting the primes, the list begins 5,3,2

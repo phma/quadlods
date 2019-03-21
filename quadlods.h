@@ -70,7 +70,7 @@ public:
   friend bool operator<(const PrimeContinuedFraction a,const PrimeContinuedFraction b);
 };
 
-class quadlods
+class Quadlods
 {
 protected:
   std::vector<mpz_class> num,denom,acc;
@@ -80,7 +80,7 @@ protected:
   int mode;
   bool sign;
 public:
-  quadlods();
+  Quadlods();
   void init(int dimensions,double resolution,int j=QL_SCRAMBLE_GRAY);
   /* If dimensions>6542, it is silently truncated to 6542.
    * If dimensions<0, primes are taken from the end of the list.
@@ -128,6 +128,6 @@ public:
   std::vector<mpq_class> gen();
   std::vector<double> dreadout();
   std::vector<double> dgen();
-  friend quadlods select(quadlods& b,std::vector<int> dimensions);
+  friend Quadlods select(Quadlods& b,std::vector<int> dimensions);
 };
 #endif

@@ -3,7 +3,7 @@
 /* filltest.h - test how well numbers fill space      */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2019 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -30,4 +30,4 @@
  */
 
 double distsq(std::vector<double> a,std::vector<double> b);
-void filltest(quadlods &quad,int iters,PostScript &ps);
+void filltest(Quadlods &quad,int iters,PostScript &ps);

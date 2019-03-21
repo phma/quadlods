@@ -3,7 +3,7 @@
 /* circletest.h - test sequence on quarter circles    */
 /*                                                    */
 /******************************************************/
-/* Copyright 2017,2018 Pierre Abbat.
+/* Copyright 2017-2019 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -32,4 +32,4 @@ struct errorrec
   std::vector<double> relError;
 };
 
-void circletest(quadlods &quad,int iters,PostScript &ps);
+void circletest(Quadlods &quad,int iters,PostScript &ps);

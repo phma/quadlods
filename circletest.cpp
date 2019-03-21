@@ -3,7 +3,7 @@
 /* circletest.cpp - test sequence on quarter circles  */
 /*                                                    */
 /******************************************************/
-/* Copyright 2017-2018 Pierre Abbat.
+/* Copyright 2017-2019 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -38,7 +38,7 @@ const double criterion=21.25;
  * keeps going down.
  */
 
-void circletest(quadlods &quad,int iters,PostScript &ps)
+void circletest(Quadlods &quad,int iters,PostScript &ps)
 /* Find all pairs of primes (dimensions) which have high discrepancy by
  * counting the pairs of points that fall inside a quadrant of a circle.
  * The number of points in the quadrant should be (π/4)i+O(ln(i)²/i).
@@ -49,7 +49,7 @@ void circletest(quadlods &quad,int iters,PostScript &ps)
   set<int> halfsteps=hsteps(1,iters);
   time_t now,then;
   bool recordthis;
-  quadlods sel2;
+  Quadlods sel2;
   vector<int> pinx2;
   vector<int> incircle,ri;
   vector<double> point;
