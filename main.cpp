@@ -44,6 +44,7 @@
 #include "matrix.h"
 
 using namespace std;
+using namespace quadlods;
 namespace po=boost::program_options;
 
 struct command

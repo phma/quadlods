@@ -3,7 +3,7 @@
 /* contfrac.cpp - continued fraction expansions       */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2019 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include "contfrac.h"
 
 using namespace std;
+using namespace quadlods;
 
 quadirr nthquadQi(int n)
 {
@@ -85,21 +86,6 @@ quadirr& quadirr::operator-=(int n)
 {
   a-=b*n;
   return *this;
-}
-
-unsigned gcd(unsigned a,unsigned b)
-{
-  while (a&&b)
-  {
-    if (a>b)
-    {
-      b^=a;
-      a^=b;
-      b^=a;
-    }
-    b%=a;
-  }
-  return a+b;
 }
 
 /* To compute the reciprocal of a/b+c*sqrt(p)/d:

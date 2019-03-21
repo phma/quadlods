@@ -48,9 +48,14 @@
  */
 #define QL_MAX_DIMS 6542
 
-unsigned gcd(unsigned a,unsigned b);
-int nthprime(int n);
-double nthquad(int n);
+namespace quadlods
+{
+  unsigned gcd(unsigned a,unsigned b);
+  int nthprime(int n);
+  double nthquad(int n);
+  unsigned relprime(unsigned n);
+  unsigned scrambledig(unsigned dig,unsigned p);
+}
 
 class ContinuedFraction
 // Represents a periodic continued fraction, i.e. a quadratic number.
@@ -114,7 +119,7 @@ public:
   }
   int getprime(int n)
   {
-    return nthprime(getprimeinx(n));
+    return quadlods::nthprime(getprimeinx(n));
   }
   std::vector<mpq_class> readout();
   void setmiddle();

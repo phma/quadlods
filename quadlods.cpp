@@ -46,20 +46,34 @@
 #define M_1PHI 0.6180339887498948482046
 
 using namespace std;
+using namespace quadlods;
 
-map<unsigned,unsigned> relprimes;
-vector<unsigned short> primes;
-map<unsigned,vector<unsigned short> > reverseScrambleTable;
-vector<PrimeContinuedFraction> primesCfSorted;
-mpz_class thue(0x69969669),third(0x55555555);
-int morse(32),b2adic(32);
-int primePowerTable[][2]=
+namespace quadlods
 {
-  {16,65536},{10,59049},{8,65536},{6,15625},{6,46656},{5,16807},
-  {5,32768},{5,59049},{4,10000},{4,14641},{4,20736},{4,28561}
-};
+  map<unsigned,unsigned> relprimes;
+  vector<unsigned short> primes;
+  map<unsigned,vector<unsigned short> > reverseScrambleTable;
+  vector<PrimeContinuedFraction> primesCfSorted;
+  mpz_class thue(0x69969669),third(0x55555555);
+  int morse(32),b2adic(32);
+  int primePowerTable[][2]=
+  {
+    {16,65536},{10,59049},{8,65536},{6,15625},{6,46656},{5,16807},
+    {5,32768},{5,59049},{4,10000},{4,14641},{4,20736},{4,28561}
+  };
+  array<int,2> primePower(unsigned short p);
+  void fillReverseScrambleTable(int p,int scrambletype);
+  mpz_class thuemorse(int n);
+  mpz_class minusthird(int n);
+  mpz_class graydecode(mpz_class n);
+  mpz_class scramble(mpz_class acc,mpz_class denom,int scrambletype);
+  short readshort(std::istream &file);
+  void initprimes();
+  void compquad(int p,double resolution,mpz_class &nmid,mpz_class &dmid);
+  void compquad(ContinuedFraction cf,double resolution,mpz_class &nmid,mpz_class &dmid);
+}
 
-unsigned gcd(unsigned a,unsigned b)
+unsigned quadlods::gcd(unsigned a,unsigned b)
 {
   while (a&&b)
   {
@@ -74,7 +88,7 @@ unsigned gcd(unsigned a,unsigned b)
   return a+b;
 }
 
-unsigned relprime(unsigned n)
+unsigned quadlods::relprime(unsigned n)
 // Returns the integer closest to n/φ of those relatively prime to n.
 {
   unsigned ret,twice;
@@ -92,7 +106,7 @@ unsigned relprime(unsigned n)
   return ret;
 }
 
-unsigned scrambledig(unsigned dig,unsigned p)
+unsigned quadlods::scrambledig(unsigned dig,unsigned p)
 /* Raises dig to the power relprime(p-1) mod p. This is used for scrambling
  * the Halton generator. -1, 0, and 1 are unaffected.
  */
@@ -108,7 +122,7 @@ unsigned scrambledig(unsigned dig,unsigned p)
   return acc;
 }
 
-array<int,2> primePower(unsigned short p)
+array<int,2> quadlods::primePower(unsigned short p)
 /* Returns the number of digits in base p that fit in one 16-bit limb
  * and the number of different limbs. p should be prime. If p is 0, 1,
  * 14, 15, or 16, returns garbage.
@@ -138,7 +152,7 @@ array<int,2> primePower(unsigned short p)
   return ret;
 }
 
-void fillReverseScrambleTable(int p,int scrambletype)
+void quadlods::fillReverseScrambleTable(int p,int scrambletype)
 /* If p=5 and scrambletype=QL_SCRAMBLE_NONE, fills reverseScrambleTable[5].
  * Entry 320041 (base 5) is 140023 (base 5).
  * If p=5 and scrambletype=QL_SCRAMBLE_POWER, fills reverseScrambleTable[0x40005].
@@ -171,7 +185,7 @@ void fillReverseScrambleTable(int p,int scrambletype)
   }
 }
 
-mpz_class thuemorse(int n)
+mpz_class quadlods::thuemorse(int n)
 {
   while (morse<=n)
   {
@@ -181,7 +195,7 @@ mpz_class thuemorse(int n)
   return thue&(((mpz_class)1<<n)-1);
 }
 
-mpz_class minusthird(int n)
+mpz_class quadlods::minusthird(int n)
 {
   while (b2adic<=n)
   {
@@ -191,7 +205,7 @@ mpz_class minusthird(int n)
   return third&(((mpz_class)1<<n)-1);
 }
 
-mpz_class graydecode(mpz_class n)
+mpz_class quadlods::graydecode(mpz_class n)
 {
   int i;
   i=mpz_sizeinbase(n.get_mpz_t(),2);
@@ -205,7 +219,7 @@ mpz_class graydecode(mpz_class n)
   return n;
 }
 
-mpz_class scramble(mpz_class acc,mpz_class denom,int scrambletype)
+mpz_class quadlods::scramble(mpz_class acc,mpz_class denom,int scrambletype)
 {
   int i;
   mpz_class bitdiff,hibits,lobits,ret;
@@ -230,14 +244,14 @@ mpz_class scramble(mpz_class acc,mpz_class denom,int scrambletype)
   return ret;
 }
 
-short readshort(std::istream &file)
+short quadlods::readshort(std::istream &file)
 {
   char buf[2];
   file.read(buf,2);
   return *(short *)buf;
 }
 
-void initprimes()
+void quadlods::initprimes()
 {
   int i,j,n;
   int primeCheck=0;
@@ -275,7 +289,7 @@ void initprimes()
   }
 }
 
-void compquad(int p,double resolution,mpz_class &nmid,mpz_class &dmid)
+void quadlods::compquad(int p,double resolution,mpz_class &nmid,mpz_class &dmid)
 {
   mpz_class nhi,dhi,nlo,dlo,comp;
   for (nhi=dlo=1,nlo=dhi=dmid=0;dmid<resolution;)
@@ -300,7 +314,7 @@ void compquad(int p,double resolution,mpz_class &nmid,mpz_class &dmid)
   nmid%=dmid;
 }
 
-void compquad(ContinuedFraction cf,double resolution,mpz_class &nmid,mpz_class &dmid)
+void quadlods::compquad(ContinuedFraction cf,double resolution,mpz_class &nmid,mpz_class &dmid)
 {
   mpz_class nhi,dhi,nlo,dlo;
   int i=0,j=0;
@@ -330,7 +344,7 @@ void compquad(ContinuedFraction cf,double resolution,mpz_class &nmid,mpz_class &
   nmid%=dmid;
 }
 
-int nthprime(int n)
+int quadlods::nthprime(int n)
 {
   if (primes.size()==0)
     initprimes();
@@ -342,7 +356,7 @@ int nthprime(int n)
     return primes[n];
 }
 
-double nthquad(int n)
+double quadlods::nthquad(int n)
 {
   mpz_class nmid,dmid;
   if (n<0 || n>=primes.size())
