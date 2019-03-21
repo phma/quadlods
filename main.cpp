@@ -502,6 +502,7 @@ void testuvmatrix()
   ps.endpage();
   ps.close();
   cout<<niter<<" iterations, average square determinant is "<<sumsqdet.total()/niter<<endl;
+  cout<<"compare "<<sumsqdet.total()-niter*6./27.<<' '<<pow(log(niter),6)/3e4<<endl;
   if (niter<2)
     cout<<"Please increase the number of iterations with -n\n";
   else if (fabs(sumsqdet.total()-niter*6./27.)>pow(log(niter),6)/3e4)
@@ -510,12 +511,12 @@ void testuvmatrix()
     // 6/27 is 3!/3^3
     testfail=true;
   }
-  //cout<<"Maximum relative difference is "<<maxreldiff<<endl;
+  cout<<"Maximum relative difference is "<<maxreldiff<<endl;
 }
 
 void runTests()
 {
-  testcoverage();
+  //testcoverage();
   testuvmatrix();
 }
 
@@ -748,6 +749,6 @@ int main(int argc,char **argv)
     listCommands();
     cout<<generic<<endl;
   }
-  checkEquivClasses(5); // 29 runs in reasonable time
+  //checkEquivClasses(5); // 29 runs in reasonable time
   return !validArgs || !validCmd || testfail;
 }
