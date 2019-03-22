@@ -333,11 +333,11 @@ void quadlods::compquad(ContinuedFraction cf,double resolution,mpz_class &nmid,m
       dlo=dmid;
       nlo=nmid;
     }
-    if (++j>cf.terms[i])
+    if (++j>=cf.terms[i])
     {
       comp=!comp;
       j=0;
-      if (++i>cf.terms.size())
+      if (++i>=cf.terms.size())
 	i-=cf.period;
     }
   }
@@ -457,16 +457,26 @@ void Quadlods::init(int dimensions,double resolution,int j)
     for (i=denom.size();i<dimensions;i++)
     {
       primeinx.push_back(i);
-      p=nthprime(i);
-      compquad(p,resolution,nmid,dmid);
+      if (primesCfSorted.size())
+	compquad(primesCfSorted[i].cf,resolution,nmid,dmid);
+      else
+      {
+	p=nthprime(i);
+	compquad(p,resolution,nmid,dmid);
+      }
       denom.push_back(dmid);
       num.push_back(nmid);
     }
-    for (i=denom.size();i>dimensions;i--)
+    for (i=-denom.size();i>dimensions;i--)
     {
       primeinx.push_back(QL_MAX_DIMS+i-1);
-      p=nthprime(QL_MAX_DIMS+i-1);
-      compquad(p,resolution,nmid,dmid);
+      if (primesCfSorted.size())
+	compquad(primesCfSorted[QL_MAX_DIMS+i-1].cf,resolution,nmid,dmid);
+      else
+      {
+	p=nthprime(QL_MAX_DIMS+i-1);
+	compquad(p,resolution,nmid,dmid);
+      }
       denom.push_back(dmid);
       num.push_back(nmid);
     }
@@ -499,8 +509,13 @@ void Quadlods::init(vector<int> dprimes,double resolution,int j)
       }
   for (i=denom.size();i<primeinx.size();i++)
   {
-    p=nthprime(primeinx[i]);
-    compquad(p,resolution,nmid,dmid);
+    if (primesCfSorted.size())
+      compquad(primesCfSorted[primeinx[i]].cf,resolution,nmid,dmid);
+    else
+    {
+      p=nthprime(primeinx[i]);
+      compquad(p,resolution,nmid,dmid);
+    }
     denom.push_back(dmid);
     num.push_back(nmid);
   }
