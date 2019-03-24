@@ -470,10 +470,13 @@ void testuvmatrix()
   bool analyze=false;
   vector<double> allsqdet;
   double absdiff,minabsdiff,maxabsdiff;
+  double hi=-INFINITY,lo=INFINITY,scale;
   manysum sumsqdet;
   histogram hist(-1,1);
   matrix mat(3,3);
   array<double,3> row;
+  array<double,4> vline;
+  vector<array<double,4> > vlines;
   vector<double> point;
   if (niter==0)
   {
@@ -549,8 +552,39 @@ void testuvmatrix()
 	    maxabsdiff=absdiff;
 	}
 	cout<<i<<' '<<minabsdiff<<'-'<<maxabsdiff<<" < "<<upperDiff(i)<<endl;
+	vline[0]=log(i);
+	vline[1]=log(minabsdiff);
+	vline[2]=maxabsdiff;
+	vline[3]=upperDiff(i);
+	vlines.push_back(vline);
+	for (k=1;k<4;k++)
+	{
+	  if (vline[k]>hi)
+	    hi=vline[k];
+	  if (vline[k]<lo)
+	    lo=vline[k];
+	}
       }
     }
+    ps.startpage();
+    ps.setscale(0,-1,3,1);
+    scale=(hi-lo)/2;
+    ps.startline();
+    ps.lineto(0,-1);
+    ps.lineto(3,-1);
+    ps.lineto(3,1);
+    ps.lineto(0,1);
+    ps.endline(true);
+    ps.setcolor(0,0,1);
+    for (i=0;i<vlines.size();i++)
+      ps.line2p(xy(vlines[i][0]/log(niter)*3,(vlines[i][1]-lo)/scale-1),
+		xy(vlines[i][0]/log(niter)*3,(vlines[i][2]-lo)/scale-1));
+    ps.setcolor(1,0,0);
+    ps.startline();
+    for (i=0;i<vlines.size();i++)
+      ps.lineto(vlines[i][0]/log(niter)*3,(vlines[i][3]-lo)/scale-1);
+    ps.endline();
+    ps.endpage();
     niter=0;
   }
   ps.close();
