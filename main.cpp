@@ -453,14 +453,23 @@ array<double,3> spherePoint(double x0,double x1)
   return ret;
 }
 
+double upperDiff(int n)
+/* For a six-dimensional integration, the error in the sum should be bounded
+ * by the sixth power of the logarithm. For small n, though, it isn't.
+ */
+{
+  return pow(log(n),6)/3e4;
+}
+
 void testuvmatrix()
 // Calculate the distribution of the determinant of three unit 3-vectors
 {
-  int i,j;
+  int i,j,k;
   double det,reldiff,maxreldiff=0;
   time_t now,then;
   bool analyze=false;
   vector<double> allsqdet;
+  double absdiff,minabsdiff,maxabsdiff;
   manysum sumsqdet;
   histogram hist(-1,1);
   matrix mat(3,3);
@@ -509,20 +518,42 @@ void testuvmatrix()
   ps.setscale(0,-1,3,1);
   hist.plot(ps,HISTO_LINEAR);
   ps.endpage();
-  ps.close();
   cout<<niter<<" iterations, average square determinant is "<<sumsqdet.total()/niter<<endl;
-  cout<<"compare "<<sumsqdet.total()-niter*6./27.<<' '<<pow(log(niter),6)/3e4<<endl;
+  //cout<<"compare "<<sumsqdet.total()-niter*6./27.<<' '<<upperDiff(niter)<<endl;
   if (niter<2)
     cout<<"Please increase the number of iterations with -n\n";
-  else if (fabs(sumsqdet.total()-niter*6./27.)>pow(log(niter),6)/3e4)
+  else if (fabs(sumsqdet.total()-niter*6./27.)>upperDiff(niter))
   {
     cout<<"Test failed, average square determinant should be 6/27\n";
     // 6/27 is 3!/3^3
     testfail=true;
   }
-  cout<<"Maximum relative difference is "<<maxreldiff<<endl;
+  //cout<<"Maximum relative difference is "<<maxreldiff<<endl;
   if (analyze)
+  {
+    for (i=2;i<niter;i++)
+    {
+      minabsdiff=INFINITY;
+      maxabsdiff=0;
+      if (niter%i==0)
+      {
+	for (j=0;j<niter;j+=i)
+	{
+	  sumsqdet.clear();
+	  for (k=0;k<i;k++)
+	    sumsqdet+=allsqdet[j+k];
+	  absdiff=fabs(sumsqdet.total()-i*6./27.);
+	  if (absdiff<minabsdiff)
+	    minabsdiff=absdiff;
+	  if (absdiff>maxabsdiff)
+	    maxabsdiff=absdiff;
+	}
+	cout<<i<<' '<<minabsdiff<<'-'<<maxabsdiff<<" < "<<upperDiff(i)<<endl;
+      }
+    }
     niter=0;
+  }
+  ps.close();
 }
 
 void runTests()
@@ -531,7 +562,7 @@ void runTests()
 
 void runLongTests()
 {
-  testcoverage();
+  //testcoverage();
   testuvmatrix();
 }
 
