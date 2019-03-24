@@ -458,7 +458,7 @@ double upperDiff(int n)
  * by the sixth power of the logarithm. For small n, though, it isn't.
  */
 {
-  return pow(log(n),6)/3e4;
+  return pow(log(n),6)/3e4+log(n)*2.22;
 }
 
 void testuvmatrix()
