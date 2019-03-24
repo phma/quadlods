@@ -527,7 +527,11 @@ void testuvmatrix()
 
 void runTests()
 {
-  //testcoverage();
+}
+
+void runLongTests()
+{
+  testcoverage();
   testuvmatrix();
 }
 
@@ -726,7 +730,8 @@ int main(int argc,char **argv)
   p.add("command",1);
   cmdline_options.add(generic).add(hidden);
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
-  commands.push_back(command("test",runTests,"Test the program"));
+  commands.push_back(command("test",runTests,"Run unit and other short tests"));
+  commands.push_back(command("longtest",runLongTests,"Run long tests"));
   commands.push_back(command("scatter",testScatter,"Scatter plot pairs of primes"));
   commands.push_back(command("circle",testCircle,"Test pairs of primes by estimating area of circle"));
   commands.push_back(command("fill",testFill,"Graph how well sequence fills space"));
