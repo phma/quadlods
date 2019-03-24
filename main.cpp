@@ -343,7 +343,7 @@ void findclosequad()
  * 59053,59051
  * 13691,13693
  * A set that is somewhat bad:
- * 5,4933,42533,57713 (CF expansions all begin n;1,1.1.1.1.1.1.1)
+ * 5,4933,42533,57713 (CF expansions all begin n;1,1,1,1,1,1,1,1)
  * 42533,57713 is bad, but not as bad as 65027,65029.
  */
 
@@ -705,7 +705,7 @@ int main(int argc,char **argv)
  * -d n		Use the first n primes in sortprimes order (d means dimensions)
  * -p p1,p2,p3	Use the specified primes
  * -r n		Set the resolution to n (default 1e17)
- * -j x		Set the jumbling option (none, third, morse, gray)
+ * -s x		Set the scrambling option (none, third, morse, gray)
  * -n n		Output n lines (textout) or run n iterations (testprimes)
  * -o fname	Write to the specified file
  */
