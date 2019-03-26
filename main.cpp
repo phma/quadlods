@@ -534,7 +534,7 @@ void testuvmatrix()
   //cout<<"Maximum relative difference is "<<maxreldiff<<endl;
   if (analyze)
   {
-    for (i=2;i<niter;i++)
+    for (i=2;i<2;i++)
     {
       minabsdiff=INFINITY;
       maxabsdiff=0;
@@ -566,25 +566,28 @@ void testuvmatrix()
 	}
       }
     }
-    ps.startpage();
-    ps.setscale(0,-1,3,1);
-    scale=(hi-lo)/2;
-    ps.startline();
-    ps.lineto(0,-1);
-    ps.lineto(3,-1);
-    ps.lineto(3,1);
-    ps.lineto(0,1);
-    ps.endline(true);
-    ps.setcolor(0,0,1);
-    for (i=0;i<vlines.size();i++)
-      ps.line2p(xy(vlines[i][0]/log(niter)*3,(vlines[i][1]-lo)/scale-1),
-		xy(vlines[i][0]/log(niter)*3,(vlines[i][2]-lo)/scale-1));
-    ps.setcolor(1,0,0);
-    ps.startline();
-    for (i=0;i<vlines.size();i++)
-      ps.lineto(vlines[i][0]/log(niter)*3,(vlines[i][3]-lo)/scale-1);
-    ps.endline();
-    ps.endpage();
+    if (vlines.size())
+    {
+      ps.startpage();
+      ps.setscale(0,-1,3,1);
+      scale=(hi-lo)/2;
+      ps.startline();
+      ps.lineto(0,-1);
+      ps.lineto(3,-1);
+      ps.lineto(3,1);
+      ps.lineto(0,1);
+      ps.endline(true);
+      ps.setcolor(0,0,1);
+      for (i=0;i<vlines.size();i++)
+	ps.line2p(xy(vlines[i][0]/log(niter)*3,(vlines[i][1]-lo)/scale-1),
+		  xy(vlines[i][0]/log(niter)*3,(vlines[i][2]-lo)/scale-1));
+      ps.setcolor(1,0,0);
+      ps.startline();
+      for (i=0;i<vlines.size();i++)
+	ps.lineto(vlines[i][0]/log(niter)*3,(vlines[i][3]-lo)/scale-1);
+      ps.endline();
+      ps.endpage();
+    }
     niter=0;
   }
   ps.close();
@@ -596,7 +599,7 @@ void runTests()
 
 void runLongTests()
 {
-  //testcoverage();
+  testcoverage();
   testuvmatrix();
 }
 
