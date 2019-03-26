@@ -50,6 +50,7 @@
 
 namespace quadlods
 {
+  extern std::vector<unsigned short> primes;
   unsigned gcd(unsigned a,unsigned b);
   int nthprime(int n);
   double nthquad(int n);

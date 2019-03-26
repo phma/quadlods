@@ -675,6 +675,7 @@ void checkEquivClasses(int p)
   map<double,quadirr>::iterator it;
   quadirr q,eqc;
   double rv;
+  int minmaxterm=100000;
   ContinuedFraction cf;
   for (i=1;i<=p;i++)
   {
@@ -701,29 +702,38 @@ void checkEquivClasses(int p)
 	      }
 	    }
   }
-  cout<<classes.size()<<" equivalence classes:\n";
+  //cout<<classes.size()<<" equivalence classes:\n";
   for (it=classes.begin();it!=classes.end();it++)
   {
     cf=contFrac(q=it->second);
-    cout<<ldecimal(rv=it->first)<<" = "<<q.stringval()<<endl;
-    for (i=0;i<cf.terms.size();i++)
+    if (cf.maximumTerm()<minmaxterm)
+      minmaxterm=cf.maximumTerm();
+  }
+  for (it=classes.begin();it!=classes.end();it++)
+  {
+    cf=contFrac(q=it->second);
+    if (cf.maximumTerm()==minmaxterm)
     {
-      if (i==cf.terms.size()-cf.period)
-	cout<<'(';
-      else
-	cout<<' ';
-      cout<<cf.terms[i];
+      cout<<ldecimal(rv=it->first)<<" = "<<q.stringval()<<endl;
+      for (i=0;i<cf.terms.size();i++)
+      {
+	if (i==cf.terms.size()-cf.period)
+	  cout<<'(';
+	else
+	  cout<<' ';
+	cout<<cf.terms[i];
+      }
+      if (cf.period)
+	cout<<')';
+      cout<<endl;
+      for (i=0;i<originals[rv].size();i++)
+      {
+	if (i)
+	  cout<<',';
+	cout<<originals[rv][i].stringval();
+      }
+      cout<<endl;
     }
-    if (cf.period)
-      cout<<')';
-    cout<<endl;
-    for (i=0;i<originals[rv].size();i++)
-    {
-      if (i)
-	cout<<',';
-      cout<<originals[rv][i].stringval();
-    }
-    cout<<endl;
   }
 }
 
@@ -863,6 +873,8 @@ int main(int argc,char **argv)
     listCommands();
     cout<<generic<<endl;
   }
-  //checkEquivClasses(5); // 29 runs in reasonable time
+  nthprime(0);
+  for (i=0;i<16;i++)
+    checkEquivClasses(primes[i]);
   return !validArgs || !validCmd || testfail;
 }
