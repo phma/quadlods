@@ -43,6 +43,8 @@
 #include "flowertest.h"
 #include "matrix.h"
 
+#define tassert(x) testfail|=(!(x))
+
 using namespace std;
 using namespace quadlods;
 namespace po=boost::program_options;
@@ -99,6 +101,33 @@ bool isValidPrime(int n)
     if (n>i && (n%i==0))
       ret=false;
   return ret;
+}
+
+void testContinuedFraction()
+{
+  ContinuedFraction cf2,cf3,cf5,cf7;
+  cout<<"Continued fraction unit test\n";
+  cf2.terms.push_back(1);
+  cf2.terms.push_back(2);
+  cf2.period=1;
+  cf3.terms.push_back(1);
+  cf3.terms.push_back(1);
+  cf3.terms.push_back(2);
+  cf3.period=2;
+  cf5.terms.push_back(1);
+  cf5.period=1;
+  cf7.terms.push_back(2);
+  cf7.terms.push_back(1);
+  cf7.terms.push_back(1);
+  cf7.terms.push_back(1);
+  cf7.terms.push_back(4);
+  cf7.period=4;
+  tassert(fabs(cf3.averageTerm()-cf7.averageTerm())<1e-15);
+  tassert(cf3.maximumTerm()<cf7.maximumTerm());
+  tassert(cf2.averageTerm()==2);
+  tassert(cf2.maximumTerm()==2);
+  tassert(cf5.averageTerm()==1);
+  tassert(cf5.maximumTerm()==1);
 }
 
 bool parsePrimeList()
@@ -595,6 +624,7 @@ void testuvmatrix()
 
 void runTests()
 {
+  testContinuedFraction();
 }
 
 void runLongTests()
