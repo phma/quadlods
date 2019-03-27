@@ -747,13 +747,15 @@ void sortPrimes()
   histogram hist(0,6.235); // log scale, 1 to 510
   PostScript ps;
   ContinuedFraction cf;
+  map<int,quadirr> qi;
   set<PrimeContinuedFraction> pcf;
   set<PrimeContinuedFraction>::iterator k;
   PrimeContinuedFraction pcf0;
   for (i=0;i<QL_MAX_DIMS;i++)
   {
     //cout<<nthprime(i)<<':';
-    cf=contFrac(nthquadQi(i));
+    qi[nthprime(i)]=nthquadQi(i);
+    cf=contFrac(qi[nthprime(i)]);
     for (j=0;false && j<cf.terms.size();j++)
     {
       if (j+cf.period==cf.terms.size())
@@ -775,12 +777,12 @@ void sortPrimes()
     writeshort(primeFile,k->cf.period);
     for (i=0;i<k->cf.terms.size();i++)
       writeshort(primeFile,k->cf.terms[i]);
-    primeText<<k->prime<<' '<<ldecimal(k->cf.averageTerm());
+    primeText<<k->prime<<' '<<qi[k->prime].stringval()<<'='<<ldecimal(qi[k->prime].realval())<<' '<<ldecimal(k->cf.averageTerm());
     for (i=j=0;i<40;i++,j++)
     {
       if (j>=k->cf.terms.size())
 	j-=k->cf.period;
-      primeText<<' '<<k->cf.terms[j];
+      primeText<<(i?' ':'\n')<<k->cf.terms[j];
     }
     primeText<<" ...\n";
   }
@@ -874,7 +876,7 @@ int main(int argc,char **argv)
     cout<<generic<<endl;
   }
   nthprime(0);
-  for (i=0;i<16;i++)
+  for (i=0;i<0;i++)
     checkEquivClasses(primes[i]);
   return !validArgs || !validCmd || testfail;
 }
