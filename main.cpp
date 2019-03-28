@@ -673,7 +673,8 @@ void checkEquivClasses(int p)
   map<double,quadirr> classes;
   map<double,vector<quadirr> > originals;
   map<double,quadirr>::iterator it;
-  quadirr q,eqc;
+  quadirr q;
+  QuadMax eqc;
   double rv;
   int minmaxterm=100000;
   ContinuedFraction cf;
@@ -693,8 +694,8 @@ void checkEquivClasses(int p)
 		try
 		{
 		  eqc=equivClass(q); // can throw OVERFLOW
-		  classes[eqc.realval()]=eqc;
-		  originals[eqc.realval()].push_back(q);
+		  classes[eqc.qi.realval()]=eqc.qi;
+		  originals[eqc.qi.realval()].push_back(q);
 		}
 		catch (...)
 		{
@@ -876,7 +877,7 @@ int main(int argc,char **argv)
     cout<<generic<<endl;
   }
   nthprime(0);
-  for (i=0;i<0;i++)
+  for (i=0;i<16;i++)
     checkEquivClasses(primes[i]);
   return !validArgs || !validCmd || testfail;
 }

@@ -63,6 +63,12 @@ public:
   void recip();
 };
 
+struct QuadMax
+{
+  quadirr qi;
+  int max;
+};
+
 quadirr nthquadQi(int n);
 ContinuedFraction contFrac(quadirr q);
-quadirr equivClass(quadirr q);
+QuadMax equivClass(quadirr q);

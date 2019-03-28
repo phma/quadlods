@@ -178,7 +178,7 @@ ContinuedFraction contFrac(quadirr q)
   return ret;
 }
 
-quadirr equivClass(quadirr q)
+QuadMax equivClass(quadirr q)
 /* There is an equivalence relation on numbers defined by ξ≡η iff ξ=(aη+b)/(cη+d)
  * for integers a,b,c,d where ad-bc=±1. If the numbers have continued fraction
  * expansions, this is the same as saying that the expansions have identical
@@ -189,7 +189,7 @@ quadirr equivClass(quadirr q)
  * in general, defining a representative requires the axiom of choice.
  */
 {
-  quadirr ret;
+  QuadMax ret;
   vector<quadirr> partials;
   int i,period;
   bool done=false;
@@ -214,9 +214,14 @@ quadirr equivClass(quadirr q)
 	period=partials.size()-1-i;
       }
   }
-  ret=partials.back();
+  ret.qi=partials.back();
+  ret.max=floor(partials.back().realval());
   for (i=1;i<period;i++)
-    if (partials[partials.size()-1-i].realval()<ret.realval())
-      ret=partials[partials.size()-1-i];
+  {
+    if (partials[partials.size()-1-i].realval()<ret.qi.realval())
+      ret.qi=partials[partials.size()-1-i];
+    if (partials[partials.size()-1-i].realval()>ret.max)
+      ret.max=floor(partials[partials.size()-1-i].realval());
+  }
   return ret;
 }
