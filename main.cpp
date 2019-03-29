@@ -667,6 +667,36 @@ void writeshort(ostream &file,unsigned short i)
   file.write(buf,2);
 }
 
+quadirr findMinMaxQuad(int p)
+{
+  int i,j,k,l;
+  map<double,quadirr> classes;
+  map<double,vector<quadirr> > originals;
+  map<double,quadirr>::iterator it;
+  quadirr q,ret;
+  QuadMax eqc;
+  double rv;
+  int minmaxterm=100000;
+  ContinuedFraction cf;
+  int triesSince=0;
+  bool cont=true;
+  for (i=1;cont;i=i+k+1)
+    for (k=0;cont && i>0;i--,k++)
+      for (j=1;j<=i;j++)
+	if (gcd(i,j)==1)
+	  for (l=0;l<k;l++)
+	    if (gcd(k,l)==1)
+	    {
+	      q=quadirr(l,k,j,i,p);
+	      cout<<q.stringval()<<endl;
+	      ret=q;
+	      triesSince++;
+	      if (triesSince>512)
+		cont=false;
+	    }
+  return ret;
+}
+
 void checkEquivClasses(int p)
 {
   int i,j,k,l;
@@ -877,7 +907,8 @@ int main(int argc,char **argv)
     cout<<generic<<endl;
   }
   nthprime(0);
-  for (i=0;i<16;i++)
+  for (i=0;i<0;i++)
     checkEquivClasses(primes[i]);
+  findMinMaxQuad(5);
   return !validArgs || !validCmd || testfail;
 }
