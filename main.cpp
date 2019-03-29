@@ -670,9 +670,6 @@ void writeshort(ostream &file,unsigned short i)
 quadirr findMinMaxQuad(int p)
 {
   int i,j,k,l;
-  map<double,quadirr> classes;
-  map<double,vector<quadirr> > originals;
-  map<double,quadirr>::iterator it;
   quadirr q,ret;
   QuadMax eqc;
   double rv;
@@ -688,12 +685,36 @@ quadirr findMinMaxQuad(int p)
 	    if (gcd(k,l)==1)
 	    {
 	      q=quadirr(l,k,j,i,p);
-	      cout<<q.stringval()<<endl;
-	      ret=q;
-	      triesSince++;
-	      if (triesSince>512)
+	      try
+	      {
+		eqc=equivClass(q); // can throw OVERFLOW
+		triesSince++;
+		if (eqc.max<minmaxterm)
+		{
+		  minmaxterm=eqc.max;
+		  ret=q;
+		  cf=contFrac(eqc.qi);
+		  triesSince=0;
+		}
+	      }
+	      catch (...)
+	      {
+	      }
+	      if (triesSince>4096)
 		cont=false;
 	    }
+  cout<<ret.stringval()<<' ';
+  for (i=0;i<cf.terms.size();i++)
+  {
+    if (i==cf.terms.size()-cf.period)
+      cout<<'(';
+    else
+      cout<<' ';
+    cout<<cf.terms[i];
+  }
+  if (cf.period)
+    cout<<')';
+  cout<<endl;
   return ret;
 }
 
@@ -907,8 +928,7 @@ int main(int argc,char **argv)
     cout<<generic<<endl;
   }
   nthprime(0);
-  for (i=0;i<0;i++)
-    checkEquivClasses(primes[i]);
-  findMinMaxQuad(5);
+  for (i=0;i<16;i++)
+    findMinMaxQuad(primes[i]);
   return !validArgs || !validCmd || testfail;
 }
