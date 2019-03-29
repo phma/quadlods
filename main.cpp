@@ -80,6 +80,7 @@ vector<int> primelist;
 string scramblestr;
 int ndims,niter,scramble;
 string filename;
+bool useMinMax=true;
 
 void listCommands()
 {
@@ -700,10 +701,10 @@ quadirr findMinMaxQuad(int p)
 	      catch (...)
 	      {
 	      }
-	      if (triesSince>4096)
+	      if (triesSince>256) // 4096
 		cont=false;
 	    }
-  cout<<ret.stringval()<<' ';
+  /*cout<<ret.stringval()<<' ';
   for (i=0;i<cf.terms.size();i++)
   {
     if (i==cf.terms.size()-cf.period)
@@ -714,7 +715,7 @@ quadirr findMinMaxQuad(int p)
   }
   if (cf.period)
     cout<<')';
-  cout<<endl;
+  cout<<endl;*/
   return ret;
 }
 
@@ -805,8 +806,12 @@ void sortPrimes()
   PrimeContinuedFraction pcf0;
   for (i=0;i<QL_MAX_DIMS;i++)
   {
-    //cout<<nthprime(i)<<':';
-    qi[nthprime(i)]=nthquadQi(i);
+    cout<<nthprime(i)<<"     \r";
+    cout.flush();
+    if (useMinMax)
+      qi[nthprime(i)]=findMinMaxQuad(nthprime(i));
+    else
+      qi[nthprime(i)]=nthquadQi(i);
     cf=contFrac(qi[nthprime(i)]);
     for (j=0;false && j<cf.terms.size();j++)
     {
@@ -928,7 +933,7 @@ int main(int argc,char **argv)
     cout<<generic<<endl;
   }
   nthprime(0);
-  for (i=0;i<16;i++)
+  for (i=0;i<0;i++)
     findMinMaxQuad(primes[i]);
   return !validArgs || !validCmd || testfail;
 }
