@@ -370,15 +370,22 @@ double quadlods::nthquad(int n)
 
 double ContinuedFraction::averageTerm() const
 {
-  int i;
+  int i,sixteens=0;
   double product=1;
   if (period<=0 || period>terms.size())
     return NAN;
   else
   {
     for (i=0;i<period;i++)
+    {
       product*=terms[terms.size()-i-1];
-    return pow(product,1./period);
+      if (product>16)
+      {
+	product/=16;
+	sixteens++;
+      }
+    }
+    return pow(product,1./period)*pow(16,(double)sixteens/period);
   }
 }
 
