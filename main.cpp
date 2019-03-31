@@ -446,6 +446,19 @@ void testFlower()
   ps.close();
 }
 
+void quadPlot()
+{
+  int i,j;
+  ps.open(filename.length()?filename:"quadplot.ps");
+  quads.init(ndims,resolution);
+  quads.init(primelist,resolution);
+  quads.setscramble(scramble);
+  quads.advance(-1);
+  quadplot(ps);
+  ps.trailer();
+  ps.close();
+}
+
 void testSeed()
 {
   int i,j,seedlen;
@@ -899,6 +912,7 @@ int main(int argc,char **argv)
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
   commands.push_back(command("test",runTests,"Run unit and other short tests"));
   commands.push_back(command("longtest",runLongTests,"Run long tests"));
+  commands.push_back(command("quadplot",quadPlot,"Plot quadratic irrationals mod 1"));
   commands.push_back(command("scatter",testScatter,"Scatter plot pairs of primes"));
   commands.push_back(command("circle",testCircle,"Test pairs of primes by estimating area of circle"));
   commands.push_back(command("fill",testFill,"Graph how well sequence fills space"));
@@ -918,6 +932,16 @@ int main(int argc,char **argv)
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==cmdstr)
       cmd=i;
+  switch (nthprime(0)) // This initializes the list of primes.
+  {
+    case 2:
+      cout<<"primes.dat has not been installed\n";
+      break;
+    case 5:
+      break;
+    default:
+      cout<<"primes.dat is non-standard\n";
+  }
   if (cmd>=0)
     if (validArgs)
       commands[cmd].fun();
@@ -932,7 +956,6 @@ int main(int argc,char **argv)
     listCommands();
     cout<<generic<<endl;
   }
-  nthprime(0);
   for (i=0;i<0;i++)
     findMinMaxQuad(primes[i]);
   return !validArgs || !validCmd || testfail;

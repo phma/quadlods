@@ -26,3 +26,4 @@
 #include "ps.h"
 
 void flowertest(Quadlods &quad,int iters,PostScript &ps);
+void quadplot(PostScript &ps);

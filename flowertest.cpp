@@ -28,6 +28,7 @@
 #include "flowertest.h"
 
 using namespace std;
+using namespace quadlods;
 
 void flowertest(Quadlods &quad,int iters,PostScript &ps)
 /* Draw a flower diagram of the sequence. The flower diagram of an unjumbled
@@ -69,6 +70,33 @@ void flowertest(Quadlods &quad,int iters,PostScript &ps)
 	  then=now;
 	}
       }
+    }
+    ps.endpage();
+  }
+}
+
+void quadplot(PostScript &ps)
+/* Draw all the quadratic irrationals mod 1 in the same manner as
+ * the flower diagram.
+ */
+{
+  int i,j,k,inx;
+  char buf[24];
+  time_t now,then;
+  double point;
+  double ang,r;
+  ps.setpaper(a4land,0);
+  ps.prolog();
+  for (j=0;j<1;j++)
+  {
+    ps.startpage();
+    ps.setscale(-sqrt(QL_MAX_DIMS),-sqrt(QL_MAX_DIMS),sqrt(QL_MAX_DIMS),sqrt(QL_MAX_DIMS));
+    for (i=0;i<QL_MAX_DIMS;i++)
+    {
+      point=nthquad(i);
+      r=sqrt(i+0.5);
+      ang=2*M_PI*point;
+      ps.dot(r*cos(ang),r*sin(ang));
     }
     ps.endpage();
   }
