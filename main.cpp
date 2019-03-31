@@ -80,7 +80,7 @@ vector<int> primelist;
 string scramblestr;
 int ndims,niter,scramble;
 string filename;
-bool useMinMax=true;
+bool useMinMax=false;
 
 void listCommands()
 {
