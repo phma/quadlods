@@ -363,7 +363,12 @@ double quadlods::nthquad(int n)
     return NAN;
   else
   {
-    compquad(primes[n],27/DBL_EPSILON,nmid,dmid);
+    if (primesCfSorted.size())
+      compquad(primesCfSorted[n].cf,27/DBL_EPSILON,nmid,dmid);
+    else
+    {
+      compquad(nthprime(n),27/DBL_EPSILON,nmid,dmid);
+    }
     return mpq_class(nmid,dmid).get_d();
   }
 }
