@@ -63,7 +63,8 @@ struct command
 };
 
 vector<command> commands;
-Quadlods quads,cirquads;
+Quadlods cirquads;
+map<int,Quadlods> quads;
 bool testfail=false;
 char rpint[][2]=
 { // relatively prime integers whose sum of squares is less than 100
@@ -381,11 +382,11 @@ void testCircle()
 {
   int i,j;
   ps.open(filename.length()?filename:"circletest.ps");
-  quads.init(ndims,resolution);
-  quads.init(primelist,resolution);
-  quads.setscramble(scramble);
-  quads.advance(-1);
-  circletest(quads,niter,ps);
+  quads[0].init(ndims,resolution);
+  quads[0].init(primelist,resolution);
+  quads[0].setscramble(scramble);
+  quads[0].advance(-1);
+  circletest(quads[0],niter,ps);
   ps.trailer();
   ps.close();
 }
@@ -397,17 +398,17 @@ void testScatter()
   allinx=ndims*(ndims-1)/2;
   ps.open(filename.length()?filename:"scattertest.ps");
   ps.prolog();
-  quads.init(ndims,resolution);
-  quads.init(primelist,resolution);
-  quads.setscramble(scramble);
-  quads.advance(-1);
-  for (i=0;i<quads.size();i++)
-    cout<<quads.getnum(i)<<'/'<<quads.getdenom(i)<<' '<<quads.getacc(i)<<endl;
-  for (i=0;i<quads.size();i++)
+  quads[0].init(ndims,resolution);
+  quads[0].init(primelist,resolution);
+  quads[0].setscramble(scramble);
+  quads[0].advance(-1);
+  for (i=0;i<quads[0].size();i++)
+    cout<<quads[0].getnum(i)<<'/'<<quads[0].getdenom(i)<<' '<<quads[0].getacc(i)<<endl;
+  for (i=0;i<quads[0].size();i++)
     for (j=0;j<i;j++)
     {
       inx=i*(i-1)/2+j;
-      plotxy(quads,i,j);
+      plotxy(quads[0],i,j);
       now=time(nullptr);
       if (now!=then)
       {
@@ -424,11 +425,11 @@ void testFill()
 {
   int i,j;
   ps.open(filename.length()?filename:"filltest.ps");
-  quads.init(ndims,resolution);
-  quads.init(primelist,resolution);
-  quads.setscramble(scramble);
-  quads.advance(-1);
-  filltest(quads,niter,ps);
+  quads[0].init(ndims,resolution);
+  quads[0].init(primelist,resolution);
+  quads[0].setscramble(scramble);
+  quads[0].advance(-1);
+  filltest(quads[0],niter,ps);
   ps.trailer();
   ps.close();
 }
@@ -437,11 +438,11 @@ void testFlower()
 {
   int i,j;
   ps.open(filename.length()?filename:"flowertest.ps");
-  quads.init(ndims,resolution);
-  quads.init(primelist,resolution);
-  quads.setscramble(scramble);
-  quads.advance(-1);
-  flowertest(quads,niter,ps);
+  quads[0].init(ndims,resolution);
+  quads[0].init(primelist,resolution);
+  quads[0].setscramble(scramble);
+  quads[0].advance(-1);
+  flowertest(quads[0],niter,ps);
   ps.trailer();
   ps.close();
 }
@@ -450,10 +451,10 @@ void quadPlot()
 {
   int i,j;
   ps.open(filename.length()?filename:"quadplot.ps");
-  quads.init(ndims,resolution);
-  quads.init(primelist,resolution);
-  quads.setscramble(scramble);
-  quads.advance(-1);
+  quads[0].init(ndims,resolution);
+  quads[0].init(primelist,resolution);
+  quads[0].setscramble(scramble);
+  quads[0].advance(-1);
   quadplot(ps);
   ps.trailer();
   ps.close();
@@ -465,8 +466,8 @@ void testSeed()
   vector<double> point;
   char *seedbuf;
   time_t now;
-  quads.init(5,1e10);
-  seedlen=quads.seedsize();
+  quads[0].init(5,1e10);
+  seedlen=quads[0].seedsize();
   cout<<seedlen<<" bytes needed to seed"<<endl;
   seedbuf=new char[seedlen];
   now=time(NULL);
@@ -474,10 +475,10 @@ void testSeed()
     seedbuf[i]=now>>(8*i);
   for (;i<seedlen;i++)
     seedbuf[i]=seedbuf[i-1]+seedbuf[i-sizeof(time_t)];
-  quads.seed(seedbuf,seedlen);
+  quads[0].seed(seedbuf,seedlen);
   for (i=0;i<30;i++)
   {
-    point=quads.dgen();
+    point=quads[0].dgen();
     for (j=0;j<point.size();j++)
       cout<<point[j]<<' ';
     cout<<endl;
@@ -526,12 +527,12 @@ void testuvmatrix()
     analyze=true;
     niter=7776000;
   }
-  quads.init(6,resolution);
-  quads.setscramble(scramble);
+  quads[0].init(6,resolution);
+  quads[0].setscramble(scramble);
   cout<<"Calculating determinants of 3×3 unit vector matrices\n";
   for (i=0;i<niter;i++)
   {
-    point=quads.dgen();
+    point=quads[0].dgen();
     row=spherePoint(point[0],point[1]);
     for (j=0;j<3;j++)
       mat[0][j]=row[j];
@@ -652,16 +653,16 @@ void textOutput()
   int i,j;
   ostream *out;
   vector<double> point;
-  quads.init(ndims,resolution);
-  quads.init(primelist,resolution);
-  quads.setscramble(scramble);
+  quads[0].init(ndims,resolution);
+  quads[0].init(primelist,resolution);
+  quads[0].setscramble(scramble);
   if (filename.length())
     out=new ofstream(filename);
   else
     out=&cout;
   for (i=0;i<niter;i++)
   {
-    point=quads.dgen();
+    point=quads[0].dgen();
     for (j=0;j<point.size();j++)
     {
       if (j)
@@ -807,7 +808,7 @@ void sortPrimes()
 {
   int i,j;
   const double logKhinchin=log(2.685452001065306);
-  quads.init(0,0);
+  quads[0].init(0,0);
   ofstream primeFile("primes.dat",ios::binary);
   ofstream primeText("primes.txt");
   histogram hist(0,6.235); // log scale, 1 to 510
