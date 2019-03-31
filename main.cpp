@@ -42,6 +42,7 @@
 #include "manysum.h"
 #include "flowertest.h"
 #include "matrix.h"
+#include "interact.h"
 
 #define tassert(x) testfail|=(!(x))
 
@@ -864,46 +865,6 @@ void sortPrimes()
   hist.plot(ps,HISTO_LOG);
   ps.setcolor(1,0,0);
   ps.line2p(xy(logKhinchin*3/6.235,2),xy(logKhinchin*3/6.235,2.1));
-}
-
-int commandInt(string &command)
-/* Removes the first word of command and returns it as an int.
- * The commands are four letters each.
- */
-{
-  int i,ret=0,ch;
-  for (i=0;i<command.length();i++)
-  {
-    ch=command[i];
-    if (isspace(ch))
-      break;
-    ch=toupper(ch);
-    if (i<4)
-      ret+=(ch&0xff)<<(8*(3-i));
-  }
-  command.erase(0,i);
-  return ret;
-}
-
-void reply(int code,bool done,string text)
-{
-  assert(code>=100 && code<1000);
-  cout<<code<<(done?' ':'-')<<text<<endl;
-}
-
-/* Commands for interactive mode, which can be used as a server:
- * init n s res: Initialize generator #n with s dimensions and resolution res.
- * form n dec/hex/flo/rat: Set format to decimal/hexadecimal/floating point/rational.
- * gene n i: Generate i points from generator n.
- * seed n: Seed generator n with random numbers.
- */
-void interact()
-{
-  bool cont=true;
-  string command;
-  reply(200,true,string("Quadlods version ")+VERSION+" ready");
-  getline(cin,command);
-  reply(400,true,"Invalid command");
 }
 
 int main(int argc,char **argv)
