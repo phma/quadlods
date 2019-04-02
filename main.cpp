@@ -133,6 +133,15 @@ void testContinuedFraction()
   tassert(cf5.maximumTerm()==1);
 }
 
+void testReverseScramble()
+{
+  cout<<"Reverse scramble unit test\n";
+  fillReverseScrambleTable(5,QL_SCRAMBLE_NONE);
+  fillReverseScrambleTable(5,QL_SCRAMBLE_POWER);
+  tassert(reverseScrambleTable[(QL_SCRAMBLE_NONE<<16)+5][10646]==5638);
+  tassert(reverseScrambleTable[(QL_SCRAMBLE_POWER<<16)+5][10646]==5642);
+}
+
 bool parsePrimeList()
 {
   string numstr;
@@ -641,6 +650,7 @@ void testuvmatrix()
 void runTests()
 {
   testContinuedFraction();
+  testReverseScramble();
 }
 
 void runLongTests()

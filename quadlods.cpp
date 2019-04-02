@@ -39,7 +39,6 @@
 #include <cmath>
 #include <string>
 #include <array>
-#include <map>
 #include "quadlods.h"
 #include "config.h"
 
@@ -62,7 +61,6 @@ namespace quadlods
     {5,32768},{5,59049},{4,10000},{4,14641},{4,20736},{4,28561}
   };
   array<int,2> primePower(unsigned short p);
-  void fillReverseScrambleTable(int p,int scrambletype);
   mpz_class thuemorse(int n);
   mpz_class minusthird(int n);
   mpz_class graydecode(mpz_class n);
@@ -163,7 +161,7 @@ void quadlods::fillReverseScrambleTable(int p,int scrambletype)
   array<int,2> pp=primePower(p);
   int i,j,dec,acc;
   vector<unsigned short> scrambleTable;
-  int inx=scrambletype<<16+p;
+  int inx=(scrambletype<<16)+p;
   if ((scrambletype==QL_SCRAMBLE_POWER || p<256) && reverseScrambleTable[inx].size()==0)
   {
     for (i=0;i<p;i++)

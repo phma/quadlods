@@ -24,6 +24,7 @@
 #ifndef QUADLODS_H
 #define QUADLODS_H
 #include <vector>
+#include <map>
 #include <gmpxx.h>
 
 #define QL_MODE_RICHTMYER 0
@@ -51,11 +52,13 @@
 namespace quadlods
 {
   extern std::vector<unsigned short> primes;
+  extern std::map<unsigned,std::vector<unsigned short> > reverseScrambleTable;
   unsigned gcd(unsigned a,unsigned b);
   int nthprime(int n);
   double nthquad(int n);
   unsigned relprime(unsigned n);
   unsigned scrambledig(unsigned dig,unsigned p);
+  void fillReverseScrambleTable(int p,int scrambletype);
 }
 
 class ContinuedFraction
