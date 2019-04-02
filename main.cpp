@@ -26,12 +26,11 @@
 #include <iomanip>
 #include <bitset>
 #include <set>
-#include <map>
 #include <ctime>
 #include <cassert>
 #include <cmath>
 #include <boost/program_options.hpp>
-#include "quadlods.h"
+#include "main.h"
 #include "config.h"
 #include "ps.h"
 #include "circletest.h"
