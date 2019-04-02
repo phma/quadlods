@@ -62,7 +62,21 @@ void interact()
 {
   bool cont=true;
   string command;
-  reply(200,true,string("Quadlods version ")+VERSION+" ready");
-  getline(cin,command);
-  reply(400,true,"Invalid command");
+  int opcode;
+  reply(220,true,string("Quadlods version ")+VERSION+" ready");
+  while (cont)
+  {
+    getline(cin,command);
+    opcode=commandInt(command);
+    switch (opcode)
+    {
+      case 0x45584954:
+      case 0x51554954:
+	cont=false;
+	reply(221,true,"Quadlods exiting");
+	break;
+      default:
+	reply(400,true,"Invalid command");
+    }
+  }
 }
