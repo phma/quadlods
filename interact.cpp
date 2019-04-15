@@ -103,7 +103,61 @@ void cmdInit(string command)
   }
   reply(replyCode,true,replyText);
 }
-  
+
+string toString(vector<mpq_class> tuple)
+{
+  string ret;
+  int i;
+  for (i=0;i<tuple.size();i++)
+  {
+    if (i)
+      ret+=' ';
+    ret+=tuple[i].get_str();
+  }
+  return ret;
+}
+
+void cmdGene(string command)
+{
+  int n,i,j;
+  int replyCode=200;
+  string replyText="OK";
+  vector<mpq_class> tuple;
+  try
+  {
+    n=stoi(firstWord(command));
+    i=stoi(firstWord(command));
+  }
+  catch (...)
+  {
+    replyCode=420;
+    replyText="Parse error";
+  }
+  if (replyCode<300 && quads.count(n)==0)
+  {
+    replyCode=410;
+    replyText="Generator is uninitialized";
+  }
+  if (replyCode<300)
+  {
+    if (i>0)
+      replyCode=220;
+    if (i<0)
+    {
+      replyCode=402;
+      replyText="Number of tuples must be positive";
+    }
+  }
+  if (replyCode==220)
+    for (j=0;j<i;j++)
+    {
+      tuple=quads[n].gen();
+      replyText=toString(tuple);
+      reply(replyCode,!(i-j-1),replyText);
+    }
+  else
+    reply(replyCode,true,replyText);
+}
 
 /* Commands for interactive mode, which can be used as a server:
  * init n s res scram: Initialize generator #n with s dimensions and resolution res.
@@ -130,6 +184,9 @@ void interact()
 	break;
       case 0x494e4954:
 	cmdInit(command);
+	break;
+      case 0x47454e45:
+	cmdGene(command);
 	break;
       default:
 	reply(400,true,"Invalid command");
