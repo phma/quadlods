@@ -25,8 +25,11 @@
 #include <cassert>
 #include "config.h"
 #include "interact.h"
+#include "ldecimal.h"
 #include "main.h"
 using namespace std;
+
+map<int,int> formats;
 
 int commandInt(string &command)
 /* Removes the first word of command and returns it as an int.
@@ -94,6 +97,8 @@ void cmdInit(string command)
     try
     {
       quads[n].init(s,res);
+      if (formats[n]==0)
+	formats[n]=10;
     }
     catch (...)
     {
@@ -104,15 +109,29 @@ void cmdInit(string command)
   reply(replyCode,true,replyText);
 }
 
-string toString(vector<mpq_class> tuple)
+string toString(vector<mpq_class> tuple,int format)
 {
   string ret;
+  double dval;
   int i;
+  char buf[32];
   for (i=0;i<tuple.size();i++)
   {
     if (i)
       ret+=' ';
-    ret+=tuple[i].get_str();
+    if (format&0xff00)
+      ret+=tuple[i].get_str(format&0xff);
+    else
+    {
+      dval=tuple[i].get_d();
+      if (format==10)
+	ret+=ldecimal(dval);
+      else
+      {
+	snprintf(buf,31,"%a",dval);
+	ret+=buf;
+      }
+    }
   }
   return ret;
 }
@@ -152,11 +171,91 @@ void cmdGene(string command)
     for (j=0;j<i;j++)
     {
       tuple=quads[n].gen();
-      replyText=toString(tuple);
+      replyText=toString(tuple,formats[n]);
       reply(replyCode,!(i-j-1),replyText);
     }
   else
     reply(replyCode,true,replyText);
+}
+
+size_t findsubseq(string haystack,string needle)
+{
+  size_t i,j,ret=ULLONG_MAX;
+  for (i=j=0;i<haystack.length() && j<needle.length();i++)
+    if (tolower(haystack[i])==tolower(needle[j]))
+      if (++j==needle.length())
+	ret=i;
+  return ret;
+}
+
+int parseFormat(string fmt)
+{
+  size_t pos,lastpos=ULLONG_MAX;
+  int ret=-1;
+  pos=findsubseq(fmt,"dec");
+  if (pos<lastpos)
+  {
+    lastpos=pos;
+    ret=10;
+  }
+  pos=findsubseq(fmt,"hex");
+  if (pos<lastpos)
+  {
+    lastpos=pos;
+    ret=16;
+  }
+  pos=findsubseq(fmt,"flo");
+  if (pos<lastpos)
+  {
+    lastpos=pos;
+    ret=0;
+  }
+  pos=findsubseq(fmt,"rat");
+  if (pos<lastpos)
+  {
+    lastpos=pos;
+    ret=256;
+  }
+  return ret;
+}
+
+void cmdForm(string command)
+{
+  int n,fmt,fmt1,replyCode=200;
+  string replyText="OK";
+  vector<mpq_class> tuple;
+  try
+  {
+    n=stoi(firstWord(command));
+  }
+  catch (...)
+  {
+    replyCode=420;
+    replyText="Parse error";
+  }
+  if (replyCode<300 && quads.count(n)==0)
+  {
+    replyCode=410;
+    replyText="Generator is uninitialized";
+  }
+  if (replyCode<300)
+    fmt=formats[n];
+  while (replyCode<300 && command.length())
+  {
+    fmt1=parseFormat(firstWord(command));
+    if (fmt1<0)
+    {
+      replyCode=421;
+      replyText="Unknown format";
+    }
+    if (fmt1&0xff)
+      fmt=(fmt&0xff00)+fmt1;
+    else
+      fmt=(fmt&0xff)+fmt1;
+  }
+  if (replyCode<300)
+    formats[n]=fmt;
+  reply(replyCode,true,replyText);
 }
 
 /* Commands for interactive mode, which can be used as a server:
@@ -187,6 +286,9 @@ void interact()
 	break;
       case 0x47454e45:
 	cmdGene(command);
+	break;
+      case 0x464f524d:
+	cmdForm(command);
 	break;
       default:
 	reply(400,true,"Invalid command");
