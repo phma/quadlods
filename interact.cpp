@@ -78,9 +78,17 @@ void cmdInit(string command)
   string scramStr;
   int replyCode=200;
   string replyText="OK";
-  n=stoi(firstWord(command));
-  s=stoi(firstWord(command));
-  res=stod(firstWord(command));
+  try
+  {
+    n=stoi(firstWord(command));
+    s=stoi(firstWord(command));
+    res=stod(firstWord(command));
+  }
+  catch (...)
+  {
+    replyCode=420;
+    replyText="Parse error";
+  }
   scramStr=firstWord(command);
   if (s<0)
   {
@@ -273,6 +281,11 @@ void interact()
   while (cont)
   {
     getline(cin,command);
+    if (!cin)
+    {
+      cont=false;
+      continue;
+    }
     opcode=commandInt(command);
     switch (opcode)
     {
