@@ -26,3 +26,4 @@
 #include "quadlods.h"
 
 extern std::map<int,Quadlods> quads;
+int parseScramble(std::string scramblestr);

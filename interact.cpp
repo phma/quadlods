@@ -73,7 +73,7 @@ void reply(int code,bool done,string text)
 
 void cmdInit(string command)
 {
-  int n,s;
+  int n,s,scram;
   double res;
   string scramStr;
   int replyCode=200;
@@ -102,11 +102,21 @@ void cmdInit(string command)
   }
   if (replyCode<300)
   {
+    scram=parseScramble(scramStr);
+    if (scram<0)
+    {
+      replyCode=402;
+      replyText="Unrecognized scrambling method";
+    }
+  }
+  if (replyCode<300)
+  {
     try
     {
       quads[n].init(s,res);
       if (formats[n]==0)
 	formats[n]=10;
+      quads[n].setscramble(scram);
     }
     catch (...)
     {
