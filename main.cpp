@@ -193,14 +193,14 @@ array<short,676> digraphs(string word)
   return ret;
 }
 
-bool parseScramble()
+int parseScramble(string scramblestr)
 {
   array<short,676> dig0=digraphs("None");
   array<short,676> dig1=digraphs("Third");
   array<short,676> dig2=digraphs("Thue-Morse");
   array<short,676> dig3=digraphs("Gray");
   array<short,676> digj=digraphs(scramblestr);
-  int i,match0=0,match1=0,match2=0,match3=0,maxmatch,nmatch=0;
+  int i,ret,match0=0,match1=0,match2=0,match3=0,maxmatch,nmatch=0;
   for (i=0;i<676;i++)
   {
     match0+=dig0[i]*digj[i];
@@ -218,29 +218,28 @@ bool parseScramble()
   if (match0==maxmatch)
   {
     nmatch++;
-    scramble=QL_SCRAMBLE_NONE;
+    ret=QL_SCRAMBLE_NONE;
   }
   if (match1==maxmatch)
   {
     nmatch++;
-    scramble=QL_SCRAMBLE_THIRD;
+    ret=QL_SCRAMBLE_THIRD;
   }
   if (match2==maxmatch)
   {
     nmatch++;
-    scramble=QL_SCRAMBLE_THUEMORSE;
+    ret=QL_SCRAMBLE_THUEMORSE;
   }
   if (match3==maxmatch)
   {
     nmatch++;
-    scramble=QL_SCRAMBLE_GRAY;
+    ret=QL_SCRAMBLE_GRAY;
   }
   if (nmatch>1)
   {
-    cerr<<"Unrecognized or ambiguous scrambling: "<<scramblestr<<endl;
-    scramble=-1;
+    ret=-1;
   }
-  return scramble>=0;
+  return ret;
 }
 
 void plotxy(Quadlods& quad,int xdim,int ydim)
@@ -927,7 +926,10 @@ int main(int argc,char **argv)
   {
     po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
     po::notify(vm);
-    validArgs=parsePrimeList()&parseScramble();
+    scramble=parseScramble(scramblestr);
+    if (scramble<0)
+      cerr<<"Unrecognized or ambiguous scrambling: "<<scramblestr<<endl;
+    validArgs=parsePrimeList()&scramble>=0;
   }
   catch (exception &e)
   {
