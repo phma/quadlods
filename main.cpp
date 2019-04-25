@@ -193,7 +193,7 @@ array<short,676> digraphs(string word)
   return ret;
 }
 
-bool parseJumble()
+bool parseScramble()
 {
   array<short,676> dig0=digraphs("None");
   array<short,676> dig1=digraphs("Third");
@@ -237,7 +237,7 @@ bool parseJumble()
   }
   if (nmatch>1)
   {
-    cerr<<"Unrecognized or ambiguous jumbling: "<<scramblestr<<endl;
+    cerr<<"Unrecognized or ambiguous scrambling: "<<scramblestr<<endl;
     scramble=-1;
   }
   return scramble>=0;
@@ -927,7 +927,7 @@ int main(int argc,char **argv)
   {
     po::store(po::command_line_parser(argc,argv).options(cmdline_options).positional(p).run(),vm);
     po::notify(vm);
-    validArgs=parsePrimeList()&parseJumble();
+    validArgs=parsePrimeList()&parseScramble();
   }
   catch (exception &e)
   {

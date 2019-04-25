@@ -31,7 +31,7 @@ using namespace std;
 using namespace quadlods;
 
 void flowertest(Quadlods &quad,int iters,PostScript &ps)
-/* Draw a flower diagram of the sequence. The flower diagram of an unjumbled
+/* Draw a flower diagram of the sequence. The flower diagram of an unscrambled
  * sequence with step φ (from prime 5) is the pattern of flowers in an
  * asteraceous flower head.
  */
