@@ -183,7 +183,7 @@ array<short,676> digraphs(string word)
   array<short,676> ret;
   for (i=0;i<676;i++)
     ret[i]=0;
-  for (i=0;i<word.length()-1;i++)
+  for (i=0;i+1<word.length();i++)
   {
     l0=tolower(word[i]);
     l1=tolower(word[i+1]);
