@@ -27,6 +27,7 @@
 #include "interact.h"
 #include "ldecimal.h"
 #include "main.h"
+#include "random.h"
 using namespace std;
 
 map<int,int> formats;
@@ -206,6 +207,36 @@ size_t findsubseq(string haystack,string needle)
   return ret;
 }
 
+void cmdSeed(string command)
+{
+  int n,i,b;
+  int replyCode=200;
+  string replyText="OK";
+  vector<char> bytes;
+  try
+  {
+    n=stoi(firstWord(command));
+  }
+  catch (...)
+  {
+    replyCode=420;
+    replyText="Parse error";
+  }
+  if (replyCode<300 && quads.count(n)==0)
+  {
+    replyCode=410;
+    replyText="Generator is uninitialized";
+  }
+  if (replyCode<300)
+  {
+    b=quads[n].seedsize();
+    for (i=0;i<b;i++)
+      bytes.push_back(rng.ucrandom());
+    quads[n].seed(&bytes[0],b);
+  }
+  reply(replyCode,true,replyText);
+}
+
 int parseFormat(string fmt)
 {
   size_t pos,lastpos=ULLONG_MAX;
@@ -312,6 +343,9 @@ void interact()
 	break;
       case 0x464f524d:
 	cmdForm(command);
+	break;
+      case 0x53454544:
+	cmdSeed(command);
 	break;
       default:
 	reply(400,true,"Invalid command");
