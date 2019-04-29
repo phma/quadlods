@@ -95,6 +95,26 @@ void listCommands()
     cout<<setw(15)<<left<<commands[i].word<<commands[i].desc<<'\n';
 }
 
+int parseInt(string intstr)
+{
+  int ret;
+  size_t idx;
+  ret=stoi(intstr,&idx);
+  if (idx<intstr.length())
+    throw(invalid_argument("parseInt"));
+  return ret;
+}
+
+double parseDouble(string intstr)
+{
+  double ret;
+  size_t idx;
+  ret=stod(intstr,&idx);
+  if (idx<intstr.length())
+    throw(invalid_argument("parseInt"));
+  return ret;
+}
+
 bool isValidPrime(int n)
 {
   int i;
@@ -158,12 +178,20 @@ bool parsePrimeList()
     {
       if (numstr.find_first_not_of("0123456789")>numstr.length())
       {
-	num=stoi(numstr);
-	if (isValidPrime(num))
-	  primelist.push_back(num);
-	else
+	try
 	{
-	  cerr<<num<<" is not a prime less than 65535\n";
+	  num=parseInt(numstr);
+	  if (isValidPrime(num))
+	    primelist.push_back(num);
+	  else
+	  {
+	    cerr<<num<<" is not a prime less than 65535\n";
+	    ret=false;
+	  }
+	}
+	catch (...)
+	{
+	  cerr<<numstr<<" is out of range for an int\n";
 	  ret=false;
 	}
       }

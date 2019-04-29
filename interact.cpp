@@ -81,9 +81,9 @@ void cmdInit(string command)
   string replyText="OK";
   try
   {
-    n=stoi(firstWord(command));
-    s=stoi(firstWord(command));
-    res=stod(firstWord(command));
+    n=parseInt(firstWord(command));
+    s=parseInt(firstWord(command));
+    res=parseDouble(firstWord(command));
   }
   catch (...)
   {
@@ -163,8 +163,8 @@ void cmdGene(string command)
   vector<mpq_class> tuple;
   try
   {
-    n=stoi(firstWord(command));
-    i=stoi(firstWord(command));
+    n=parseInt(firstWord(command));
+    i=parseInt(firstWord(command));
   }
   catch (...)
   {
@@ -215,7 +215,7 @@ void cmdSeed(string command)
   vector<char> bytes;
   try
   {
-    n=stoi(firstWord(command));
+    n=parseInt(firstWord(command));
   }
   catch (...)
   {
@@ -275,7 +275,7 @@ void cmdForm(string command)
   vector<mpq_class> tuple;
   try
   {
-    n=stoi(firstWord(command));
+    n=parseInt(firstWord(command));
   }
   catch (...)
   {
