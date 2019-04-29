@@ -309,6 +309,12 @@ void cmdForm(string command)
   reply(replyCode,true,replyText);
 }
 
+void cmdHelp(string command)
+{
+  int replyCode=220;
+  string replyText=gettext("help");
+}
+
 /* Commands for interactive mode, which can be used as a server:
  * init n s res scram: Initialize generator #n with s dimensions and resolution res.
  * form n dec/hex/flo/rat: Set format to decimal/hexadecimal/floating point/rational.

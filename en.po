@@ -1,0 +1,39 @@
+# English translations for Quadlods package.
+# Copyright (C) 2019 THE Quadlods'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Quadlods package.
+# Pierre Abbat <phma@bezitopo.org>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Quadlods\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-29 04:17-0400\n"
+"PO-Revision-Date: 2019-04-29 04:25-0400\n"
+"Last-Translator: Pierre Abbat <phma@bezitopo.org>\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Language: en_US\n"
+"X-Source-Language: C\n"
+
+#: interact.cpp:315
+msgid "help"
+msgstr ""
+"Commands, scramblings, and formats are case-insensitive.\n"
+"INIT n s res scram\n"
+"     Initialize generator #n with s dimensions and resolution res.\n"
+"     scram can be none, third, Thue-Morse, or Gray.\n"
+"     Example: INIT 1 5 1e17 Gray\n"
+"FORM n fmt\n"
+"     Set format of generator n to fmt.\n"
+"     fmt can be decimal, hex, floating, or rational.\n"
+"     Example: FORM 8 rational\n"
+"GENE n i\n"
+"     Generate i points from generator n.\n"
+"     Example: GENE 3 95\n"
+"SEED n\n"
+"     Seed generator n with random numbers.\n"
+"     Example: SEED 0"
