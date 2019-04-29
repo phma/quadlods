@@ -23,12 +23,14 @@
  */
 #include <iostream>
 #include <cassert>
+#include <boost/locale.hpp>
 #include "config.h"
 #include "interact.h"
 #include "ldecimal.h"
 #include "main.h"
 #include "random.h"
 using namespace std;
+using namespace boost::locale;
 
 map<int,int> formats;
 
@@ -318,6 +320,9 @@ void interact()
   bool cont=true;
   string command;
   int opcode;
+  generator gen;
+  gen.add_messages_path(".");
+  gen.add_messages_domain("interact");
   reply(220,true,string("Quadlods version ")+VERSION+" ready");
   while (cont)
   {
