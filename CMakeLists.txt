@@ -10,6 +10,15 @@ add_library(quadlib1 SHARED quadlods.cpp)
 add_custom_command(OUTPUT primes.dat COMMAND quadlods sortprimes)
 #primes.dat does not depend on quadlods because it's just math and doesn't change.
 add_custom_target(primesdat ALL DEPENDS primes.dat)
+
+set(TRANSLATIONS en)
+foreach(lang ${TRANSLATIONS})
+  message(STATUS lang=${lang})
+  file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${lang}/LC_MESSAGES)
+  add_custom_command(OUTPUT ${lang}/LC_MESSAGES/interact.mo COMMAND msgfmt -o ${lang}/LC_MESSAGES/interact.mo ${PROJECT_SOURCE_DIR}/${lang}/LC_MESSAGES/interact.po)
+  add_custom_target(mo_${lang} ALL DEPENDS ${lang}/LC_MESSAGES/interact.mo)
+endforeach(lang)
+
 install(TARGETS quadlods DESTINATION bin)
 install(TARGETS quadlib0 quadlib1 DESTINATION lib)
 install(FILES quadlods.h DESTINATION include)
