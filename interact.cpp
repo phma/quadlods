@@ -327,8 +327,10 @@ void interact()
   string command;
   int opcode;
   generator gen;
-  gen.add_messages_path(".");
+  gen.add_messages_path(SHARE_DIR);
   gen.add_messages_domain("interact");
+  locale::global(gen("en"));
+  command=dgettext("interact","help");
   reply(220,true,string("Quadlods version ")+VERSION+" ready");
   while (cont)
   {
