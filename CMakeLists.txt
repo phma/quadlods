@@ -13,10 +13,10 @@ add_custom_target(primesdat ALL DEPENDS primes.dat)
 
 set(TRANSLATIONS en)
 foreach(lang ${TRANSLATIONS})
-  message(STATUS lang=${lang})
   file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${lang}/LC_MESSAGES)
   add_custom_command(OUTPUT ${lang}/LC_MESSAGES/interact.mo COMMAND msgfmt -o ${lang}/LC_MESSAGES/interact.mo ${PROJECT_SOURCE_DIR}/${lang}/LC_MESSAGES/interact.po)
   add_custom_target(mo_${lang} ALL DEPENDS ${lang}/LC_MESSAGES/interact.mo)
+  install(FILES ${PROJECT_BINARY_DIR}/${lang}/LC_MESSAGES/interact.mo DESTINATION share/quadlods/${lang}/LC_MESSAGES)
 endforeach(lang)
 
 install(TARGETS quadlods DESTINATION bin)
