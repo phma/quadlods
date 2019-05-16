@@ -330,7 +330,8 @@ void interact()
   gen.add_messages_path(SHARE_DIR);
   gen.add_messages_domain("interact");
   locale::global(gen("en"));
-  command=dgettext("interact","help");
+  command=boost::locale::gettext("help");
+  cerr<<command;
   reply(220,true,string("Quadlods version ")+VERSION+" ready");
   while (cont)
   {
