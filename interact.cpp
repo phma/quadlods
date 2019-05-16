@@ -312,7 +312,16 @@ void cmdForm(string command)
 void cmdHelp(string command)
 {
   int replyCode=220;
-  string replyText=gettext("help");
+  string replyText=boost::locale::gettext("help");
+  string line;
+  size_t pos;
+  while ((pos=replyText.find('\n'))<=replyText.length())
+  {
+    line=replyText.substr(0,pos);
+    reply(replyCode,false,line);
+    replyText.erase(0,pos+1);
+  }
+  reply(replyCode,true,replyText);
 }
 
 /* Commands for interactive mode, which can be used as a server:
@@ -330,8 +339,6 @@ void interact()
   gen.add_messages_path(SHARE_DIR);
   gen.add_messages_domain("interact");
   locale::global(gen("en"));
-  command=boost::locale::gettext("help");
-  cerr<<command;
   reply(220,true,string("Quadlods version ")+VERSION+" ready");
   while (cont)
   {
@@ -360,6 +367,9 @@ void interact()
 	break;
       case 0x53454544:
 	cmdSeed(command);
+	break;
+      case 0x48454c50:
+	cmdHelp(command);
 	break;
       default:
 	reply(400,true,"Invalid command");
