@@ -26,6 +26,7 @@
 #include <ctime>
 #include <cmath>
 #include "flowertest.h"
+#include "histogram.h"
 
 using namespace std;
 using namespace quadlods;
@@ -84,20 +85,36 @@ void quadplot(PostScript &ps)
   char buf[24];
   time_t now,then;
   double point;
-  double ang,r;
+  double ang,r,x,y;
+  double a,comb=1.625;
+  histogram hist(-0.1,0.1);
   ps.setpaper(a4land,0);
   ps.prolog();
   for (j=0;j<1;j++)
   {
     ps.startpage();
     ps.setscale(-sqrt(QL_MAX_DIMS),-sqrt(QL_MAX_DIMS),sqrt(QL_MAX_DIMS),sqrt(QL_MAX_DIMS));
+    ps.setcolor(1,0,1);
+    a=floor(sqrt(QL_MAX_DIMS)/comb);
+    for (i=-a;i<=a;i++)
+      ps.line2p(xy(-sqrt(QL_MAX_DIMS),i*comb),xy(sqrt(QL_MAX_DIMS),i*comb));
+    ps.setcolor(0,0,0);
     for (i=0;i<QL_MAX_DIMS;i++)
     {
       point=nthquad(i);
       r=sqrt(i+0.5);
       ang=2*M_PI*point;
-      ps.dot(r*cos(ang),r*sin(ang));
+      x=r*cos(ang);
+      y=r*sin(ang);
+      ps.dot(x,y);
+      if (x>2*abs(y))
+      {
+	hist<<y;
+      }
     }
     ps.endpage();
   }
+  ps.startpage();
+  hist.plot(ps,HISTO_LINEAR);
+  ps.endpage();
 }
