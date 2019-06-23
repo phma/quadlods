@@ -885,7 +885,7 @@ void sortPrimes()
     writeshort(primeFile,k->cf.period);
     for (i=0;i<k->cf.terms.size();i++)
       writeshort(primeFile,k->cf.terms[i]);
-    primeText<<k->prime<<' '<<qi[k->prime].stringval()<<'='<<ldecimal(qi[k->prime].realval())<<' '<<ldecimal(k->cf.averageTerm());
+    primeText<<k->prime<<' '<<qi[k->prime].stringval()<<'='<<ldecimal(qi[k->prime].realval())<<' '<<ldecimal(k->cf.averageTerm())<<' '<<k->cf.maximumTerm();
     for (i=j=0;i<40;i++,j++)
     {
       if (j>=k->cf.terms.size())
