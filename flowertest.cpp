@@ -112,13 +112,13 @@ void quadplot(PostScript &ps)
       if (x>2*abs(y))
       {
 	hist<<y;
-	if (y<0 && y>-2.6*comb)
-	  cout<<i<<' '<<y/comb<<endl;
+	//if (y<0 && y>-2.6*comb)
+	  //cout<<i<<' '<<y/comb<<endl;
       }
     }
     ps.endpage();
   }
-  ps.startpage();
-  hist.plot(ps,HISTO_LINEAR);
-  ps.endpage();
+  //ps.startpage();
+  //hist.plot(ps,HISTO_LINEAR);
+  //ps.endpage();
 }
