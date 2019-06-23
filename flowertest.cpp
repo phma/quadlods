@@ -95,7 +95,7 @@ void quadplot(PostScript &ps)
     ps.startpage();
     ps.setscale(-sqrt(QL_MAX_DIMS),-sqrt(QL_MAX_DIMS),sqrt(QL_MAX_DIMS),sqrt(QL_MAX_DIMS));
     ps.setcolor(1,0,1);
-    a=floor(sqrt(QL_MAX_DIMS)/comb);
+    a=-floor(sqrt(QL_MAX_DIMS)/comb);
     for (i=-a;i<=a;i++)
       ps.line2p(xy(-sqrt(QL_MAX_DIMS),i*comb),xy(sqrt(QL_MAX_DIMS),i*comb));
     ps.setcolor(0,0,0);
@@ -106,6 +106,8 @@ void quadplot(PostScript &ps)
       ang=2*M_PI*point;
       x=r*cos(ang);
       y=r*sin(ang);
+      if (i==4185) // max term increases from 253 to 254
+	ps.setcolor(1,0,1);
       ps.dot(x,y);
       if (x>2*abs(y))
       {
