@@ -843,11 +843,12 @@ void checkEquivClasses(int p)
 
 void sortPrimes()
 {
-  int i,j;
+  int i,j,n;
   const double logKhinchin=log(2.685452001065306);
   quads[0].init(0,0);
   ofstream primeFile("primes.dat",ios::binary);
   ofstream primeText("primes.txt");
+  ofstream bFile("b322289.txt");
   histogram hist(0,6.235); // log scale, 1 to 510
   PostScript ps;
   ContinuedFraction cf;
@@ -878,13 +879,15 @@ void sortPrimes()
     pcf.insert(pcf0);
     hist<<log(pcf0.cf.averageTerm());
   }
-  for (k=pcf.begin();k!=pcf.end();k++)
+  for (n=1,k=pcf.begin();k!=pcf.end();n++,k++)
   {
     writeshort(primeFile,k->prime);
     writeshort(primeFile,k->cf.terms.size());
     writeshort(primeFile,k->cf.period);
     for (i=0;i<k->cf.terms.size();i++)
       writeshort(primeFile,k->cf.terms[i]);
+    if (n<=4185)
+      bFile<<n<<' '<<k->prime<<endl;
     primeText<<k->prime<<' '<<qi[k->prime].stringval()<<'='<<ldecimal(qi[k->prime].realval())<<' '<<ldecimal(k->cf.averageTerm())<<' '<<k->cf.maximumTerm();
     for (i=j=0;i<40;i++,j++)
     {
