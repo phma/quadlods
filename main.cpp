@@ -844,11 +844,13 @@ void checkEquivClasses(int p)
 void sortPrimes()
 {
   int i,j,n;
+  int min[512],max[512];
   const double logKhinchin=log(2.685452001065306);
   quads[0].init(0,0);
   ofstream primeFile("primes.dat",ios::binary);
   ofstream primeText("primes.txt");
   ofstream bFile("b322289.txt");
+  ofstream minMaxFile("minmax.txt");
   histogram hist(0,6.235); // log scale, 1 to 510
   PostScript ps;
   ContinuedFraction cf;
@@ -856,6 +858,11 @@ void sortPrimes()
   set<PrimeContinuedFraction> pcf;
   set<PrimeContinuedFraction>::iterator k;
   PrimeContinuedFraction pcf0;
+  for (i=0;i<512;i++)
+  {
+    min[i]=65536;
+    max[i]=0;
+  }
   for (i=0;i<QL_MAX_DIMS;i++)
   {
     cout<<nthprime(i)<<"     \r";
@@ -896,7 +903,13 @@ void sortPrimes()
       primeText<<(i?' ':'\n')<<k->cf.terms[j];
     }
     primeText<<" ...\n";
+    if (k->prime>max[k->cf.maximumTerm()])
+      max[k->cf.maximumTerm()]=k->prime;
+    if (k->prime<min[k->cf.maximumTerm()])
+      min[k->cf.maximumTerm()]=k->prime;
   }
+  for (i=1;i<511;i++)
+    minMaxFile<<i<<' '<<min[i]<<' '<<max[i]<<'\n';
   ps.open("primes.ps");
   ps.setpaper(a4land,0);
   ps.prolog();
