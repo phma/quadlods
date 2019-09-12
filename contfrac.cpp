@@ -30,6 +30,14 @@ using namespace std;
 using namespace quadlods;
 
 quadirr nthquadQi(int n)
+/* Returns the quadratic irrational of the nth prime.
+ * If the prime is congruent to 1 mod 4, it returns (sqrt(p)+1)/2, whose maximum
+ * continued fraction term is half or less that of sqrt(p).
+ * If the prime is congruent to 3 mod 4, it returns sqrt(p). The continued
+ * fraction terms of sqrt(p) and (sqrt(p)+1)/2 are the same, except for the
+ * first term and a rotation.
+ * If the prime is 2, sqrt(p) has the smaller maximum term.
+ */
 {
   int p=nthprime(n);
   if ((p-1)&3)

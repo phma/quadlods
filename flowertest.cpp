@@ -79,6 +79,15 @@ void flowertest(Quadlods &quad,int iters,PostScript &ps)
 void quadplot(PostScript &ps)
 /* Draw all the quadratic irrationals mod 1 in the same manner as
  * the flower diagram.
+ *
+ * At a certain point, the curves of the graph bend. This happens when
+ * primes greater than 65536 would be interspersed with primes less than
+ * 65536, but the greater primes are not computed by the program and hence
+ * not counted.
+ *
+ * If m is odd, the primes with maximum term m are between m² and (m+2)² and
+ * are congruent to 1 mod 4. If m is even, the primes with maximum term m are
+ * between (m/2)² and (m/2+1)² and are congruent to 2 or 3 mod 4.
  */
 {
   int i,j,k,inx;
