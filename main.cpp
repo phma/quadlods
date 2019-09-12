@@ -850,7 +850,7 @@ void sortPrimes()
   ofstream primeFile("primes.dat",ios::binary);
   ofstream primeText("primes.txt");
   ofstream bFile("b322289.txt");
-  ofstream minMaxFile("minmax.txt");
+  //ofstream minMaxFile("minmax.txt");
   histogram hist(0,6.235); // log scale, 1 to 510
   PostScript ps;
   ContinuedFraction cf;
@@ -908,8 +908,8 @@ void sortPrimes()
     if (k->prime<min[k->cf.maximumTerm()])
       min[k->cf.maximumTerm()]=k->prime;
   }
-  for (i=1;i<511;i++)
-    minMaxFile<<i<<' '<<min[i]<<' '<<max[i]<<'\n';
+  //for (i=1;i<511;i++)
+    //minMaxFile<<i<<' '<<min[i]<<' '<<max[i]<<'\n';
   ps.open("primes.ps");
   ps.setpaper(a4land,0);
   ps.prolog();
