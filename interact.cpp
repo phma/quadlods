@@ -390,7 +390,7 @@ void interact()
   generator gen;
   gen.add_messages_path(SHARE_DIR);
   gen.add_messages_domain("interact");
-  locale::global(gen("en"));
+  locale::global(gen("en_US.UTF-8")); // UTF-8 because of √ sign
   reply(220,true,string("Quadlods version ")+VERSION+" ready");
   while (cont)
   {
