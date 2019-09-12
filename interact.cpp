@@ -332,8 +332,16 @@ void cmdCfra(string command)
   }
   if (replyCode<300)
   {
-    q=quadirr(a,b,c,d,p);
-    cf=contFrac(q);
+    try
+    {
+      q=quadirr(a,b,c,d,p);
+      cf=contFrac(q);
+    }
+    catch (int e)
+    {
+      replyCode=410;
+      replyText="Error "+to_string(e);
+    }
   }
   if (replyCode<300)
   {

@@ -24,6 +24,7 @@
 #include "quadlods.h"
 
 #define OVERFLOW 1
+#define ZERODIV 2
 
 class quadirr
 /* Represents the quadratic irrational a/b+c*sqrt(p)/d.
@@ -59,6 +60,7 @@ public:
   double realval();
   std::string stringval();
   bool operator==(const quadirr &r) const;
+  bool is0();
   quadirr& operator-=(int n);
   void recip();
 };

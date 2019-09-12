@@ -82,6 +82,22 @@ bool quadirr::operator==(const quadirr &r) const
     return a*r.b==b*r.a && p==r.p && c*r.d==d*r.c;
 }
 
+bool quadirr::is0()
+{
+  int i;
+  for (i=2;i*i<=p;i++)
+    if (p%(i*i)==0)
+    {
+      c*=i;
+      p/=i*i;
+      i--;
+    }
+  if (p==1)
+    return a*d+b*c==0;
+  else
+    return a==0 && c==0;
+}
+
 quadirr& quadirr::operator-=(int n)
 {
   a-=b*n;
@@ -133,6 +149,8 @@ void quadirr::recip()
   if (a!=A || b!=B || c!=C || d!=D)
     throw OVERFLOW;
   gc=gcd(abs(a),abs(b));
+  if (gc==0)
+    throw ZERODIV;
   a/=gc;
   b/=gc;
   gc=gcd(abs(c),abs(d));
@@ -162,7 +180,13 @@ ContinuedFraction contFrac(quadirr q)
     {
       partials.push_back(partials.back());
       partials.back()-=ret.terms.back();
-      partials.back().recip();
+      if (partials.back().is0())
+      {
+	done=true;
+	ret.period=0;
+      }
+      else
+	partials.back().recip();
     }
     else
       partials.push_back(q);
