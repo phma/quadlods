@@ -337,7 +337,18 @@ void cmdCfra(string command)
   }
   if (replyCode<300)
   {
-    replyText=q.stringval();
+    replyText=q.stringval()+"=[";
+    for (i=0;i<cf.terms.size();i++)
+    {
+      if (i)
+	replyText+=(i>1)?',':';';
+      if (i==cf.terms.size()-cf.period)
+	replyText+='(';
+      replyText+=to_string(cf.terms[i]);
+    }
+    if (cf.period)
+      replyText+=')';
+    replyText+=']';
   }
   reply(replyCode,true,replyText);
 }
