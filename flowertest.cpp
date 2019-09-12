@@ -115,7 +115,7 @@ void quadplot(PostScript &ps)
       ang=2*M_PI*point;
       x=r*cos(ang);
       y=r*sin(ang);
-      if (i==4185) // max term increases from 253 to 254
+      if (i==4228) // max term increases from 256 to 258; 257 is missing
 	ps.setcolor(1,0,1);
       ps.dot(x,y);
       if (x>2*abs(y))

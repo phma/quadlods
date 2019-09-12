@@ -893,7 +893,7 @@ void sortPrimes()
     writeshort(primeFile,k->cf.period);
     for (i=0;i<k->cf.terms.size();i++)
       writeshort(primeFile,k->cf.terms[i]);
-    if (n<=4185)
+    if (n<=4228)
       bFile<<n<<' '<<k->prime<<endl;
     primeText<<k->prime<<' '<<qi[k->prime].stringval()<<'='<<ldecimal(qi[k->prime].realval())<<' '<<ldecimal(k->cf.averageTerm())<<' '<<k->cf.maximumTerm();
     for (i=j=0;i<40;i++,j++)
