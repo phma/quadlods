@@ -29,6 +29,7 @@
 #include "ldecimal.h"
 #include "main.h"
 #include "random.h"
+#include "contfrac.h"
 using namespace std;
 using namespace boost::locale;
 
@@ -309,6 +310,38 @@ void cmdForm(string command)
   reply(replyCode,true,replyText);
 }
 
+void cmdCfra(string command)
+{
+  int replyCode=220;
+  int a,b,c,d,p,i;
+  quadirr q;
+  string replyText;
+  ContinuedFraction cf;
+  try
+  {
+    a=parseInt(firstWord(command));
+    b=parseInt(firstWord(command));
+    c=parseInt(firstWord(command));
+    d=parseInt(firstWord(command));
+    p=parseInt(firstWord(command));
+  }
+  catch (...)
+  {
+    replyCode=420;
+    replyText="Parse error";
+  }
+  if (replyCode<300)
+  {
+    q=quadirr(a,b,c,d,p);
+    cf=contFrac(q);
+  }
+  if (replyCode<300)
+  {
+    replyText=q.stringval();
+  }
+  reply(replyCode,true,replyText);
+}
+
 void cmdHelp(string command)
 {
   int replyCode=220;
@@ -367,6 +400,9 @@ void interact()
 	break;
       case 0x53454544:
 	cmdSeed(command);
+	break;
+      case 0x43465241:
+	cmdCfra(command);
 	break;
       case 0x48454c50:
 	cmdHelp(command);
