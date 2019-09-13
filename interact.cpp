@@ -81,7 +81,7 @@ void cmdInit(string command)
   double res;
   string scramStr;
   int replyCode=200;
-  string replyText="OK";
+  string replyText=boost::locale::gettext("OK");
   try
   {
     n=parseInt(firstWord(command));
@@ -91,18 +91,18 @@ void cmdInit(string command)
   catch (...)
   {
     replyCode=420;
-    replyText="Parse error";
+    replyText=boost::locale::gettext("Parse error");
   }
   scramStr=firstWord(command);
   if (s<0)
   {
     replyCode=400;
-    replyText="Number of dimensions must be nonnegative";
+    replyText=boost::locale::gettext("Number of dimensions must be nonnegative");
   }
   if (res<=0) // res==0 means Halton, but that's not finished yet
   {
     replyCode=401;
-    replyText="Resolution must be positive";
+    replyText=boost::locale::gettext("Resolution must be positive");
   }
   if (replyCode<300)
   {
@@ -110,7 +110,7 @@ void cmdInit(string command)
     if (scram<0)
     {
       replyCode=402;
-      replyText="Unrecognized scrambling method";
+      replyText=boost::locale::gettext("Unrecognized scrambling method");
     }
   }
   if (replyCode<300)
@@ -125,7 +125,7 @@ void cmdInit(string command)
     catch (...)
     {
       replyCode=500;
-      replyText="Internal service error";
+      replyText=boost::locale::gettext("Internal service error");
     }
   }
   reply(replyCode,true,replyText);
@@ -162,7 +162,7 @@ void cmdGene(string command)
 {
   int n,i,j;
   int replyCode=200;
-  string replyText="OK";
+  string replyText=boost::locale::gettext("OK");
   vector<mpq_class> tuple;
   try
   {
@@ -172,12 +172,12 @@ void cmdGene(string command)
   catch (...)
   {
     replyCode=420;
-    replyText="Parse error";
+    replyText=boost::locale::gettext("Parse error");
   }
   if (replyCode<300 && quads.count(n)==0)
   {
     replyCode=410;
-    replyText="Generator is uninitialized";
+    replyText=boost::locale::gettext("Generator is uninitialized");
   }
   if (replyCode<300)
   {
@@ -186,7 +186,7 @@ void cmdGene(string command)
     if (i<0)
     {
       replyCode=402;
-      replyText="Number of tuples must be positive";
+      replyText=boost::locale::gettext("Number of tuples must be positive");
     }
   }
   if (replyCode==220)
@@ -214,7 +214,7 @@ void cmdSeed(string command)
 {
   int n,i,b;
   int replyCode=200;
-  string replyText="OK";
+  string replyText=boost::locale::gettext("OK");
   vector<char> bytes;
   try
   {
@@ -223,12 +223,12 @@ void cmdSeed(string command)
   catch (...)
   {
     replyCode=420;
-    replyText="Parse error";
+    replyText=boost::locale::gettext("Parse error");
   }
   if (replyCode<300 && quads.count(n)==0)
   {
     replyCode=410;
-    replyText="Generator is uninitialized";
+    replyText=boost::locale::gettext("Generator is uninitialized");
   }
   if (replyCode<300)
   {
@@ -274,7 +274,7 @@ int parseFormat(string fmt)
 void cmdForm(string command)
 {
   int n,fmt,fmt1,replyCode=200;
-  string replyText="OK";
+  string replyText=boost::locale::gettext("OK");
   vector<mpq_class> tuple;
   try
   {
@@ -283,12 +283,12 @@ void cmdForm(string command)
   catch (...)
   {
     replyCode=420;
-    replyText="Parse error";
+    replyText=boost::locale::gettext("Parse error");
   }
   if (replyCode<300 && quads.count(n)==0)
   {
     replyCode=410;
-    replyText="Generator is uninitialized";
+    replyText=boost::locale::gettext("Generator is uninitialized");
   }
   if (replyCode<300)
     fmt=formats[n];
@@ -298,7 +298,7 @@ void cmdForm(string command)
     if (fmt1<0)
     {
       replyCode=421;
-      replyText="Unknown format";
+      replyText=boost::locale::gettext("Unknown format");
     }
     if (fmt1&0xff)
       fmt=(fmt&0xff00)+fmt1;
@@ -328,7 +328,7 @@ void cmdCfra(string command)
   catch (...)
   {
     replyCode=420;
-    replyText="Parse error";
+    replyText=boost::locale::gettext("Parse error");
   }
   if (replyCode<300)
   {
@@ -341,6 +341,11 @@ void cmdCfra(string command)
     {
       replyCode=410;
       replyText="Error "+to_string(e);
+      replyText=boost::locale::gettext(replyText.c_str());
+#if 0
+      gettext("Error 1"); // overflow
+      gettext("Error 2"); // zero divide
+#endif
     }
   }
   if (replyCode<300)

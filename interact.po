@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the Quadlods package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quadlods\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-29 04:17-0400\n"
+"POT-Creation-Date: 2019-09-13 05:14-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,10 +16,52 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Language: en_US\n"
-"X-Source-Language: C\n"
 
-#: interact.cpp:315
+#: interact.cpp:315 interact.cpp:368 interact.cpp:372
 msgid "help"
+msgstr ""
+
+#: interact.cpp:346
+msgid "Error 1"
+msgstr ""
+
+#: interact.cpp:347
+msgid "Error 2"
+msgstr ""
+
+#: interact.cpp:84 interact.cpp:165 interact.cpp:217 interact.cpp:277
+msgid "OK"
+msgstr ""
+
+#: interact.cpp:94 interact.cpp:175 interact.cpp:226 interact.cpp:286
+#: interact.cpp:331
+msgid "Parse error"
+msgstr ""
+
+#: interact.cpp:100
+msgid "Number of dimensions must be nonnegative"
+msgstr ""
+
+#: interact.cpp:105
+msgid "Resolution must be positive"
+msgstr ""
+
+#: interact.cpp:113
+msgid "Unrecognized scrambling method"
+msgstr ""
+
+#: interact.cpp:128
+msgid "Internal service error"
+msgstr ""
+
+#: interact.cpp:180 interact.cpp:231 interact.cpp:291
+msgid "Generator is uninitialized"
+msgstr ""
+
+#: interact.cpp:189
+msgid "Number of tuples must be positive"
+msgstr ""
+
+#: interact.cpp:301
+msgid "Unknown format"
 msgstr ""
