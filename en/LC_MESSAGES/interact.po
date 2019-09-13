@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quadlods\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-29 04:17-0400\n"
+"POT-Creation-Date: 2019-09-13 05:14-0400\n"
 "PO-Revision-Date: 2019-04-29 04:25-0400\n"
 "Last-Translator: Pierre Abbat <phma@bezitopo.org>\n"
 "Language-Team: English\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Language: en_US\n"
 "X-Source-Language: C\n"
 
-#: interact.cpp:315
+#: interact.cpp:315 interact.cpp:368 interact.cpp:372
 msgid "help"
 msgstr ""
 "Commands, scramblings, and formats are case-insensitive.\n"
@@ -45,3 +45,48 @@ msgstr ""
 "EXIT\n"
 "QUIT\n"
 "     Exits the program."
+
+#: interact.cpp:346
+msgid "Error 1"
+msgstr "Overflow in computing continued fraction"
+
+#: interact.cpp:347
+msgid "Error 2"
+msgstr "Division by zero in computing continued fraction"
+
+#: interact.cpp:84 interact.cpp:165 interact.cpp:217 interact.cpp:277
+msgid "OK"
+msgstr "OK"
+
+#: interact.cpp:94 interact.cpp:175 interact.cpp:226 interact.cpp:286
+#: interact.cpp:331
+msgid "Parse error"
+msgstr "Parse error"
+
+#: interact.cpp:100
+msgid "Number of dimensions must be nonnegative"
+msgstr "Number of dimensions must be nonnegative"
+
+#: interact.cpp:105
+msgid "Resolution must be positive"
+msgstr "Resolution must be positive"
+
+#: interact.cpp:113
+msgid "Unrecognized scrambling method"
+msgstr "Unrecognized scrambling method"
+
+#: interact.cpp:128
+msgid "Internal service error"
+msgstr "Internal service error"
+
+#: interact.cpp:180 interact.cpp:231 interact.cpp:291
+msgid "Generator is uninitialized"
+msgstr "Generator is uninitialized"
+
+#: interact.cpp:189
+msgid "Number of tuples must be positive"
+msgstr "Number of tuples must be positive"
+
+#: interact.cpp:301
+msgid "Unknown format"
+msgstr "Unknown format"
