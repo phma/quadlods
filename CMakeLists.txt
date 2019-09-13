@@ -18,6 +18,10 @@ foreach(lang ${TRANSLATIONS})
   add_custom_target(mo_${lang} ALL DEPENDS ${lang}/LC_MESSAGES/interact.mo)
   install(FILES ${PROJECT_BINARY_DIR}/${lang}/LC_MESSAGES/interact.mo DESTINATION share/quadlods/${lang}/LC_MESSAGES)
 endforeach(lang)
+# To update translations, run
+# $ xgettext -jo interact.po --package-name=Quadlods interact.cpp
+# then for each language, run
+# $ msgmerge -U ${lang}/LC_MESSAGES/interact.po interact.po
 
 install(TARGETS quadlods DESTINATION bin)
 install(TARGETS quadlib0 quadlib1 DESTINATION lib)
