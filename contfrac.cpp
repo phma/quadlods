@@ -63,6 +63,8 @@ quadirr::quadirr(int A,int B,int C,int D,int P)
 
 double quadirr::realval()
 {
+  if (p<0)
+    throw IMAGINARY;
   return a/(double)b+c*sqrt(p)/d;
 }
 

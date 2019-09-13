@@ -25,6 +25,7 @@
 
 #define OVERFLOW 1
 #define ZERODIV 2
+#define IMAGINARY 3
 
 class quadirr
 /* Represents the quadratic irrational a/b+c*sqrt(p)/d.
