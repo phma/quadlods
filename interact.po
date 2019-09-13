@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quadlods\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 05:14-0400\n"
+"POT-Creation-Date: 2019-09-13 06:16-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: interact.cpp:315 interact.cpp:368 interact.cpp:372
+#: interact.cpp:315 interact.cpp:368 interact.cpp:372 interact.cpp:373
 msgid "help"
 msgstr ""
 
@@ -64,4 +64,8 @@ msgstr ""
 
 #: interact.cpp:301
 msgid "Unknown format"
+msgstr ""
+
+#: interact.cpp:348
+msgid "Error 3"
 msgstr ""

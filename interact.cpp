@@ -345,6 +345,7 @@ void cmdCfra(string command)
 #if 0
       gettext("Error 1"); // overflow
       gettext("Error 2"); // zero divide
+      gettext("Error 3"); // imaginary
 #endif
     }
   }

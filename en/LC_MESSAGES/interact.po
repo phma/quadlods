@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quadlods\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 05:14-0400\n"
+"POT-Creation-Date: 2019-09-13 06:16-0400\n"
 "PO-Revision-Date: 2019-04-29 04:25-0400\n"
 "Last-Translator: Pierre Abbat <phma@bezitopo.org>\n"
 "Language-Team: English\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Language: en_US\n"
 "X-Source-Language: C\n"
 
-#: interact.cpp:315 interact.cpp:368 interact.cpp:372
+#: interact.cpp:315 interact.cpp:368 interact.cpp:372 interact.cpp:373
 msgid "help"
 msgstr ""
 "Commands, scramblings, and formats are case-insensitive.\n"
@@ -90,3 +90,7 @@ msgstr "Number of tuples must be positive"
 #: interact.cpp:301
 msgid "Unknown format"
 msgstr "Unknown format"
+
+#: interact.cpp:348
+msgid "Error 3"
+msgstr "Imaginary number in computing continued fraction"
