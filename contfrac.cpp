@@ -137,6 +137,8 @@ void quadirr::recip()
   mpq_class denom,e(a,b),f(c,d);
   int g,h,gc;
   long long A,B,C,D;
+  if (b==0 || d==0)
+    throw ZERODIV;
   e.canonicalize();
   f.canonicalize();
   e*=e;
