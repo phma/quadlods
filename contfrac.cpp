@@ -103,9 +103,9 @@ bool quadirr::is0()
       i--;
     }
   if (p==1)
-    return a*d+b*c==0;
+    return b!=0 && d!=0 && a*d+b*c==0;
   else
-    return a==0 && c==0;
+    return (a==0 && b!=0) && ((c==0 || p==0) && d!=0);
 }
 
 quadirr& quadirr::operator-=(int n)
