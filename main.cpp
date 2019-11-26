@@ -417,14 +417,19 @@ void findclosequad()
 void testCircle()
 {
   int i,j;
-  ps.open(filename.length()?filename:"circletest.ps");
-  quads[0].init(ndims,resolution);
-  quads[0].init(primelist,resolution);
-  quads[0].setscramble(scramble);
-  quads[0].advance(-1);
-  circletest(quads[0],niter,ps);
-  ps.trailer();
-  ps.close();
+  if (niter>0)
+  {
+    ps.open(filename.length()?filename:"circletest.ps");
+    quads[0].init(ndims,resolution);
+    quads[0].init(primelist,resolution);
+    quads[0].setscramble(scramble);
+    quads[0].advance(-1);
+    circletest(quads[0],niter,ps);
+    ps.trailer();
+    ps.close();
+  }
+  else
+    cerr<<"Please specify number of iterations with -n\n";
 }
 
 void testScatter()
