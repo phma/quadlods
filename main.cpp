@@ -1017,7 +1017,7 @@ int main(int argc,char **argv)
     scramble=parseScramble(scramblestr);
     if (scramble<0)
       cerr<<"Unrecognized or ambiguous scrambling: "<<scramblestr<<endl;
-    validArgs=parsePrimeList()&scramble>=0;
+    validArgs=parsePrimeList()&&scramble>=0;
   }
   catch (exception &e)
   {
