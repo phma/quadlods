@@ -183,7 +183,7 @@ void quadlods::fillReverseScrambleTable(int p,int scrambletype)
   }
 }
 
-bool incHacc(std::vector<unsigned short> &hacc,int pp,int increment,int pos,bool sign)
+bool quadlods::incHacc(std::vector<unsigned short> &hacc,int pp,int increment,int pos,bool sign)
 /* Increments a Halton accumulator, whose prime power is pp, by increment,
  * which should be less in absolute value than pp, starting at the posth limb,
  * and returns the sign of the result (true is negative).

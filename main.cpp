@@ -678,10 +678,49 @@ void testuvmatrix()
   ps.close();
 }
 
+void outHaltonAccumulators(vector<unsigned short> terHacc,vector<unsigned short> quinHacc,vector<unsigned short> septHacc)
+{
+  int i;
+  for (i=terHacc.size()-1;i>=0;i--)
+    cout<<terHacc[i]<<' ';
+  cout<<endl;
+  for (i=quinHacc.size()-1;i>=0;i--)
+    cout<<quinHacc[i]<<' ';
+  cout<<endl;
+  for (i=septHacc.size()-1;i>=0;i--)
+    cout<<septHacc[i]<<' ';
+  cout<<endl;
+}
+
+void testHaltonAccumulator()
+{
+  vector<unsigned short> terHacc,quinHacc,septHacc;
+  int i;
+  bool sign=false,newsign;
+  cout<<"Halton accumulator test\n";
+  newsign=incHacc(terHacc,59049,496125,0,sign);
+  tassert(!newsign);
+  newsign=incHacc(quinHacc,15625,496125,0,sign);
+  tassert(!newsign);
+  newsign=incHacc(septHacc,16807,496125,0,sign);
+  tassert(!newsign);
+  outHaltonAccumulators(terHacc,quinHacc,septHacc);
+  sign=newsign;
+  newsign=incHacc(terHacc,59049,-524288,0,sign);
+  tassert(newsign);
+  newsign=incHacc(quinHacc,15625,-524288,0,sign);
+  tassert(newsign);
+  newsign=incHacc(septHacc,16807,-524288,0,sign);
+  tassert(newsign);
+  outHaltonAccumulators(terHacc,quinHacc,septHacc);
+  sign=newsign;
+}
+
 void runTests()
 {
   testContinuedFraction();
   testReverseScramble();
+  testHaltonAccumulator();
 }
 
 void runLongTests()
