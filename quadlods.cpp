@@ -14,7 +14,7 @@
  * is at least some specified limit. The exclusive-oring is done in such a way
  * that the result will not exceed the denominator.
  */
-/* Copyright 2014,2016-2019 Pierre Abbat.
+/* Copyright 2014,2016-2020 Pierre Abbat.
  * This file is part of the Quadlods library.
  * 
  * The Quadlods library is free software: you can redistribute it and/or
@@ -181,6 +181,47 @@ void quadlods::fillReverseScrambleTable(int p,int scrambletype)
       reverseScrambleTable[inx].push_back(acc);
     }
   }
+}
+
+bool incHacc(std::vector<unsigned short> &hacc,int pp,int increment,int pos,bool sign)
+/* Increments a Halton accumulator, whose prime power is pp, by increment,
+ * which should be less in absolute value than pp, starting at the posth limb,
+ * and returns the sign of the result (true is negative).
+ */
+{
+  int i,limb,carry;
+  for (i=pos;increment;i++)
+  {
+    while (hacc.size()<=i)
+      hacc.push_back(sign?(pp-1):0);
+    limb=hacc[i]+increment;
+    increment=0;
+    while (limb>=pp)
+    {
+      increment++;
+      limb-=pp;
+    }
+    while (limb<0)
+    {
+      increment--;
+      limb+=pp;
+    }
+    if (i==hacc.size()-1)
+    {
+      if (increment==1 && sign)
+      {
+	increment=0;
+	sign=false;
+      }
+      if (increment==-1 && !sign)
+      {
+	increment=0;
+	sign=true;
+      }
+    }
+    hacc[i]=limb;
+  }
+  return sign;
 }
 
 mpz_class quadlods::thuemorse(int n)

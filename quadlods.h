@@ -3,7 +3,7 @@
 /* quadlods.h - quadratic low-discrepancy sequence    */
 /*                                                    */
 /******************************************************/
-/* Copyright 2014,2016-2019 Pierre Abbat.
+/* Copyright 2014,2016-2020 Pierre Abbat.
  * This file is part of the Quadlods library.
  * 
  * The Quadlods library is free software: you can redistribute it and/or
@@ -59,6 +59,7 @@ namespace quadlods
   unsigned relprime(unsigned n);
   unsigned scrambledig(unsigned dig,unsigned p);
   void fillReverseScrambleTable(int p,int scrambletype);
+  bool incHacc(std::vector<unsigned short> &hacc,int pp,int increment,int pos,bool sign);
 }
 
 class ContinuedFraction
