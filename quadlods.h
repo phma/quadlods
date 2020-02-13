@@ -60,6 +60,7 @@ namespace quadlods
   unsigned scrambledig(unsigned dig,unsigned p);
   void fillReverseScrambleTable(int p,int scrambletype);
   bool incHacc(std::vector<unsigned short> &hacc,int pp,int increment,int pos,bool sign);
+  bool incHacc(std::vector<unsigned short> &hacc,int pp,mpz_class increment,bool sign);
 }
 
 class ContinuedFraction

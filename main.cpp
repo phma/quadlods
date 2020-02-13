@@ -696,6 +696,7 @@ void testHaltonAccumulator()
 {
   vector<unsigned short> terHacc,quinHacc,septHacc;
   int i;
+  mpz_class inc;
   bool sign=false,newsign;
   cout<<"Halton accumulator test\n";
   newsign=incHacc(terHacc,59049,496125,0,sign);
@@ -714,6 +715,24 @@ void testHaltonAccumulator()
   tassert(newsign);
   outHaltonAccumulators(terHacc,quinHacc,septHacc);
   sign=newsign;
+  for (inc=1,i=0;i<41;i++)
+    inc*=41;
+  newsign=incHacc(terHacc,59049,inc,sign);
+  tassert(!newsign);
+  newsign=incHacc(quinHacc,15625,inc,sign);
+  tassert(!newsign);
+  newsign=incHacc(septHacc,16807,inc,sign);
+  tassert(!newsign);
+  outHaltonAccumulators(terHacc,quinHacc,septHacc);
+  tassert(terHacc[0]==41670);
+  tassert(terHacc.size()==14);
+  tassert(terHacc.back()==12542);
+  tassert(quinHacc[0]==3603);
+  tassert(quinHacc.size()==16);
+  tassert(quinHacc.back()==1647);
+  tassert(septHacc[0]==4036);
+  tassert(septHacc.size()==16);
+  tassert(septHacc.back()==551);
 }
 
 void runTests()

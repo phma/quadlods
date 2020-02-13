@@ -224,6 +224,26 @@ bool quadlods::incHacc(std::vector<unsigned short> &hacc,int pp,int increment,in
   return sign;
 }
 
+bool quadlods::incHacc(std::vector<unsigned short> &hacc,int pp,mpz_class increment,bool sign)
+{
+  int ex=0,limb;
+  mpz_class ppex=1;
+  while (fabs(increment.get_d()/ppex.get_d())>2*pp)
+  {
+    ex++;
+    ppex*=pp;
+  }
+  while (ex>=0)
+  {
+    limb=lrint(increment.get_d()/ppex.get_d());
+    sign=incHacc(hacc,pp,limb,ex,sign);
+    increment-=limb*ppex;
+    ex--;
+    ppex/=pp;
+  }
+  return sign;
+}
+
 mpz_class quadlods::thuemorse(int n)
 {
   while (morse<=n)
