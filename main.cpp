@@ -3,7 +3,7 @@
 /* main.cpp - main program                            */
 /*                                                    */
 /******************************************************/
-/* Copyright 2014,2016,2018,2019 Pierre Abbat.
+/* Copyright 2014,2016,2018-2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
