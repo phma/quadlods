@@ -61,6 +61,7 @@ namespace quadlods
     {5,32768},{5,59049},{4,10000},{4,14641},{4,20736},{4,28561}
   };
   array<int,2> primePower(unsigned short p);
+  int reverseScramble(int limb,int p,int scrambletype);
   mpz_class thuemorse(int n);
   mpz_class minusthird(int n);
   mpz_class graydecode(mpz_class n);
@@ -181,6 +182,16 @@ void quadlods::fillReverseScrambleTable(int p,int scrambletype)
       reverseScrambleTable[inx].push_back(acc);
     }
   }
+}
+
+int reverseScramble(int limb,int p,int scrambletype)
+{
+  int inx=(scrambletype<<16)+p;
+  fillReverseScrambleTable(p,scrambletype);
+  if (reverseScrambleTable[inx].size())
+    return reverseScrambleTable[inx][limb];
+  else
+    return limb;
 }
 
 bool quadlods::incHacc(std::vector<unsigned short> &hacc,int pp,int increment,int pos,bool sign)
