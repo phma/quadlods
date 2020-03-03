@@ -582,9 +582,12 @@ void Quadlods::init(vector<int> dprimes,double resolution,int j)
  * bad set of primes.
  */
 {
-  int i,k,p;
+  int i,k,p,newmode;
   mpz_class nmid,dmid;
   // TODO check that dprimes are actually distinct
+  newmode=resolution?QL_MODE_RICHTMYER:QL_MODE_HALTON;
+  if (mode!=newmode)
+    primeinx.clear();
   for (i=primeinx.size();i<dprimes.size();i++)
     for (k=0;k<QL_MAX_DIMS;k++)
       if (dprimes[i]==nthprime(k))
@@ -594,23 +597,38 @@ void Quadlods::init(vector<int> dprimes,double resolution,int j)
       }
   for (i=denom.size();i<primeinx.size();i++)
   {
-    if (primesCfSorted.size())
-      compquad(primesCfSorted[primeinx[i]].cf,resolution,nmid,dmid);
-    else
+    if (newmode==QL_MODE_RICHTMYER)
     {
-      p=nthprime(primeinx[i]);
-      compquad(p,resolution,nmid,dmid);
+      if (primesCfSorted.size())
+	compquad(primesCfSorted[primeinx[i]].cf,resolution,nmid,dmid);
+      else
+      {
+	p=nthprime(primeinx[i]);
+	compquad(p,resolution,nmid,dmid);
+      }
+      denom.push_back(dmid);
+      num.push_back(nmid);
     }
-    denom.push_back(dmid);
-    num.push_back(nmid);
+    if (newmode==QL_MODE_HALTON)
+    {
+      if (primesCfSorted.size())
+	p=primesCfSorted[primeinx[i]].prime;
+      else
+	p=nthprime(primeinx[i]);
+      hacc.push_back(vector<unsigned short>());
+    }
   }
   if (j>=0)
     scrambletype=j;
   if (scrambletype<0 || scrambletype>QL_SCRAMBLE_GRAY)
     scrambletype=QL_SCRAMBLE_GRAY;
-  num.resize(primeinx.size());
-  denom.resize(primeinx.size());
-  acc.resize(primeinx.size());
+  mode=newmode;
+  if (mode==QL_MODE_RICHTMYER)
+  {
+    num.resize(primeinx.size());
+    denom.resize(primeinx.size());
+    acc.resize(primeinx.size());
+  }
 }
 
 mpz_class Quadlods::gethacc(int n)
