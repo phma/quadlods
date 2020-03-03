@@ -569,9 +569,12 @@ void Quadlods::init(int dimensions,double resolution,int j)
     scrambletype=QL_SCRAMBLE_GRAY;
   mode=newmode;
   dimensions=abs(dimensions);
-  num.resize(dimensions);
-  denom.resize(dimensions);
-  acc.resize(dimensions);
+  if (mode==QL_MODE_RICHTMYER)
+  {
+    num.resize(dimensions);
+    denom.resize(dimensions);
+    acc.resize(dimensions);
+  }
 }
 
 void Quadlods::init(vector<int> dprimes,double resolution,int j)
