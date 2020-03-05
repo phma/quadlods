@@ -255,6 +255,15 @@ bool quadlods::incHacc(std::vector<unsigned short> &hacc,int pp,mpz_class increm
   return sign;
 }
 
+mpz_class quadlods::haccValue(vector<unsigned short> &hacc,int pp,bool sign)
+{
+  mpz_class ret=-sign;
+  int i;
+  for (i=hacc.size()-1;i>=0;i--)
+    ret=ret*pp+hacc[i];
+  return ret;
+}
+
 mpz_class quadlods::thuemorse(int n)
 {
   while (morse<=n)

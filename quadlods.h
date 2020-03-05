@@ -61,6 +61,7 @@ namespace quadlods
   void fillReverseScrambleTable(int p,int scrambletype);
   bool incHacc(std::vector<unsigned short> &hacc,int pp,int increment,int pos,bool sign);
   bool incHacc(std::vector<unsigned short> &hacc,int pp,mpz_class increment,bool sign);
+  mpz_class haccValue(std::vector<unsigned short> &hacc,int pp,bool sign);
 }
 
 class ContinuedFraction

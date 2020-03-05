@@ -678,18 +678,18 @@ void testuvmatrix()
   ps.close();
 }
 
-void outHaltonAccumulators(vector<unsigned short> terHacc,vector<unsigned short> quinHacc,vector<unsigned short> septHacc)
+void outHaltonAccumulators(vector<unsigned short> terHacc,vector<unsigned short> quinHacc,vector<unsigned short> septHacc,bool sign)
 {
   int i;
   for (i=terHacc.size()-1;i>=0;i--)
     cout<<terHacc[i]<<' ';
-  cout<<endl;
+  cout<<endl<<haccValue(terHacc,59049,sign)<<endl;
   for (i=quinHacc.size()-1;i>=0;i--)
     cout<<quinHacc[i]<<' ';
-  cout<<endl;
+  cout<<endl<<haccValue(quinHacc,15625,sign)<<endl;
   for (i=septHacc.size()-1;i>=0;i--)
     cout<<septHacc[i]<<' ';
-  cout<<endl;
+  cout<<endl<<haccValue(septHacc,16807,sign)<<endl;
 }
 
 void testHaltonAccumulator()
@@ -705,7 +705,7 @@ void testHaltonAccumulator()
   tassert(!newsign);
   newsign=incHacc(septHacc,16807,496125,0,sign);
   tassert(!newsign);
-  outHaltonAccumulators(terHacc,quinHacc,septHacc);
+  outHaltonAccumulators(terHacc,quinHacc,septHacc,newsign);
   sign=newsign;
   newsign=incHacc(terHacc,59049,-524288,0,sign);
   tassert(newsign);
@@ -713,7 +713,7 @@ void testHaltonAccumulator()
   tassert(newsign);
   newsign=incHacc(septHacc,16807,-524288,0,sign);
   tassert(newsign);
-  outHaltonAccumulators(terHacc,quinHacc,septHacc);
+  outHaltonAccumulators(terHacc,quinHacc,septHacc,newsign);
   sign=newsign;
   for (inc=1,i=0;i<41;i++)
     inc*=41;
@@ -723,7 +723,7 @@ void testHaltonAccumulator()
   tassert(!newsign);
   newsign=incHacc(septHacc,16807,inc,sign);
   tassert(!newsign);
-  outHaltonAccumulators(terHacc,quinHacc,septHacc);
+  outHaltonAccumulators(terHacc,quinHacc,septHacc,newsign);
   tassert(terHacc[0]==41670);
   tassert(terHacc.size()==14);
   tassert(terHacc.back()==12542);
