@@ -184,7 +184,7 @@ void quadlods::fillReverseScrambleTable(int p,int scrambletype)
   }
 }
 
-int reverseScramble(int limb,int p,int scrambletype)
+int quadlods::reverseScramble(int limb,int p,int scrambletype)
 {
   int inx=(scrambletype<<16)+p;
   fillReverseScrambleTable(p,scrambletype);
