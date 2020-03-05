@@ -533,13 +533,19 @@ void Quadlods::init(int dimensions,double resolution,int j)
     {
       primeinx.push_back(i);
       p=nthprime(i);
-      hacc.resize(primeinx.size()); // TODO set hacc to previous hacc value
+      hacc.resize(primeinx.size());
+      if (i)
+	incHacc(hacc[i],primePower(p)[1],
+		haccValue(hacc[i-1],primePower(nthprime(primeinx[i-1]))[1],sign),false);
     }
     for (i=denom.size();i>dimensions;i--)
     {
       primeinx.push_back(QL_MAX_DIMS+i-1);
       p=nthprime(QL_MAX_DIMS+i-1);
-      hacc.resize(primeinx.size()); // TODO set hacc to previous hacc value
+      hacc.resize(primeinx.size());
+      if (i)
+	incHacc(hacc[i],primePower(p)[1],
+		haccValue(hacc[i-1],primePower(nthprime(primeinx[i-1]))[1],sign),false);
     }
   }
   else
