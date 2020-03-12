@@ -677,11 +677,16 @@ vector<mpq_class> Quadlods::readout()
 
 vector<double> Quadlods::dreadout()
 {
-  int i;
+  int i,pp;
   vector<double> ret;
-  for (i=0;i<num.size();i++)
+  for (i=0;mode==QL_MODE_RICHTMYER && i<num.size();i++)
   {
     ret.push_back(mpq_class((scramble(acc[i],denom[i],scrambletype)<<1)|1,denom[i]<<1).get_d());
+  }
+  for (i=0;mode==QL_MODE_HALTON && i<hacc.size();i++)
+  {
+    pp=primePower(nthprime(primeinx[i]))[1];
+    ret.push_back(mpq_class(haccValue(hacc[i],pp,sign),mpz_class(1)).get_d());
   }
   return ret;
 }
