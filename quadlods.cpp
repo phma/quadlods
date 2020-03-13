@@ -529,7 +529,7 @@ void Quadlods::init(int dimensions,double resolution,int j)
     num.clear();
     denom.clear();
     acc.clear();
-    for (i=denom.size();i<dimensions;i++)
+    for (i=hacc.size();i<dimensions;i++)
     {
       primeinx.push_back(i);
       p=nthprime(i);
@@ -538,7 +538,7 @@ void Quadlods::init(int dimensions,double resolution,int j)
 	incHacc(hacc[i],primePower(p)[1],
 		haccValue(hacc[i-1],primePower(nthprime(primeinx[i-1]))[1],sign),false);
     }
-    for (i=denom.size();i>dimensions;i--)
+    for (i=hacc.size();i>dimensions;i--)
     {
       primeinx.push_back(QL_MAX_DIMS+i-1);
       p=nthprime(QL_MAX_DIMS+i-1);
@@ -610,7 +610,7 @@ void Quadlods::init(vector<int> dprimes,double resolution,int j)
         primeinx.push_back(k);
         k=8191;
       }
-  for (i=denom.size();i<primeinx.size();i++)
+  for (i=newmode?hacc.size():denom.size();i<primeinx.size();i++)
   {
     if (newmode==QL_MODE_RICHTMYER)
     {
