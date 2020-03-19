@@ -70,6 +70,7 @@ namespace quadlods
   void initprimes();
   void compquad(int p,double resolution,mpz_class &nmid,mpz_class &dmid);
   void compquad(ContinuedFraction cf,double resolution,mpz_class &nmid,mpz_class &dmid);
+  mpq_class haccReverseScramble(vector<unsigned short> &hacc,int p,int scrambletype,bool sign);
 }
 
 unsigned quadlods::gcd(unsigned a,unsigned b)
@@ -262,6 +263,18 @@ mpz_class quadlods::haccValue(vector<unsigned short> &hacc,int pp,bool sign)
   for (i=hacc.size()-1;i>=0;i--)
     ret=ret*pp+hacc[i];
   return ret;
+}
+
+mpq_class quadlods::haccReverseScramble(vector<unsigned short> &hacc,int p,int scrambletype,bool sign)
+{
+  mpz_class num=sign,denom=1;
+  int i,pp=primePower(p)[1];
+  for (i=0;i<hacc.size();i++)
+  {
+    num=num*pp+reverseScramble(hacc[i],p,scrambletype);
+    denom*=pp;
+  }
+  return mpq_class(num,denom);
 }
 
 mpz_class quadlods::thuemorse(int n)
@@ -677,7 +690,7 @@ vector<mpq_class> Quadlods::readout()
 
 vector<double> Quadlods::dreadout()
 {
-  int i,pp;
+  int i,p,pp;
   vector<double> ret;
   for (i=0;mode==QL_MODE_RICHTMYER && i<num.size();i++)
   {
@@ -685,8 +698,8 @@ vector<double> Quadlods::dreadout()
   }
   for (i=0;mode==QL_MODE_HALTON && i<hacc.size();i++)
   {
-    pp=primePower(nthprime(primeinx[i]))[1];
-    ret.push_back(mpq_class(haccValue(hacc[i],pp,sign),mpz_class(1)).get_d());
+    pp=primePower(p=nthprime(primeinx[i]))[1];
+    ret.push_back(haccReverseScramble(hacc[i],p,scrambletype,sign).get_d());
   }
   return ret;
 }
