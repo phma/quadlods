@@ -703,12 +703,19 @@ void Quadlods::setmiddle()
 
 void Quadlods::advance(mpz_class n)
 {
-  int i;
+  int i,pp;
+  bool newsign=sign;
   for (i=0;i<num.size();i++)
     if (n<0)
       acc[i]=(acc[i]-n*(denom[i]-num[i]))%denom[i];
     else
       acc[i]=(acc[i]+n*num[i])%denom[i];
+  for (i=0;i<hacc.size();i++)
+  {
+    pp=primePower(nthprime(primeinx[i]))[1];
+    newsign=incHacc(hacc[i],pp,n,sign);
+  }
+  sign=newsign;
 }
 
 unsigned int Quadlods::seedsize()
