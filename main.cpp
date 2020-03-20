@@ -227,14 +227,16 @@ int parseScramble(string scramblestr)
   array<short,676> dig1=digraphs("Third");
   array<short,676> dig2=digraphs("Thue-Morse");
   array<short,676> dig3=digraphs("Gray");
+  array<short,676> dig4=digraphs("Power");
   array<short,676> digj=digraphs(scramblestr);
-  int i,ret,match0=0,match1=0,match2=0,match3=0,maxmatch,nmatch=0;
+  int i,ret,match0=0,match1=0,match2=0,match3=0,match4=0,maxmatch,nmatch=0;
   for (i=0;i<676;i++)
   {
     match0+=dig0[i]*digj[i];
     match1+=dig1[i]*digj[i];
     match2+=dig2[i]*digj[i];
     match3+=dig3[i]*digj[i];
+    match4+=dig4[i]*digj[i];
   }
   maxmatch=match0;
   if (match1>maxmatch)
@@ -243,6 +245,8 @@ int parseScramble(string scramblestr)
     maxmatch=match2;
   if (match3>maxmatch)
     maxmatch=match3;
+  if (match4>maxmatch)
+    maxmatch=match4;
   if (match0==maxmatch)
   {
     nmatch++;
@@ -262,6 +266,11 @@ int parseScramble(string scramblestr)
   {
     nmatch++;
     ret=QL_SCRAMBLE_GRAY;
+  }
+  if (match4==maxmatch)
+  {
+    nmatch++;
+    ret=QL_SCRAMBLE_POWER;
   }
   if (nmatch>1)
   {
