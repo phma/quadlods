@@ -773,15 +773,22 @@ Quadlods select(Quadlods& b,vector<int> dimensions)
   Quadlods ret;
   int i,j;
   ret.scrambletype=b.scrambletype;
+  ret.mode=b.mode;
+  ret.sign=b.sign;
   for (i=0;i<dimensions.size();i++)
     if (dimensions[i]>=0 && dimensions[i]<b.size())
     {
       for (j=0;j<ret.size() && ret.primeinx[j]!=b.primeinx[dimensions[i]];j++);
       if (j==ret.size())
       {
-        ret.num.     push_back(b.num     [dimensions[i]]);
-        ret.denom.   push_back(b.denom   [dimensions[i]]);
-        ret.acc.     push_back(b.acc     [dimensions[i]]);
+	if (b.num.size())
+	  ret.num.     push_back(b.num     [dimensions[i]]);
+	if (b.denom.size())
+	  ret.denom.   push_back(b.denom   [dimensions[i]]);
+	if (b.acc.size())
+	  ret.acc.     push_back(b.acc     [dimensions[i]]);
+	if (b.hacc.size())
+	  ret.hacc.    push_back(b.hacc    [dimensions[i]]);
         ret.primeinx.push_back(b.primeinx[dimensions[i]]);
       }
     }

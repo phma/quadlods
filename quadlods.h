@@ -102,7 +102,7 @@ public:
   void init(std::vector<int> dprimes,double resolution,int j=QL_SCRAMBLE_GRAY);
   int size()
   {
-    return acc.size();
+    return mode?hacc.size():acc.size();
   }
   mpz_class getnum(int n)
   {
