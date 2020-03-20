@@ -678,12 +678,17 @@ mpz_class Quadlods::gethacc(int n)
 
 vector<mpq_class> Quadlods::readout()
 {
-  int i;
+  int i,p,pp;
   vector<mpq_class> ret;
-  for (i=0;i<num.size();i++)
+  for (i=0;mode==QL_MODE_RICHTMYER && i<num.size();i++)
   {
     ret.push_back(mpq_class((scramble(acc[i],denom[i],scrambletype)<<1)|1,denom[i]<<1));
     ret[i].canonicalize();
+  }
+  for (i=0;mode==QL_MODE_HALTON && i<hacc.size();i++)
+  {
+    pp=primePower(p=nthprime(primeinx[i]))[1];
+    ret.push_back(haccReverseScramble(hacc[i],p,scrambletype,sign));
   }
   return ret;
 }
