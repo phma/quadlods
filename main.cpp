@@ -223,51 +223,43 @@ array<short,676> digraphs(string word)
 
 int parseScramble(string scramblestr)
 {
-  array<short,676> dig0=digraphs("None");
-  array<short,676> dig1=digraphs("Third");
-  array<short,676> dig2=digraphs("Thue-Morse");
-  array<short,676> dig3=digraphs("Gray");
-  array<short,676> dig4=digraphs("Power");
+  vector<array<short,676> > digs;
   array<short,676> digj=digraphs(scramblestr);
-  int i,ret,match0=0,match1=0,match2=0,match3=0,match4=0,maxmatch,nmatch=0;
+  vector<int> match;
+  int i,j,ret,maxmatch=-1,nmatch=0;
+  digs.push_back(digraphs("None"));
+  digs.push_back(digraphs("Third"));
+  digs.push_back(digraphs("Thue-Morse"));
+  digs.push_back(digraphs("Gray"));
+  digs.push_back(digraphs("Power"));
+  match.resize(digs.size());
   for (i=0;i<676;i++)
-  {
-    match0+=dig0[i]*digj[i];
-    match1+=dig1[i]*digj[i];
-    match2+=dig2[i]*digj[i];
-    match3+=dig3[i]*digj[i];
-    match4+=dig4[i]*digj[i];
-  }
-  maxmatch=match0;
-  if (match1>maxmatch)
-    maxmatch=match1;
-  if (match2>maxmatch)
-    maxmatch=match2;
-  if (match3>maxmatch)
-    maxmatch=match3;
-  if (match4>maxmatch)
-    maxmatch=match4;
-  if (match0==maxmatch)
+    for (j=0;j<digs.size();j++)
+      match[j]+=digs[j][i]*digj[i];
+  for (i=0;i<match.size();i++)
+    if (match[i]>maxmatch)
+      maxmatch=match[i];
+  if (match[0]==maxmatch)
   {
     nmatch++;
     ret=QL_SCRAMBLE_NONE;
   }
-  if (match1==maxmatch)
+  if (match[1]==maxmatch)
   {
     nmatch++;
     ret=QL_SCRAMBLE_THIRD;
   }
-  if (match2==maxmatch)
+  if (match[2]==maxmatch)
   {
     nmatch++;
     ret=QL_SCRAMBLE_THUEMORSE;
   }
-  if (match3==maxmatch)
+  if (match[3]==maxmatch)
   {
     nmatch++;
     ret=QL_SCRAMBLE_GRAY;
   }
-  if (match4==maxmatch)
+  if (match[4]==maxmatch)
   {
     nmatch++;
     ret=QL_SCRAMBLE_POWER;
