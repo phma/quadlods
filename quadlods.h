@@ -34,6 +34,7 @@
 #define QL_SCRAMBLE_THUEMORSE 2
 #define QL_SCRAMBLE_GRAY 3
 #define QL_SCRAMBLE_POWER 4
+#define QL_SCRAMBLE_FAURE 5
 /* The scrambletype controls how to scramble the bits of the accumulator when
  * reading the generator. If acc is 0xc0de and denom is 0x10000, it returns:
  * QL_SCRAMBLE_NONE:      1100000011011110

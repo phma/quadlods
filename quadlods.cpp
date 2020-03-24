@@ -178,11 +178,13 @@ void quadlods::fillReverseScrambleTable(int p,int scrambletype)
   int i,j,dec,acc;
   vector<unsigned short> scrambleTable;
   int inx=(scrambletype<<16)+p;
-  if ((scrambletype==QL_SCRAMBLE_POWER || p<256) && reverseScrambleTable[inx].size()==0)
+  if ((scrambletype==QL_SCRAMBLE_POWER || scrambletype==QL_SCRAMBLE_FAURE || p<256) && reverseScrambleTable[inx].size()==0)
   {
     for (i=0;i<p;i++)
       if (scrambletype==QL_SCRAMBLE_POWER)
 	scrambleTable.push_back(scrambledig(i,p));
+      else if (scrambletype==QL_SCRAMBLE_FAURE)
+	scrambleTable.push_back(faureperm(i,p));
       else
 	scrambleTable.push_back(i);
     for (i=0;i<pp[1];i++)
