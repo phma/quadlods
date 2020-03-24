@@ -122,6 +122,20 @@ unsigned quadlods::scrambledig(unsigned dig,unsigned p)
   return acc;
 }
 
+unsigned quadlods::faureperm(unsigned dig,unsigned p)
+{
+  if (dig>0 && dig+1<p && 2*dig+1!=p)
+  {
+    if (dig*2<p)
+      dig=2*faureperm(dig,p/2);
+    else
+      dig=2*faureperm(dig-(p+1)/2,p/2)+1;
+    if ((p%2) && dig*2>p)
+      dig++;
+  }
+  return dig;
+}
+
 array<int,2> quadlods::primePower(unsigned short p)
 /* Returns the number of digits in base p that fit in one 16-bit limb
  * and the number of different limbs. p should be prime. If p is 0, 1,
