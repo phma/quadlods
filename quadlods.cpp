@@ -130,7 +130,7 @@ unsigned quadlods::faureperm(unsigned dig,unsigned p)
       dig=2*faureperm(dig,p/2);
     else
       dig=2*faureperm(dig-(p+1)/2,p/2)+1;
-    if ((p%2) && dig*2>p)
+    if ((p%2) && dig*2>p-2)
       dig++;
   }
   return dig;

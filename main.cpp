@@ -154,11 +154,18 @@ void testContinuedFraction()
 
 void testReverseScramble()
 {
+  int i,j;
   cout<<"Reverse scramble unit test\n";
   fillReverseScrambleTable(5,QL_SCRAMBLE_NONE);
   fillReverseScrambleTable(5,QL_SCRAMBLE_POWER);
   tassert(reverseScrambleTable[(QL_SCRAMBLE_NONE<<16)+5][10646]==5638);
   tassert(reverseScrambleTable[(QL_SCRAMBLE_POWER<<16)+5][10646]==5642);
+  for (i=2;i<12;i++)
+  {
+    for (j=0;j<i;j++)
+      cout<<faureperm(j,i)<<' ';
+    cout<<endl;
+  }
 }
 
 bool parsePrimeList()
