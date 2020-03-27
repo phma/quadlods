@@ -168,6 +168,41 @@ void testReverseScramble()
   }
 }
 
+vector<int> factor(int n)
+{
+  vector<int> ret;
+  int i,p;
+  for (i=0;i<QL_MAX_DIMS && n>1;i++)
+  {
+    p=nthprime(i);
+    while (n%p==0)
+    {
+      ret.push_back(p);
+      n/=p;
+    }
+  }
+  return ret;
+}
+
+void newScramble()
+{
+  map<int,vector<int> > scram;
+  int i,j;
+  vector<int> factors;
+  scram[2].push_back(0);
+  scram[2].push_back(1);
+  scram[3].push_back(0);
+  scram[3].push_back(1);
+  scram[3].push_back(2);
+  for (i=5;i<65536;i+=2)
+  {
+    factors=factor(i);
+    if (factors.size()>1)
+      continue;
+    factors=factor(i-3);
+  }
+}
+
 bool parsePrimeList()
 {
   string numstr;
