@@ -184,69 +184,6 @@ vector<int> factor(int n)
   return ret;
 }
 
-int facRev(int n,const vector<int> &factors, map<int,vector<int> > scram)
-{
-  int i;
-  vector<int> parts;
-  for (i=0;i<factors.size();i++)
-  {
-    parts.push_back(n%factors[i]);
-    n/=factors[i];
-  }
-  for (i=0;i<factors.size();i++)
-  {
-    n=n*factors[i]+scram[factors[i]][parts[i]];
-  }
-  return n;
-}
-
-void newScramble()
-{
-  map<int,vector<int> > scram,submap;
-  vector<int> row;
-  int p,i,j;
-  vector<int> factors;
-  PostScript ps;
-  scram[2].push_back(0);
-  scram[2].push_back(1);
-  scram[3].push_back(0);
-  scram[3].push_back(1);
-  scram[3].push_back(2);
-  for (p=5;p<65536;p+=2)
-  {
-    factors=factor(p);
-    if (factors.size()>1)
-      continue;
-    cout<<p<<"     \r";
-    cout.flush();
-    factors=factor(p-3);
-    row.clear();
-    submap.clear();
-    for (i=0;i<factors.size();i++)
-      submap[factors[i]]=scram[factors[i]];
-    row.push_back(0);
-    row.push_back(1);
-    for (i=0;i<p-3;i++)
-      row.push_back(p-2-facRev(i,factors,submap));
-    row.push_back(p-1);
-    scram[p]=row;
-  }
-  ps.open("scramble.ps");
-  ps.setpaper(a4land,0);
-  ps.prolog();
-  ps.startpage();
-  ps.setscale(0,0,65026,65026);
-  for (i=0;i<65027;i++)
-    ps.dot(i,scram[65027][i]);
-  ps.endpage();
-  ps.startpage();
-  ps.setscale(0,0,65028,65028);
-  for (i=0;i<65029;i++)
-    ps.dot(i,scram[65029][i]);
-  ps.endpage();
-  ps.close();
-}
-
 bool parsePrimeList()
 {
   string numstr;
@@ -873,6 +810,72 @@ void writeshort(ostream &file,unsigned short i)
   char buf[2];
   *(unsigned short *)buf=i;
   file.write(buf,2);
+}
+
+int facRev(int n,const vector<int> &factors, map<int,vector<int> > scram)
+{
+  int i;
+  vector<int> parts;
+  for (i=0;i<factors.size();i++)
+  {
+    parts.push_back(n%factors[i]);
+    n/=factors[i];
+  }
+  for (i=0;i<factors.size();i++)
+  {
+    n=n*factors[i]+scram[factors[i]][parts[i]];
+  }
+  return n;
+}
+
+void newScramble()
+{
+  map<int,vector<int> > scram,submap;
+  vector<int> row;
+  int p,i,j;
+  vector<int> factors;
+  ofstream scrambleFile("scramble.dat",ios::binary);
+  PostScript ps;
+  scram[2].push_back(0);
+  scram[2].push_back(1);
+  scram[3].push_back(0);
+  scram[3].push_back(1);
+  scram[3].push_back(2);
+  for (p=5;p<65536;p+=2)
+  {
+    factors=factor(p);
+    if (factors.size()>1)
+      continue;
+    cout<<p<<"     \r";
+    cout.flush();
+    factors=factor(p-3);
+    row.clear();
+    submap.clear();
+    for (i=0;i<factors.size();i++)
+      submap[factors[i]]=scram[factors[i]];
+    row.push_back(0);
+    row.push_back(1);
+    for (i=0;i<p-3;i++)
+      row.push_back(p-2-facRev(i,factors,submap));
+    row.push_back(p-1);
+    for (i=p-1;i>1;i--)
+      writeshort(scrambleFile,row[i]);
+    scram[p]=row;
+  }
+  ps.open("scramble.ps");
+  ps.setpaper(a4land,0);
+  ps.prolog();
+  ps.startpage();
+  ps.setscale(0,0,65026,65026);
+  for (i=0;i<65027;i++)
+    ps.dot(i,scram[65027][i]);
+  ps.endpage();
+  ps.startpage();
+  ps.setscale(0,0,65028,65028);
+  for (i=0;i<65029;i++)
+    ps.dot(i,scram[65029][i]);
+  ps.endpage();
+  ps.close();
 }
 
 quadirr findMinMaxQuad(int p)
