@@ -202,7 +202,8 @@ int facRev(int n,const vector<int> &factors, map<int,vector<int> > scram)
 
 void newScramble()
 {
-  map<int,vector<int> > scram;
+  map<int,vector<int> > scram,submap;
+  vector<int> row;
   int p,i,j;
   vector<int> factors;
   PostScript ps;
@@ -219,11 +220,16 @@ void newScramble()
     cout<<p<<"     \r";
     cout.flush();
     factors=factor(p-3);
-    scram[p].push_back(0);
-    scram[p].push_back(1);
+    row.clear();
+    submap.clear();
+    for (i=0;i<factors.size();i++)
+      submap[factors[i]]=scram[factors[i]];
+    row.push_back(0);
+    row.push_back(1);
     for (i=0;i<p-3;i++)
-      scram[p].push_back(p-2-facRev(i,factors,scram));
-    scram[p].push_back(p-1);
+      row.push_back(p-2-facRev(i,factors,submap));
+    row.push_back(p-1);
+    scram[p]=row;
   }
   ps.open("scramble.ps");
   ps.setpaper(a4land,0);
