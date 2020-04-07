@@ -832,7 +832,7 @@ void newScramble()
 {
   map<int,vector<int> > scram,submap;
   vector<int> row;
-  int p,i,j;
+  int p,i,j,last;
   vector<int> factors;
   ofstream scrambleFile("scramble.dat",ios::binary);
   PostScript ps;
@@ -858,8 +858,12 @@ void newScramble()
     for (i=0;i<p-3;i++)
       row.push_back(p-2-facRev(i,factors,submap));
     row.push_back(p-1);
+    last=0;
     for (i=p-1;i>1;i--)
-      writeshort(scrambleFile,row[i]);
+    {
+      writeshort(scrambleFile,row[i]-last);
+      last=row[i];
+    }
     scram[p]=row;
   }
   ps.open("scramble.ps");
