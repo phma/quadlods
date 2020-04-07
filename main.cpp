@@ -184,6 +184,22 @@ vector<int> factor(int n)
   return ret;
 }
 
+int facRev(int n,const vector<int> &factors, map<int,vector<int> > scram)
+{
+  int i;
+  vector<int> parts;
+  for (i=0;i<factors.size();i++)
+  {
+    parts.push_back(n%factors[i]);
+    n/=factors[i];
+  }
+  for (i=0;i<factors.size();i++)
+  {
+    n=n*factors[i]+scram[factors[i]][parts[i]];
+  }
+  return n;
+}
+
 void newScramble()
 {
   map<int,vector<int> > scram;
@@ -206,7 +222,7 @@ void newScramble()
     scram[p].push_back(0);
     scram[p].push_back(1);
     for (i=0;i<p-3;i++)
-      scram[p].push_back(p-2-i);
+      scram[p].push_back(p-2-facRev(i,factors,scram));
     scram[p].push_back(p-1);
   }
   ps.open("scramble.ps");
