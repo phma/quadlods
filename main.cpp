@@ -829,6 +829,18 @@ int facRev(int n,const vector<int> &factors, map<int,vector<int> > scram)
 }
 
 void newScramble()
+/* This is a sequence of scrambling permutations defined recursively
+ * as follows:
+ * P(2)=(0,1)
+ * P(3)=(0,1,2)
+ * P(p) where p>4 is (0,1,p-2-S(p-3),p-1)
+ * where S(n)[i] is computed by factoring n, expressing i as if the factors
+ * were a base, reversing the expression, applying the previously computed
+ * P(q) where q are the factors to the "digits", and turning it back
+ * into one number. The reason for subtracting 3 (thus keeping 0, 1, and p-1
+ * fixed, as with power scrambling) instead of 2 (keeping only 0 and p-1 fixed,
+ * as with Faure) is so that twin primes get completely different permutations.
+ */
 {
   map<int,vector<int> > scram,submap;
   vector<int> row;
@@ -860,6 +872,10 @@ void newScramble()
     row.push_back(p-1);
     last=0;
     for (i=p-1;i>1;i--)
+    /* Write the numbers backward, starting with p-1, which is one more than
+     * the number of numbers written. Omit the first two, which are always
+     * 0 and 1. Write differences to make it easier to compress.
+     */
     {
       writeshort(scrambleFile,row[i]-last);
       last=row[i];
