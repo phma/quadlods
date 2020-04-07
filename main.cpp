@@ -187,19 +187,26 @@ vector<int> factor(int n)
 void newScramble()
 {
   map<int,vector<int> > scram;
-  int i,j;
+  int p,i,j;
   vector<int> factors;
   scram[2].push_back(0);
   scram[2].push_back(1);
   scram[3].push_back(0);
   scram[3].push_back(1);
   scram[3].push_back(2);
-  for (i=5;i<65536;i+=2)
+  for (p=5;p<65536;p+=2)
   {
-    factors=factor(i);
+    factors=factor(p);
     if (factors.size()>1)
       continue;
-    factors=factor(i-3);
+    cout<<p<<"     \r";
+    cout.flush();
+    factors=factor(p-3);
+    scram[p].push_back(0);
+    scram[p].push_back(1);
+    for (i=0;i<p-3;i++)
+      scram[p].push_back(p-2-i);
+    scram[p].push_back(p-1);
   }
 }
 
@@ -1029,6 +1036,7 @@ void sortPrimes()
   hist.plot(ps,HISTO_LOG);
   ps.setcolor(1,0,0);
   ps.line2p(xy(logKhinchin*3/6.235,2),xy(logKhinchin*3/6.235,2.1));
+  newScramble();
 }
 
 int main(int argc,char **argv)
