@@ -51,6 +51,7 @@ namespace quadlods
 {
   map<unsigned,unsigned> relprimes;
   vector<unsigned short> primes;
+  map<int,int> scrambleFileIndex;
   map<unsigned,vector<unsigned short> > reverseScrambleTable;
   vector<PrimeContinuedFraction> primesCfSorted;
   mpz_class thue(0x69969669),third(0x55555555);
@@ -86,6 +87,13 @@ unsigned quadlods::gcd(unsigned a,unsigned b)
     b%=a;
   }
   return a+b;
+}
+
+short quadlods::readshort(std::istream &file)
+{
+  char buf[2];
+  file.read(buf,2);
+  return *(short *)buf;
 }
 
 unsigned quadlods::relprime(unsigned n)
@@ -134,6 +142,28 @@ unsigned quadlods::faureperm(unsigned dig,unsigned p)
       dig++;
   }
   return dig;
+}
+
+vector<unsigned short> readRow(int pos)
+{
+  ifstream scrambleFile("scramble.dat",ios::binary);
+  int i,p;
+  unsigned short n;
+  vector<unsigned short> ret;
+  scrambleFile.seekg(pos,scrambleFile.beg);
+  n=readshort(scrambleFile);
+  ret.push_back(n);
+  p=n+1;
+  for (i=1;i<p-2;i++)
+  {
+    n+=readshort(scrambleFile);
+    ret.push_back(n);
+  }
+  ret.push_back(1);
+  ret.push_back(0);
+  for (i=0;i*2<p;i++)
+    swap(ret[i],ret[p-1-i]);
+  return ret;
 }
 
 array<int,2> quadlods::primePower(unsigned short p)
@@ -352,17 +382,10 @@ mpz_class quadlods::scramble(mpz_class acc,mpz_class denom,int scrambletype)
   return ret;
 }
 
-short quadlods::readshort(std::istream &file)
-{
-  char buf[2];
-  file.read(buf,2);
-  return *(short *)buf;
-}
-
 void quadlods::initprimes()
 {
   int i,j,n;
-  int primeCheck=0;
+  int primeCheck=0,filePos=0;
   bool prime;
   PrimeContinuedFraction pcf;
   ifstream primeFile(string(SHARE_DIR)+"/primes.dat",ios::binary);
@@ -376,8 +399,18 @@ void quadlods::initprimes()
     {
       primeCheck+=i;
       primes.push_back(i);
+      if (i<4)
+	scrambleFileIndex[i]=-1;
+      else
+      {
+	scrambleFileIndex[i]=filePos;
+	filePos+=i-2;
+      }
     }
   }
+  /* The scramble file is 250 times bigger than the prime file, so it's
+   * not loaded, but read when setting up a Halton generator.
+   */
   primesCfSorted.clear();
   for (i=0;i<QL_MAX_DIMS;i++)
   {
