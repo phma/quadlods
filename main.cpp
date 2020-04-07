@@ -189,6 +189,7 @@ void newScramble()
   map<int,vector<int> > scram;
   int p,i,j;
   vector<int> factors;
+  PostScript ps;
   scram[2].push_back(0);
   scram[2].push_back(1);
   scram[3].push_back(0);
@@ -208,6 +209,20 @@ void newScramble()
       scram[p].push_back(p-2-i);
     scram[p].push_back(p-1);
   }
+  ps.open("scramble.ps");
+  ps.setpaper(a4land,0);
+  ps.prolog();
+  ps.startpage();
+  ps.setscale(0,0,65026,65026);
+  for (i=0;i<65027;i++)
+    ps.dot(i,scram[65027][i]);
+  ps.endpage();
+  ps.startpage();
+  ps.setscale(0,0,65028,65028);
+  for (i=0;i<65029;i++)
+    ps.dot(i,scram[65029][i]);
+  ps.endpage();
+  ps.close();
 }
 
 bool parsePrimeList()
