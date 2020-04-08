@@ -144,25 +144,36 @@ unsigned quadlods::faureperm(unsigned dig,unsigned p)
   return dig;
 }
 
-vector<unsigned short> readRow(int pos)
+vector<unsigned short> readRow(int prime)
 {
   ifstream scrambleFile("scramble.dat",ios::binary);
-  int i,p;
+  int i,p,pos;
   unsigned short n;
   vector<unsigned short> ret;
-  scrambleFile.seekg(pos,scrambleFile.beg);
-  n=readshort(scrambleFile);
-  ret.push_back(n);
-  p=n+1;
-  for (i=1;i<p-2;i++)
+  pos=scrambleFileIndex[prime];
+  if (pos<0)
   {
-    n+=readshort(scrambleFile);
-    ret.push_back(n);
+    for (i=0;i<prime;i++)
+      ret.push_back(i);
   }
-  ret.push_back(1);
-  ret.push_back(0);
-  for (i=0;i*2<p;i++)
-    swap(ret[i],ret[p-1-i]);
+  else
+  {
+    scrambleFile.seekg(pos,scrambleFile.beg);
+    n=readshort(scrambleFile);
+    ret.push_back(n);
+    p=n+1;
+    if (p!=prime)
+      cerr<<"Error reading row "<<prime<<" from position "<<pos<<endl;
+    for (i=1;i<p-2;i++)
+    {
+      n+=readshort(scrambleFile);
+      ret.push_back(n);
+    }
+    ret.push_back(1);
+    ret.push_back(0);
+    for (i=0;i*2<p;i++)
+      swap(ret[i],ret[p-1-i]);
+  }
   return ret;
 }
 
