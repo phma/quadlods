@@ -844,7 +844,7 @@ void newScramble()
 {
   map<int,vector<int> > scram,submap;
   vector<int> row;
-  int p,i,j,last;
+  int p,i,j,last,sz;
   vector<int> factors;
   ofstream scrambleFile("scramble.dat",ios::binary);
   PostScript ps;
@@ -861,9 +861,12 @@ void newScramble()
     cout<<p<<"     \r";
     cout.flush();
     factors=factor(p-3);
+    sz=factors.size();
+    for (i=0;i*2<sz;i++)
+      swap(factors[i],factors[sz-1-i]);
     row.clear();
     submap.clear();
-    for (i=0;i<factors.size();i++)
+    for (i=0;i<sz;i++)
       submap[factors[i]]=scram[factors[i]];
     row.push_back(0);
     row.push_back(1);
