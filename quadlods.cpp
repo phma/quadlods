@@ -158,7 +158,7 @@ vector<unsigned short> readRow(int prime)
   }
   else
   {
-    scrambleFile.seekg(pos,scrambleFile.beg);
+    scrambleFile.seekg(2*pos,scrambleFile.beg);
     n=readshort(scrambleFile);
     ret.push_back(n);
     p=n+1;
@@ -217,15 +217,24 @@ void quadlods::fillReverseScrambleTable(int p,int scrambletype)
 {
   array<int,2> pp=primePower(p);
   int i,j,dec,acc;
-  vector<unsigned short> scrambleTable;
+  vector<unsigned short> scrambleTable,row;
   int inx=(scrambletype<<16)+p;
-  if ((scrambletype==QL_SCRAMBLE_POWER || scrambletype==QL_SCRAMBLE_FAURE || p<256) && reverseScrambleTable[inx].size()==0)
+  if ((scrambletype==QL_SCRAMBLE_POWER ||
+       scrambletype==QL_SCRAMBLE_FAURE ||
+       scrambletype==QL_SCRAMBLE_RECUR ||
+       p<256) && reverseScrambleTable[inx].size()==0)
   {
     for (i=0;i<p;i++)
       if (scrambletype==QL_SCRAMBLE_POWER)
 	scrambleTable.push_back(scrambledig(i,p));
-      else if (scrambletype==QL_SCRAMBLE_FAURE)
+      else if (scrambletype==QL_SCRAMBLE_RECUR)
 	scrambleTable.push_back(faureperm(i,p));
+      else if (scrambletype==QL_SCRAMBLE_FAURE)
+      {
+	if (row.size()==0)
+	  row=readRow(p);
+	scrambleTable.push_back(row[i]);
+      }
       else
 	scrambleTable.push_back(i);
     for (i=0;i<pp[1];i++)
