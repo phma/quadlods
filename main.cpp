@@ -859,7 +859,7 @@ void newScramble()
 {
   map<int,vector<int> > scram,submap;
   vector<int> row;
-  int p,i,j,last,sz;
+  int p,i,j,last,sz,stsz;
   vector<int> factors,stairs,skipStairs;
   ofstream scrambleFile("scramble.dat",ios::binary);
   PostScript ps;
@@ -882,7 +882,8 @@ void newScramble()
 	j++;
       else
 	skipStairs.push_back(i);
-    factors=factor(skipStairs.size());
+    stsz=skipStairs.size();
+    factors=factor(stsz);
     sz=factors.size();
     for (i=0;i*2<sz;i++)
       swap(factors[i],factors[sz-1-i]);
@@ -892,10 +893,20 @@ void newScramble()
     submap.clear();
     for (i=0;i<sz;i++)
       submap[factors[i]]=scram[factors[i]];
-    for (i=0;i<skipStairs.size();i++)
-      row[skipStairs[i]]=skipStairs[skipStairs.size()-1-facRev(i,factors,submap)];
-    for (i=0;i<stairs.size();i++)
-      row[stairs[i]]=stairs[i];
+    for (i=0;i<stsz;i++)
+      row[skipStairs[i]]=skipStairs[stsz-1-facRev(i,factors,submap)];
+    stsz=stairs.size()-2;
+    factors=factor(stsz);
+    sz=factors.size();
+    for (i=0;i*2<sz;i++)
+      swap(factors[i],factors[sz-1-i]);
+    submap.clear();
+    for (i=0;i<sz;i++)
+      submap[factors[i]]=scram[factors[i]];
+    for (i=0;i<stsz;i++)
+      row[stairs[i+1]]=stairs[stsz-facRev(i,factors,submap)];
+    row[0]=0;
+    row[p-1]=p-1;
     last=0;
     for (i=p-1;i>0;i--)
     /* Write the numbers backward, starting with p-1, which is one more than
