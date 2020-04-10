@@ -828,6 +828,21 @@ int facRev(int n,const vector<int> &factors, map<int,vector<int> > scram)
   return n;
 }
 
+vector<int> sqrtStairs(int p)
+{
+  int i,q,diff;
+  vector<int> ret;
+  q=lrint(sqrt(p));
+  for (i=0;i<=q;i++)
+    ret.push_back(i*q);
+  diff=p-1-ret[q];
+  for (i=0;i<diff;i++)
+    ret[q-i]+=diff-i;
+  for (i=0;i<-diff;i++)
+    ret[q-i]+=i+diff;
+  return ret;
+}
+
 void newScramble()
 /* This is a sequence of scrambling permutations defined recursively
  * as follows:
@@ -845,7 +860,7 @@ void newScramble()
   map<int,vector<int> > scram,submap;
   vector<int> row;
   int p,i,j,last,sz;
-  vector<int> factors;
+  vector<int> factors,stairs;
   ofstream scrambleFile("scramble.dat",ios::binary);
   PostScript ps;
   scram[2].push_back(0);
@@ -861,6 +876,7 @@ void newScramble()
     cout<<p<<"     \r";
     cout.flush();
     factors=factor(p-3);
+    stairs=sqrtStairs(p);
     sz=factors.size();
     for (i=0;i*2<sz;i++)
       swap(factors[i],factors[sz-1-i]);
