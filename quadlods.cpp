@@ -164,12 +164,11 @@ vector<unsigned short> readRow(int prime)
     p=n+1;
     if (p!=prime)
       cerr<<"Error reading row "<<prime<<" from position "<<pos<<endl;
-    for (i=1;i<p-2;i++)
+    for (i=1;i<p-1;i++)
     {
       n+=readshort(scrambleFile);
       ret.push_back(n);
     }
-    ret.push_back(1);
     ret.push_back(0);
     for (i=0;i*2<p;i++)
       swap(ret[i],ret[p-1-i]);
@@ -424,7 +423,7 @@ void quadlods::initprimes()
       else
       {
 	scrambleFileIndex[i]=filePos;
-	filePos+=i-2;
+	filePos+=i-1;
       }
     }
   }

@@ -864,7 +864,7 @@ void newScramble()
     sz=factors.size();
     for (i=0;i*2<sz;i++)
       swap(factors[i],factors[sz-1-i]);
-    if (p>64000)
+    if (p>66000)
       cout<<p<<' '<<factors[0]<<endl;
     row.clear();
     submap.clear();
@@ -876,10 +876,10 @@ void newScramble()
       row.push_back(p-2-facRev(i,factors,submap));
     row.push_back(p-1);
     last=0;
-    for (i=p-1;i>1;i--)
+    for (i=p-1;i>0;i--)
     /* Write the numbers backward, starting with p-1, which is one more than
-     * the number of numbers written. Omit the first two, which are always
-     * 0 and 1. Write differences to make it easier to compress.
+     * the number of numbers written. Omit the first, which is always
+     * 0. Write differences to make it easier to compress.
      */
     {
       writeshort(scrambleFile,row[i]-last);
