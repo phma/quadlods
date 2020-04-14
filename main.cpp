@@ -888,7 +888,7 @@ void newScramble()
     sz=factors.size();
     for (i=0;i*2<sz;i++)
       swap(factors[i],factors[sz-1-i]);
-    if (p>66000)
+    if (p>64000)
       cout<<p<<' '<<factors[0]<<endl;
     row.resize(p);
     submap.clear();
