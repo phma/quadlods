@@ -828,18 +828,18 @@ int facRev(int n,const vector<int> &factors, map<int,vector<int> > scram)
   return n;
 }
 
-vector<int> sqrtStairs(int p)
+vector<int> stepStairs(int p,int s)
 {
   int i,q,diff;
   vector<int> ret;
-  q=lrint(sqrt(p));
-  for (i=0;i<=q;i++)
+  q=lrint((double)p/s);
+  for (i=0;i<=s;i++)
     ret.push_back(i*q);
-  diff=p-1-ret[q];
+  diff=p-1-ret[s];
   for (i=0;i<diff;i++)
-    ret[q-i]+=diff-i;
+    ret[s-i]+=diff-i;
   for (i=0;i<-diff;i++)
-    ret[q-i]+=i+diff;
+    ret[s-i]+=i+diff;
   return ret;
 }
 
@@ -859,7 +859,7 @@ void newScramble()
 {
   map<int,vector<int> > scram,submap;
   vector<int> row;
-  int p,i,j,last,sz,stsz;
+  int p,i,j,last,sz,stsz,inx;
   vector<int> factors,stairs,skipStairs;
   ofstream scrambleFile("scramble.dat",ios::binary);
   PostScript ps;
@@ -868,14 +868,15 @@ void newScramble()
   scram[3].push_back(0);
   scram[3].push_back(1);
   scram[3].push_back(2);
-  for (p=5;p<65536;p+=2)
+  for (p=5,inx=0;p<65536;p+=2)
   {
     factors=factor(p);
     if (factors.size()>1)
       continue;
     cout<<p<<"     \r";
     cout.flush();
-    stairs=sqrtStairs(p);
+    inx++;
+    stairs=stepStairs(p,inx);
     skipStairs.clear();
     for (i=j=0;i<p;i++)
       if (i==stairs[j])
