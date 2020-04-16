@@ -832,6 +832,8 @@ vector<int> stepStairs(int p,int s)
 {
   int i,q,diff;
   vector<int> ret;
+  set<int> sret;
+  set<int>::iterator j;
   q=lrint((double)p/s);
   for (i=0;i<=s;i++)
     ret.push_back(i*q);
@@ -840,6 +842,11 @@ vector<int> stepStairs(int p,int s)
     ret[s-i]+=diff-i;
   for (i=0;i<-diff;i++)
     ret[s-i]+=i+diff;
+  for (i=0;i<=s;i++)
+    sret.insert(scrambledig(ret[i],p));
+  ret.clear();
+  for (j=sret.begin();j!=sret.end();j++)
+    ret.push_back(*j);
   return ret;
 }
 
