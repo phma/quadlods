@@ -867,6 +867,16 @@ void writeStairs(ostream &file,vector<int> stairs)
   }
 }
 
+void writePerm(ostream &file,vector<int> perm)
+{
+  int i,last;
+  for (i=last=0;i<perm.size();i++)
+  {
+    writeshort(file,perm[i]-last);
+    last=perm[i];
+  }
+}
+
 void newScramble()
 /* This is a sequence of scrambling permutations defined recursively
  * as follows:
@@ -882,7 +892,7 @@ void newScramble()
  */
 {
   map<int,vector<int> > scram,submap;
-  vector<int> row;
+  vector<int> row,perm0,perm1;
   int p,i,j,last,sz,stsz,inx;
   vector<int> factors,stairs,skipStairs;
   ofstream scrambleFile("scramble.dat",ios::binary);
@@ -917,11 +927,17 @@ void newScramble()
     if (p>64000)
       cout<<p<<' '<<factors[0]<<endl;
     row.resize(p);
+    perm0.clear();
+    perm1.clear();
     submap.clear();
     for (i=0;i<sz;i++)
       submap[factors[i]]=scram[factors[i]];
     for (i=0;i<stsz;i++)
-      row[skipStairs[i]]=skipStairs[stsz-1-facRev(i,factors,submap)];
+    {
+      perm0.push_back(stsz-1-facRev(i,factors,submap));
+      row[skipStairs[i]]=skipStairs[perm0.back()];
+    }
+    writePerm(permuteFile,perm0);
     stsz=stairs.size()-2;
     factors=factor(stsz);
     sz=factors.size();
@@ -931,9 +947,13 @@ void newScramble()
     for (i=0;i<sz;i++)
       submap[factors[i]]=scram[factors[i]];
     for (i=0;i<stsz;i++)
-      row[stairs[i+1]]=stairs[stsz-facRev(i,factors,submap)];
+    {
+      perm1.push_back(stsz-1-facRev(i,factors,submap));
+      row[stairs[i+1]]=stairs[perm1.back()+1];
+    }
     row[0]=0;
     row[p-1]=p-1;
+    writePerm(permuteFile,perm1);
     last=0;
     for (i=p-1;i>0;i--)
     /* Write the numbers backward, starting with p-1, which is one more than
