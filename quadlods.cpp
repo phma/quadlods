@@ -226,9 +226,9 @@ void quadlods::fillReverseScrambleTable(int p,int scrambletype)
     for (i=0;i<p;i++)
       if (scrambletype==QL_SCRAMBLE_POWER)
 	scrambleTable.push_back(scrambledig(i,p));
-      else if (scrambletype==QL_SCRAMBLE_RECUR)
-	scrambleTable.push_back(faureperm(i,p));
       else if (scrambletype==QL_SCRAMBLE_FAURE)
+	scrambleTable.push_back(faureperm(i,p));
+      else if (scrambletype==QL_SCRAMBLE_RECUR)
       {
 	if (row.size()==0)
 	  row=readRow(p);

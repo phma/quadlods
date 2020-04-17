@@ -256,6 +256,7 @@ int parseScramble(string scramblestr)
   digs.push_back(digraphs("Gray"));
   digs.push_back(digraphs("Power"));
   digs.push_back(digraphs("Faure"));
+  digs.push_back(digraphs("novel")); // temporary name
   match.resize(digs.size());
   for (i=0;i<676;i++)
     for (j=0;j<digs.size();j++)
@@ -292,6 +293,11 @@ int parseScramble(string scramblestr)
   {
     nmatch++;
     ret=QL_SCRAMBLE_FAURE;
+  }
+  if (match[6]==maxmatch)
+  {
+    nmatch++;
+    ret=QL_SCRAMBLE_RECUR;
   }
   if (nmatch>1)
   {
