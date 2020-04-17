@@ -856,6 +856,17 @@ vector<int> stepStairs(int p,int s)
   return ret;
 }
 
+void writeStairs(ostream &file,vector<int> stairs)
+{
+  int i;
+  for (i=1;i<stairs.size();i++)
+  {
+    file.put(stairs[i]-stairs[i-1]);
+    if (stairs[i]-stairs[i-1]>255)
+      cout<<stairs[i]-stairs[i-1]<<" too big\n";
+  }
+}
+
 void newScramble()
 /* This is a sequence of scrambling permutations defined recursively
  * as follows:
@@ -875,6 +886,7 @@ void newScramble()
   int p,i,j,last,sz,stsz,inx;
   vector<int> factors,stairs,skipStairs;
   ofstream scrambleFile("scramble.dat",ios::binary);
+  ofstream permuteFile("permute.dat",ios::binary);
   PostScript ps;
   scram[2].push_back(0);
   scram[2].push_back(1);
@@ -890,6 +902,7 @@ void newScramble()
     cout.flush();
     inx++;
     stairs=stepStairs(p,inx);
+    writeStairs(permuteFile,stairs);
     skipStairs.clear();
     for (i=j=0;i<p;i++)
       if (i==stairs[j])
