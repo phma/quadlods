@@ -62,12 +62,14 @@ namespace quadlods
     {5,32768},{5,59049},{4,10000},{4,14641},{4,20736},{4,28561}
   };
   array<int,2> primePower(unsigned short p);
+  short readshort(istream &file);
+  vector<unsigned short> readSteps(istream &file,int prime);
+  vector<unsigned short> readRow(int prime);
   int reverseScramble(int limb,int p,int scrambletype);
   mpz_class thuemorse(int n);
   mpz_class minusthird(int n);
   mpz_class graydecode(mpz_class n);
   mpz_class scramble(mpz_class acc,mpz_class denom,int scrambletype);
-  short readshort(std::istream &file);
   void initprimes();
   void compquad(int p,double resolution,mpz_class &nmid,mpz_class &dmid);
   void compquad(ContinuedFraction cf,double resolution,mpz_class &nmid,mpz_class &dmid);
@@ -89,7 +91,7 @@ unsigned quadlods::gcd(unsigned a,unsigned b)
   return a+b;
 }
 
-short quadlods::readshort(std::istream &file)
+short quadlods::readshort(istream &file)
 {
   char buf[2];
   file.read(buf,2);
@@ -144,7 +146,24 @@ unsigned quadlods::faureperm(unsigned dig,unsigned p)
   return dig;
 }
 
-vector<unsigned short> readRow(int prime)
+vector<unsigned short> quadlods::readSteps(istream &file,int prime)
+/* Reads a sequence of bytes, such as 03 03 04 01 01 08 06 03 01, which add up
+ * to prime-1 (in this case prime=31), and returns the steps, in this case
+ * 00 03 06 0a 0b 0c 14 1a 1d 1e.
+ */
+{
+  int ch=0,sum=0;
+  vector<unsigned short> ret;
+  while (sum+1<prime && ch>=0)
+  {
+    ret.push_back(sum);
+    ch=file.get();
+    sum+=ch;
+  }
+  return ret;
+}
+
+vector<unsigned short> quadlods::readRow(int prime)
 {
   ifstream scrambleFile("scramble.dat",ios::binary);
   int i,p,pos;
