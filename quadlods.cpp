@@ -51,7 +51,7 @@ namespace quadlods
 {
   map<unsigned,unsigned> relprimes;
   vector<unsigned short> primes;
-  map<int,int> scrambleFileIndex;
+  map<int,int> scrambleFileIndex,permuteFileIndex;
   map<unsigned,vector<unsigned short> > reverseScrambleTable;
   vector<PrimeContinuedFraction> primesCfSorted;
   mpz_class thue(0x69969669),third(0x55555555);
@@ -404,7 +404,7 @@ mpz_class quadlods::scramble(mpz_class acc,mpz_class denom,int scrambletype)
 void quadlods::initprimes()
 {
   int i,j,n;
-  int primeCheck=0,filePos=0;
+  int primeCheck=0,filePos=0,filePos1=0;
   bool prime;
   PrimeContinuedFraction pcf;
   ifstream primeFile(string(SHARE_DIR)+"/primes.dat",ios::binary);
@@ -419,12 +419,19 @@ void quadlods::initprimes()
       primeCheck+=i;
       primes.push_back(i);
       if (i<4)
+      {
 	scrambleFileIndex[i]=-1;
+	permuteFileIndex[i]=-1;
+      }
       else
       {
 	scrambleFileIndex[i]=filePos;
+	permuteFileIndex[i]=filePos1;
 	filePos+=i-1;
+	filePos1+=(i-2)*2+primes.size()-2;
       }
+      if (i>32700 && i<32800)
+	cout<<i<<' '<<filePos<<' '<<filePos1<<endl;
     }
   }
   /* The scramble file is 250 times bigger than the prime file, so it's
