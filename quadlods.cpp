@@ -185,7 +185,7 @@ vector<unsigned short> quadlods::readRow(int prime)
 {
   ifstream scrambleFile("scramble.dat",ios::binary);
   ifstream permuteFile("permute.dat",ios::binary);
-  int i,p,pos0,pos;
+  int i,j,p,pos0,pos;
   unsigned short n;
   vector<unsigned short> stairs,skipStairs,perm0,perm1,ret;
   pos0=scrambleFileIndex[prime];
@@ -207,14 +207,18 @@ vector<unsigned short> quadlods::readRow(int prime)
     stairs=readSteps(permuteFile,prime);
     perm0=readPerm(permuteFile,prime-stairs.size());
     perm1=readPerm(permuteFile,stairs.size()-2);
-    for (i=1;i<p-1;i++)
-    {
-      n+=readshort(scrambleFile);
-      ret.push_back(n);
-    }
-    ret.push_back(0);
-    for (i=0;i*2<p;i++)
-      swap(ret[i],ret[p-1-i]);
+    for (i=j=0;i<prime;i++)
+      if (i==stairs[j])
+	j++;
+      else
+	skipStairs.push_back(i);
+    ret.resize(prime);
+    ret[0]=0;
+    ret[prime-1]=prime-1;
+    for (i=0;i<skipStairs.size();i++)
+      ret[skipStairs[i]]=skipStairs[perm0[i]];
+    for (i=0;i<stairs.size();i++)
+      ret[stairs[i+1]]=stairs[perm1[i]+1];
   }
   return ret;
 }
