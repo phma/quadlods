@@ -161,6 +161,7 @@ vector<unsigned short> quadlods::readSteps(istream &file,int prime)
     ch=file.get();
     sum+=ch;
   }
+  ret.push_back(sum);
   return ret;
 }
 
@@ -183,10 +184,12 @@ vector<unsigned short> quadlods::readPerm(istream &file,int n)
 vector<unsigned short> quadlods::readRow(int prime)
 {
   ifstream scrambleFile("scramble.dat",ios::binary);
-  int i,p,pos;
+  ifstream permuteFile("permute.dat",ios::binary);
+  int i,p,pos0,pos;
   unsigned short n;
-  vector<unsigned short> ret;
-  pos=scrambleFileIndex[prime];
+  vector<unsigned short> stairs,skipStairs,perm0,perm1,ret;
+  pos0=scrambleFileIndex[prime];
+  pos=permuteFileIndex[prime];
   if (pos<0)
   {
     for (i=0;i<prime;i++)
@@ -194,12 +197,16 @@ vector<unsigned short> quadlods::readRow(int prime)
   }
   else
   {
-    scrambleFile.seekg(2*pos,scrambleFile.beg);
+    scrambleFile.seekg(2*pos0,scrambleFile.beg);
+    permuteFile.seekg(pos,permuteFile.beg);
     n=readshort(scrambleFile);
     ret.push_back(n);
     p=n+1;
     if (p!=prime)
       cerr<<"Error reading row "<<prime<<" from position "<<pos<<endl;
+    stairs=readSteps(permuteFile,prime);
+    perm0=readPerm(permuteFile,prime-stairs.size());
+    perm1=readPerm(permuteFile,stairs.size()-2);
     for (i=1;i<p-1;i++)
     {
       n+=readshort(scrambleFile);
