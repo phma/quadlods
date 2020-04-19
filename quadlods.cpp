@@ -64,6 +64,7 @@ namespace quadlods
   array<int,2> primePower(unsigned short p);
   short readshort(istream &file);
   vector<unsigned short> readSteps(istream &file,int prime);
+  vector<unsigned short> readPerm(istream &file,int n);
   vector<unsigned short> readRow(int prime);
   int reverseScramble(int limb,int p,int scrambletype);
   mpz_class thuemorse(int n);
@@ -159,6 +160,22 @@ vector<unsigned short> quadlods::readSteps(istream &file,int prime)
     ret.push_back(sum);
     ch=file.get();
     sum+=ch;
+  }
+  return ret;
+}
+
+vector<unsigned short> quadlods::readPerm(istream &file,int n)
+/* Reads a sequence of shorts, such as 0007 fffc 0002 fffc 0005 fffc 0002 fffc,
+ * which are differences, and returns the permutation, in this case
+ * 7 3 5 1 6 2 4 0.
+ */
+{
+  int i,sum=0;
+  vector<unsigned short> ret;
+  for (i=0;i<n;i++)
+  {
+    sum+=readshort(file);
+    ret.push_back(sum);
   }
   return ret;
 }
