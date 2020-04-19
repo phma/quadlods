@@ -7,7 +7,7 @@ Before 0.1.1:
 •Draw flower diagrams of individual dimensions of a sequence. ✓
 
 Before 0.2.0:
-•Add a Halton mode to the generator.
+•Add a Halton mode to the generator. ✓
 
 Before 0.3.0:
 •Investigate constructing continued fractions with long periods and small terms. ✓
