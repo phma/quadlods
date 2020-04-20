@@ -183,7 +183,7 @@ vector<unsigned short> quadlods::readPerm(istream &file,int n)
 
 vector<unsigned short> quadlods::readRow(int prime)
 {
-  ifstream permuteFile("permute.dat",ios::binary);
+  ifstream permuteFile(string(SHARE_DIR)+"/permute.dat",ios::binary);
   int i,j,p,pos;
   unsigned short n;
   vector<unsigned short> stairs,skipStairs,perm0,perm1,ret;
