@@ -882,20 +882,18 @@ void newScramble()
  * as follows:
  * P(2)=(0,1)
  * P(3)=(0,1,2)
- * P(p) where p>4 is (0,1,p-2-S(p-3),p-1)
+ * P(p) where p>4 is (0,a-S(a),p-1) interleaved with b-1-S(b)
  * where S(n)[i] is computed by factoring n, expressing i as if the factors
  * were a base, reversing the expression, applying the previously computed
  * P(q) where q are the factors to the "digits", and turning it back
- * into one number. The reason for subtracting 3 (thus keeping 0, 1, and p-1
- * fixed, as with power scrambling) instead of 2 (keeping only 0 and p-1 fixed,
- * as with Faure) is so that twin primes get completely different permutations.
+ * into one number. a is 2 less than the index of p (p=5,a=0; p=7,a=1; p=11,a=2;
+ * etc.), a+b+2=p, and the interleaving uses the power scrambling function.
  */
 {
   map<int,vector<int> > scram,submap;
   vector<int> row,perm0,perm1;
   int p,i,j,last,sz,stsz,inx;
   vector<int> factors,stairs,skipStairs;
-  ofstream scrambleFile("scramble.dat",ios::binary);
   ofstream permuteFile("permute.dat",ios::binary);
   PostScript ps;
   scram[2].push_back(0);
@@ -955,15 +953,6 @@ void newScramble()
     row[p-1]=p-1;
     writePerm(permuteFile,perm1);
     last=0;
-    for (i=p-1;i>0;i--)
-    /* Write the numbers backward, starting with p-1, which is one more than
-     * the number of numbers written. Omit the first, which is always
-     * 0. Write differences to make it easier to compress.
-     */
-    {
-      writeshort(scrambleFile,row[i]-last);
-      last=row[i];
-    }
     scram[p]=row;
   }
   ps.open("scramble.ps");
