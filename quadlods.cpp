@@ -469,8 +469,6 @@ void quadlods::initprimes()
 	filePos+=i-1;
 	filePos1+=(i-2)*2+primes.size()-2;
       }
-      if (i>32700 && i<32800)
-	cout<<i<<' '<<filePos<<' '<<filePos1<<endl;
     }
   }
   /* The scramble file is 250 times bigger than the prime file, so it's
