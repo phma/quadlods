@@ -209,7 +209,7 @@ vector<unsigned short> quadlods::readRow(int prime)
     ret[prime-1]=prime-1;
     for (i=0;i<skipStairs.size();i++)
       ret[skipStairs[i]]=skipStairs[perm0[i]];
-    for (i=0;i<stairs.size();i++)
+    for (i=0;i<stairs.size()-2;i++)
       ret[stairs[i+1]]=stairs[perm1[i]+1];
   }
   return ret;
