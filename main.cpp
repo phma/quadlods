@@ -1169,7 +1169,6 @@ void sortPrimes()
   hist.plot(ps,HISTO_LOG);
   ps.setcolor(1,0,0);
   ps.line2p(xy(logKhinchin*3/6.235,2),xy(logKhinchin*3/6.235,2.1));
-  newScramble();
 }
 
 int main(int argc,char **argv)
@@ -1210,6 +1209,7 @@ int main(int argc,char **argv)
   p.add("command",1);
   cmdline_options.add(generic).add(hidden);
   commands.push_back(command("sortprimes",sortPrimes,"Sort primes by average continued fraction term"));
+  commands.push_back(command("scramblehalton",newScramble,"Compute permutations for scrambling Halton"));
   commands.push_back(command("test",runTests,"Run unit and other short tests"));
   commands.push_back(command("longtest",runLongTests,"Run long tests"));
   commands.push_back(command("quadplot",quadPlot,"Plot quadratic irrationals mod 1"));
