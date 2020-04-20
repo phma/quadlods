@@ -472,13 +472,13 @@ void testScatter()
 {
   int i,j,inx,allinx;
   time_t now,then;
-  allinx=ndims*(ndims-1)/2;
   ps.open(filename.length()?filename:"scattertest.ps");
   ps.prolog();
   quads[0].init(ndims,resolution);
   quads[0].init(primelist,resolution);
   quads[0].setscramble(scramble);
   quads[0].advance(-1);
+  allinx=quads[0].size()*(quads[0].size()-1)/2;
   for (i=0;resolution && i<quads[0].size();i++)
     cout<<quads[0].getnum(i)<<'/'<<quads[0].getdenom(i)<<' '<<quads[0].getacc(i)<<endl;
   for (i=0;i<quads[0].size();i++)
