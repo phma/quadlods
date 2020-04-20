@@ -724,17 +724,21 @@ void Quadlods::init(vector<int> dprimes,double resolution,int j)
 {
   int i,k,p,newmode;
   mpz_class nmid,dmid;
-  // TODO check that dprimes are actually distinct
   newmode=resolution?QL_MODE_RICHTMYER:QL_MODE_HALTON;
   if (mode!=newmode)
     primeinx.clear();
-  for (i=primeinx.size();i<dprimes.size();i++)
+  for (i=0;i<dprimes.size();i++)
+  {
+    for (k=0;k<primeinx.size();k++)
+      if (dprimes[i]==nthprime(primeinx[k]))
+	dprimes[i]=0;
     for (k=0;k<QL_MAX_DIMS;k++)
       if (dprimes[i]==nthprime(k))
       {
         primeinx.push_back(k);
         k=8191;
       }
+  }
   for (i=newmode?hacc.size():denom.size();i<primeinx.size();i++)
   {
     if (newmode==QL_MODE_RICHTMYER)
