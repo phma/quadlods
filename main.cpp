@@ -75,6 +75,7 @@ char rpint[][2]=
 map<double,int> singleq;
 int minlargerp;
 PostScript ps;
+string resstr;
 double resolution;
 string primestr;
 vector<int> primelist;
@@ -302,6 +303,26 @@ int parseScramble(string scramblestr)
   if (nmatch>1)
   {
     ret=-1;
+  }
+  return ret;
+}
+
+double parseResolution(string resstr)
+{
+  size_t rest;
+  double ret;
+  try
+  {
+    ret=stod(resstr,&rest);
+    if (rest<resstr.length())
+      ret=-1;
+  }
+  catch (...)
+  {
+    if (resstr==string("Halton").substr(0,resstr.length()) && resstr.length()>0)
+      ret=0;
+    else
+      ret=-1;
   }
   return ret;
 }
@@ -1200,7 +1221,7 @@ int main(int argc,char **argv)
   generic.add_options()
     ("dimensions,d",po::value<int>(&ndims),"Number of dimensions")
     ("primes,p",po::value<string>(&primestr),"List of primes")
-    ("resolution,r",po::value<double>(&resolution)->default_value(1e17),"Resolution")
+    ("resolution,r",po::value<string>(&resstr)->default_value("1e17"),"Resolution")
     ("scramble,s",po::value<string>(&scramblestr)->default_value("Gray"),"Scrambling: none, third, Thue-Morse, Gray")
     ("niter,n",po::value<int>(&niter),"Number of iterations or lines of output")
     ("output,o",po::value<string>(&filename),"Output file");
@@ -1226,7 +1247,10 @@ int main(int argc,char **argv)
     scramble=parseScramble(scramblestr);
     if (scramble<0)
       cerr<<"Unrecognized or ambiguous scrambling: "<<scramblestr<<endl;
-    validArgs=parsePrimeList()&&scramble>=0;
+    resolution=parseResolution(resstr);
+    if (!(resolution>=0))
+      cerr<<"Invalid resolution (should be positive number or H): "<<resstr<<endl;
+    validArgs=parsePrimeList() && scramble>=0 && resolution>=0;
   }
   catch (exception &e)
   {
