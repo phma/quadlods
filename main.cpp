@@ -916,6 +916,7 @@ void newScramble()
   int p,i,j,last,sz,stsz,inx;
   vector<int> factors,stairs,skipStairs;
   ofstream permuteFile("permute.dat",ios::binary);
+  ofstream permuteText("permute.txt");
   PostScript ps;
   scram[2].push_back(0);
   scram[2].push_back(1);
@@ -973,6 +974,12 @@ void newScramble()
     row[0]=0;
     row[p-1]=p-1;
     writePerm(permuteFile,perm1);
+    if (p<128)
+    {
+      for (i=0;i<p;i++)
+	permuteText<<(i?' ':'(')<<row[i];
+      permuteText<<")\n";
+    }
     last=0;
     scram[p]=row;
   }
