@@ -65,6 +65,7 @@ namespace quadlods
   short readshort(istream &file);
   vector<unsigned short> readSteps(istream &file,int prime);
   vector<unsigned short> readPerm(istream &file,int n);
+  bool isPerm(vector<unsigned short> &perm);
   vector<unsigned short> readRow(int prime);
   int reverseScramble(int limb,int p,int scrambletype);
   mpz_class thuemorse(int n);
@@ -181,6 +182,30 @@ vector<unsigned short> quadlods::readPerm(istream &file,int n)
   return ret;
 }
 
+bool quadlods::isPerm(vector<unsigned short> &perm)
+{
+  int i,min=65536,max=-1,acc1p=0,acc1i=0,acc2p=0,acc2i=0,accxp=0,accxi=0;
+  for (i=0;i<perm.size();i++)
+  {
+    if (perm[i]<min)
+      min=perm[i];
+    if (perm[i]>max)
+      max=perm[i];
+    acc1p+=perm[i];
+    acc1i+=i;
+    acc2p+=perm[i]*perm[i];
+    acc2i+=i*i;
+    accxp^=perm[i];
+    accxi^=i;
+  }
+  if (min>max) // empty permutation
+  {
+    min=0;
+    max=-1;
+  }
+  return min==0 && max==perm.size()-1 && acc1p==acc1i && acc2p==acc2i && accxp==accxi;
+}
+
 vector<unsigned short> quadlods::readRow(int prime)
 {
   ifstream permuteFile(string(SHARE_DIR)+"/permute.dat",ios::binary);
@@ -199,6 +224,8 @@ vector<unsigned short> quadlods::readRow(int prime)
     stairs=readSteps(permuteFile,prime);
     perm0=readPerm(permuteFile,prime-stairs.size());
     perm1=readPerm(permuteFile,stairs.size()-2);
+    if (!isPerm(perm0) || !isPerm(perm1))
+      cerr<<"Permutation file is corrupt or failed to read\n";
     for (i=j=0;i<prime;i++)
       if (i==stairs[j])
 	j++;
