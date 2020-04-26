@@ -36,6 +36,7 @@
 #define QL_SCRAMBLE_POWER 4
 #define QL_SCRAMBLE_FAURE 5
 #define QL_SCRAMBLE_RECUR 6
+#define QL_SCRAMBLE_DEFAULT 255
 /* The scrambletype controls how to scramble the bits of the accumulator when
  * reading the generator. If acc is 0xc0de and denom is 0x10000, it returns:
  * QL_SCRAMBLE_NONE:      1100000011011110
@@ -133,10 +134,7 @@ public:
   }
   std::vector<mpq_class> readout();
   void setmiddle();
-  void setscramble(int j)
-  {
-    scrambletype=j;
-  }
+  void setscramble(int j);
   void advance(mpz_class n);
   unsigned int seedsize();
   void seed(char *s,unsigned int n);

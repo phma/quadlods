@@ -258,6 +258,7 @@ int parseScramble(string scramblestr)
   digs.push_back(digraphs("Power"));
   digs.push_back(digraphs("Faure"));
   digs.push_back(digraphs("novel")); // temporary name
+  digs.push_back(digraphs("default"));
   match.resize(digs.size());
   for (i=0;i<676;i++)
     for (j=0;j<digs.size();j++)
@@ -299,6 +300,11 @@ int parseScramble(string scramblestr)
   {
     nmatch++;
     ret=QL_SCRAMBLE_RECUR;
+  }
+  if (match[7]==maxmatch)
+  {
+    nmatch++;
+    ret=QL_SCRAMBLE_DEFAULT;
   }
   if (nmatch>1)
   {
@@ -1229,7 +1235,7 @@ int main(int argc,char **argv)
     ("dimensions,d",po::value<int>(&ndims),"Number of dimensions")
     ("primes,p",po::value<string>(&primestr),"List of primes")
     ("resolution,r",po::value<string>(&resstr)->default_value("1e17"),"Resolution")
-    ("scramble,s",po::value<string>(&scramblestr)->default_value("Gray"),"Scrambling: none, third, Thue-Morse, Gray")
+    ("scramble,s",po::value<string>(&scramblestr)->default_value("default"),"Scrambling: none, third, Thue-Morse, Gray")
     ("niter,n",po::value<int>(&niter),"Number of iterations or lines of output")
     ("output,o",po::value<string>(&filename),"Output file");
   hidden.add_options()

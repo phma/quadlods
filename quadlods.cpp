@@ -730,10 +730,15 @@ void Quadlods::init(int dimensions,double resolution,int j)
       num.push_back(nmid);
     }
   }
+  if (j==QL_SCRAMBLE_DEFAULT)
+    if (newmode==QL_MODE_HALTON)
+      j=QL_SCRAMBLE_RECUR;
+    else
+      j=QL_SCRAMBLE_GRAY;
   if (j>=0)
     scrambletype=j;
-  if (scrambletype<0 || scrambletype>QL_SCRAMBLE_GRAY)
-    scrambletype=QL_SCRAMBLE_GRAY;
+  if (scrambletype<0 || scrambletype>QL_SCRAMBLE_RECUR)
+    scrambletype=QL_SCRAMBLE_RECUR;
   mode=newmode;
   dimensions=abs(dimensions);
   if (mode==QL_MODE_RICHTMYER)
@@ -789,10 +794,15 @@ void Quadlods::init(vector<int> dprimes,double resolution,int j)
       hacc.push_back(vector<unsigned short>());
     }
   }
+  if (j==QL_SCRAMBLE_DEFAULT)
+    if (newmode==QL_MODE_HALTON)
+      j=QL_SCRAMBLE_RECUR;
+    else
+      j=QL_SCRAMBLE_GRAY;
   if (j>=0)
     scrambletype=j;
-  if (scrambletype<0 || scrambletype>QL_SCRAMBLE_GRAY)
-    scrambletype=QL_SCRAMBLE_GRAY;
+  if (scrambletype<0 || scrambletype>QL_SCRAMBLE_RECUR)
+    scrambletype=QL_SCRAMBLE_RECUR;
   mode=newmode;
   if (mode==QL_MODE_RICHTMYER)
   {
@@ -860,6 +870,16 @@ void Quadlods::setmiddle()
   int i;
   for (i=0;i<num.size();i++)
     acc[i]=denom[i]>>1;
+}
+
+void Quadlods::setscramble(int j)
+{
+  if (j==QL_SCRAMBLE_DEFAULT)
+    if (mode==QL_MODE_HALTON)
+      j=QL_SCRAMBLE_RECUR;
+    else
+      j=QL_SCRAMBLE_GRAY;
+  scrambletype=j;
 }
 
 void Quadlods::advance(mpz_class n)
