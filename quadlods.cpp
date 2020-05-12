@@ -690,14 +690,14 @@ void Quadlods::init(int dimensions,double resolution,int j)
 	incHacc(hacc[i],primePower(p)[1],
 		haccValue(hacc[i-1],primePower(nthprime(primeinx[i-1]))[1],sign),false);
     }
-    for (i=hacc.size();i>dimensions;i--)
+    for (i=-hacc.size();i>dimensions;i--)
     {
       primeinx.push_back(QL_MAX_DIMS+i-1);
       p=nthprime(QL_MAX_DIMS+i-1);
       hacc.resize(primeinx.size());
       if (i)
-	incHacc(hacc[i],primePower(p)[1],
-		haccValue(hacc[i-1],primePower(nthprime(primeinx[i-1]))[1],sign),false);
+	incHacc(hacc[-i],primePower(p)[1],
+		haccValue(hacc[-1-i],primePower(nthprime(primeinx[-1-i]))[1],sign),false);
     }
   }
   else
