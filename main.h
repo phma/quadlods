@@ -3,7 +3,7 @@
 /* main.h - globals of main program                   */
 /*                                                    */
 /******************************************************/
-/* Copyright 2019 Pierre Abbat.
+/* Copyright 2019,2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -29,3 +29,4 @@ extern std::map<int,Quadlods> quads;
 int parseInt(std::string intstr);
 double parseDouble(std::string intstr);
 int parseScramble(std::string scramblestr);
+double parseResolution(std::string resstr);

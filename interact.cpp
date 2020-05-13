@@ -3,7 +3,7 @@
 /* interact.cpp - interactive mode                    */
 /*                                                    */
 /******************************************************/
-/* Copyright 2019 Pierre Abbat.
+/* Copyright 2019,2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -86,7 +86,7 @@ void cmdInit(string command)
   {
     n=parseInt(firstWord(command));
     s=parseInt(firstWord(command));
-    res=parseDouble(firstWord(command));
+    res=parseResolution(firstWord(command));
   }
   catch (...)
   {
@@ -99,10 +99,10 @@ void cmdInit(string command)
     replyCode=400;
     replyText=boost::locale::gettext("Number of dimensions must be nonnegative");
   }
-  if (res<=0) // res==0 means Halton, but that's not finished yet
+  if (res<0) 
   {
     replyCode=401;
-    replyText=boost::locale::gettext("Resolution must be positive");
+    replyText=boost::locale::gettext("Resolution must be positive or Halton");
   }
   if (replyCode<300)
   {
