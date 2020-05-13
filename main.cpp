@@ -325,7 +325,11 @@ double parseResolution(string resstr)
   }
   catch (...)
   {
-    if (resstr==string("Halton").substr(0,resstr.length()) && resstr.length()>0)
+    int i;
+    string lower;
+    for (i=0;i<resstr.length();i++)
+      lower+=tolower(resstr[i]);
+    if (lower==string("halton").substr(0,lower.length()) && lower.length()>0)
       ret=0;
     else
       ret=-1;
