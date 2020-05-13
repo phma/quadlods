@@ -1205,6 +1205,40 @@ void sortPrimes()
   ps.line2p(xy(logKhinchin*3/6.235,2),xy(logKhinchin*3/6.235,2.1));
 }
 
+void primesqrt2()
+/* 2 2
+ * 2 3
+ * 5 7
+ * 29 41
+ * 691 977
+ * 773 1093
+ * 971 1373
+ * 1009 1427
+ * 2617 3701
+ * 6079 8597
+ * 15731 22247
+ * 27073 38287
+ * 37879 53569
+ * 43789 61927
+ */
+{
+  int i=0,j=0;
+  double close=1,diff;
+  while (j<=QL_MAX_DIMS)
+  {
+    diff=double(primes[j])/primes[i]-M_SQRT2;
+    if (fabs(diff)<close)
+    {
+      cout<<primes[i]<<' '<<primes[j]<<endl;
+      close=fabs(diff);
+    }
+    if (diff>0)
+      ++i;
+    else
+      ++j;
+  }
+}
+
 int main(int argc,char **argv)
 /* Commands:
  * sortprimes	Write a list of primes sorted by average continued fraction term
