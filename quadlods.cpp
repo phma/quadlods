@@ -842,6 +842,7 @@ vector<mpq_class> Quadlods::readout()
   {
     pp=primePower(p=nthprime(primeinx[i]))[1];
     ret.push_back(haccReverseScramble(hacc[i],p,scrambletype,sign));
+    ret[i].canonicalize();
   }
   return ret;
 }
