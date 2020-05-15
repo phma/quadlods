@@ -806,6 +806,7 @@ void runTests()
 {
   testContinuedFraction();
   testReverseScramble();
+  testSeed();
   testHaltonAccumulator();
 }
 
