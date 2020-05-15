@@ -570,28 +570,32 @@ void quadPlot()
 
 void testSeed()
 {
-  int i,j,seedlen;
+  int n,i,j,seedlen;
   vector<double> point;
   char *seedbuf;
   time_t now;
   quads[0].init(5,1e10);
-  seedlen=quads[0].seedsize();
-  cout<<seedlen<<" bytes needed to seed"<<endl;
-  seedbuf=new char[seedlen];
-  now=time(NULL);
-  for (i=0;i<sizeof(time_t) && i<seedlen;i++)
-    seedbuf[i]=now>>(8*i);
-  for (;i<seedlen;i++)
-    seedbuf[i]=seedbuf[i-1]+seedbuf[i-sizeof(time_t)];
-  quads[0].seed(seedbuf,seedlen);
-  for (i=0;i<30;i++)
+  quads[1].init(5,0);
+  for (n=0;n<2;n++)
   {
-    point=quads[0].dgen();
-    for (j=0;j<point.size();j++)
-      cout<<point[j]<<' ';
-    cout<<endl;
+    seedlen=quads[n].seedsize();
+    cout<<seedlen<<" bytes needed to seed"<<endl;
+    seedbuf=new char[seedlen];
+    now=time(NULL);
+    for (i=0;i<sizeof(time_t) && i<seedlen;i++)
+      seedbuf[i]=now>>(8*i);
+    for (;i<seedlen;i++)
+      seedbuf[i]=seedbuf[i-1]+seedbuf[i-sizeof(time_t)];
+    quads[n].seed(seedbuf,seedlen);
+    for (i=0;i<30;i++)
+    {
+      point=quads[n].dgen();
+      for (j=0;j<point.size();j++)
+	cout<<point[j]<<' ';
+      cout<<endl;
+    }
+    delete[] seedbuf;
   }
-  delete[] seedbuf;
 }
 
 array<double,3> spherePoint(double x0,double x1)
