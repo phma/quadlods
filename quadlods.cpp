@@ -920,11 +920,25 @@ unsigned int Quadlods::seedsize()
 }
 
 void Quadlods::seed(char *s,unsigned int n)
+/* If mode is Richtmyer:
+ * Multiplies each accumulator by a power of 256 and adds some bytes of s,
+ * then mods the accumulator by its denominator.
+ * If mode is Halton:
+ * Interprets the bytes of s as a centered base-257 number with no zero,
+ * and advances by that number (which may be negative).
+ * Note that if 257**(n-1) is less than the number of tuples you will generate,
+ * you may go through -1,0, which will give all 1s followed by all 0s.
+ */
 {
   unsigned i,sz;
+  mpz_class haltonStep;
   sz=denom.size();
   for (i=0;sz && i<n;i++)
     acc[i%sz]=((acc[i%sz]<<8)+(s[i]&0xff))%denom[i%sz];
+  sz=hacc.size();
+  for (i=0;sz && i<n;i++)
+    haltonStep=haltonStep*257+((s[i]&128)?(s[i]+1):(s[i]|-128));
+  advance(haltonStep);
 }
 
 vector<mpq_class> Quadlods::gen()
