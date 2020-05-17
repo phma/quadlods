@@ -598,6 +598,21 @@ void testSeed()
   }
 }
 
+void testNegativeHalton()
+{
+  int i,j;
+  vector<double> point;
+  quads[0].init(5,0);
+  quads[0].advance(-15);
+  for (i=0;i<30;i++)
+  {
+    point=quads[0].dgen();
+    for (j=0;j<point.size();j++)
+      cout<<point[j]<<' ';
+    cout<<endl;
+  }
+}
+
 array<double,3> spherePoint(double x0,double x1)
 {
   array<double,3> ret;
@@ -810,6 +825,7 @@ void runTests()
 {
   testContinuedFraction();
   testReverseScramble();
+  testNegativeHalton();
   testSeed();
   testHaltonAccumulator();
 }
