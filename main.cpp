@@ -602,7 +602,7 @@ void testNegativeHalton()
 {
   int i,j;
   vector<double> point,sum;
-  quads[0].init(5,0);
+  quads[0].init(5,0,QL_SCRAMBLE_NONE);
   quads[0].advance(-16);
   sum.resize(5,0);
   cout<<"Negative Halton test\n";
