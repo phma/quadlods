@@ -398,14 +398,14 @@ mpz_class quadlods::haccValue(vector<unsigned short> &hacc,int pp,bool sign)
 
 mpq_class quadlods::haccReverseScramble(vector<unsigned short> &hacc,int p,int scrambletype,bool sign)
 {
-  mpz_class num=sign,denom=1;
+  mpz_class num=0,denom=1;
   int i,pp=primePower(p)[1];
   for (i=0;i<hacc.size();i++)
   {
     num=num*pp+reverseScramble(hacc[i],p,scrambletype);
     denom*=pp;
   }
-  return mpq_class(num,denom);
+  return mpq_class(num+sign,denom);
 }
 
 mpz_class quadlods::thuemorse(int n)
