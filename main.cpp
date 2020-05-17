@@ -601,15 +601,24 @@ void testSeed()
 void testNegativeHalton()
 {
   int i,j;
-  vector<double> point;
+  vector<double> point,sum;
   quads[0].init(5,0);
-  quads[0].advance(-15);
+  quads[0].advance(-16);
+  sum.resize(5,0);
+  cout<<"Negative Halton test\n";
   for (i=0;i<30;i++)
   {
     point=quads[0].dgen();
     for (j=0;j<point.size();j++)
+    {
+      sum[j]+=point[j];
       cout<<point[j]<<' ';
+    }
     cout<<endl;
+  }
+  for (j=0;j<sum.size();j++)
+  {
+    tassert(fabs(sum[j]-15)<1e-12);
   }
 }
 
