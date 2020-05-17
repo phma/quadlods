@@ -903,20 +903,27 @@ void Quadlods::advance(mpz_class n)
 unsigned int Quadlods::seedsize()
 {
   unsigned i,maxlen,len;
+  mpz_class prod=1;
   for (i=maxlen=0;i<denom.size();i++)
   {
     len=(mpz_sizeinbase(denom[i].get_mpz_t(),2)+7)/8;
     if (len>maxlen)
       maxlen=len;
   }
-  return maxlen*denom.size();
+  for (i=0;i<hacc.size();i++)
+    prod*=nthprime(primeinx[i]);
+  if (mode==QL_MODE_HALTON)
+    len=(mpz_sizeinbase(prod.get_mpz_t(),2)+7)/8;
+  else
+    len=0;
+  return maxlen*denom.size()+len;
 }
 
 void Quadlods::seed(char *s,unsigned int n)
 {
   unsigned i,sz;
   sz=denom.size();
-  for (i=0;i<n;i++)
+  for (i=0;sz && i<n;i++)
     acc[i%sz]=((acc[i%sz]<<8)+(s[i]&0xff))%denom[i%sz];
 }
 
