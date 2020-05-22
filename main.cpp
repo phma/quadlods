@@ -83,6 +83,7 @@ string scramblestr;
 int ndims,niter,scramble;
 string filename;
 bool useMinMax=false;
+int maxStairStep;
 
 void listCommands()
 {
@@ -923,6 +924,8 @@ void writeStairs(ostream &file,vector<int> stairs)
   for (i=1;i<stairs.size();i++)
   {
     file.put(stairs[i]-stairs[i-1]);
+    if (stairs[i]-stairs[i-1]>maxStairStep)
+      maxStairStep=stairs[i]-stairs[i-1];
     if (stairs[i]-stairs[i-1]>255)
       cout<<stairs[i]-stairs[i-1]<<" too big\n";
   }
@@ -963,6 +966,7 @@ void newScramble()
   scram[3].push_back(0);
   scram[3].push_back(1);
   scram[3].push_back(2);
+  maxStairStep=0;
   for (p=5,inx=0;p<65536;p+=2)
   {
     factors=factor(p);
@@ -1037,6 +1041,7 @@ void newScramble()
     ps.dot(i,scram[65029][i]);
   ps.endpage();
   ps.close();
+  cout<<"Maximum stair step: "<<maxStairStep<<'\n';
 }
 
 quadirr findMinMaxQuad(int p)
