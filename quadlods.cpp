@@ -160,6 +160,8 @@ vector<unsigned short> quadlods::readSteps(istream &file,int prime)
   {
     ret.push_back(sum);
     ch=file.get();
+    if (ch==0) // There are no zeros in the step bytes. The max step is 150.
+      ch=256;  // This keeps the program from getting stuck on a run of zeros.
     sum+=ch;
   }
   ret.push_back(sum);
