@@ -286,7 +286,7 @@ void quadlods::fillReverseScrambleTable(int p,int scrambletype)
   int inx=(scrambletype<<16)+p;
   if ((scrambletype==QL_SCRAMBLE_POWER ||
        scrambletype==QL_SCRAMBLE_FAURE ||
-       scrambletype==QL_SCRAMBLE_RECUR ||
+       scrambletype==QL_SCRAMBLE_TIPWITCH ||
        p<256) && reverseScrambleTable[inx].size()==0)
   {
     for (i=0;i<p;i++)
@@ -294,7 +294,7 @@ void quadlods::fillReverseScrambleTable(int p,int scrambletype)
 	scrambleTable.push_back(scrambledig(i,p));
       else if (scrambletype==QL_SCRAMBLE_FAURE)
 	scrambleTable.push_back(faureperm(i,p));
-      else if (scrambletype==QL_SCRAMBLE_RECUR)
+      else if (scrambletype==QL_SCRAMBLE_TIPWITCH)
       {
 	if (row.size()==0)
 	  row=readRow(p);
@@ -732,13 +732,13 @@ void Quadlods::init(int dimensions,double resolution,int j)
   }
   if (j==QL_SCRAMBLE_DEFAULT)
     if (newmode==QL_MODE_HALTON)
-      j=QL_SCRAMBLE_RECUR;
+      j=QL_SCRAMBLE_TIPWITCH;
     else
       j=QL_SCRAMBLE_GRAY;
   if (j>=0)
     scrambletype=j;
-  if (scrambletype<0 || scrambletype>QL_SCRAMBLE_RECUR)
-    scrambletype=QL_SCRAMBLE_RECUR;
+  if (scrambletype<0 || scrambletype>QL_SCRAMBLE_TIPWITCH)
+    scrambletype=QL_SCRAMBLE_TIPWITCH;
   mode=newmode;
   dimensions=abs(dimensions);
   if (mode==QL_MODE_RICHTMYER)
@@ -796,13 +796,13 @@ void Quadlods::init(vector<int> dprimes,double resolution,int j)
   }
   if (j==QL_SCRAMBLE_DEFAULT)
     if (newmode==QL_MODE_HALTON)
-      j=QL_SCRAMBLE_RECUR;
+      j=QL_SCRAMBLE_TIPWITCH;
     else
       j=QL_SCRAMBLE_GRAY;
   if (j>=0)
     scrambletype=j;
-  if (scrambletype<0 || scrambletype>QL_SCRAMBLE_RECUR)
-    scrambletype=QL_SCRAMBLE_RECUR;
+  if (scrambletype<0 || scrambletype>QL_SCRAMBLE_TIPWITCH)
+    scrambletype=QL_SCRAMBLE_TIPWITCH;
   mode=newmode;
   if (mode==QL_MODE_RICHTMYER)
   {
@@ -877,7 +877,7 @@ void Quadlods::setscramble(int j)
 {
   if (j==QL_SCRAMBLE_DEFAULT)
     if (mode==QL_MODE_HALTON)
-      j=QL_SCRAMBLE_RECUR;
+      j=QL_SCRAMBLE_TIPWITCH;
     else
       j=QL_SCRAMBLE_GRAY;
   scrambletype=j;
