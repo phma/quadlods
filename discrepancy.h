@@ -28,14 +28,16 @@
  * In each generation, the least fit boxes die, and the remaining boxes have
  * children, with occasional mutations.
  */
+#define sizeMismatch 1
 
 class Box
 {
 public:
   Box();
   Box(Box &mother,Box &father);
+  int in(const std::vector<double> &point);
+  void countPoints(const std::vector<std::vector<double> > &points);
   double discrepancy();
-  void countPoints(std::vector<std::vector<double> > points;
 private:
   static double mutationRate;
   std::vector<std::array<double,2> > bounds;

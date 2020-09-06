@@ -1,7 +1,8 @@
 project(quadlods)
 cmake_minimum_required(VERSION 2.8)
 
-add_executable(quadlods main.cpp circletest.cpp contfrac.cpp filltest.cpp flowertest.cpp
+add_executable(quadlods main.cpp circletest.cpp contfrac.cpp
+	       discrepancy.cpp filltest.cpp flowertest.cpp
                histogram.cpp hstep.cpp interact.cpp
                ldecimal.cpp manysum.cpp matrix.cpp polyline.cpp ps.cpp
                random.cpp xy.cpp)
