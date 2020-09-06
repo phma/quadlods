@@ -3,7 +3,7 @@
 /* random.h - random numbers                          */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -33,6 +33,7 @@ public:
   double expirandom();
   double expsrandom();
   double expcrandom();
+  bool brandom();
   ~randm();
 private:
 #if defined(_WIN32)
@@ -40,6 +41,7 @@ private:
 #else
   FILE *randfil;
 #endif
+  unsigned int bitbuf,bitcnt;
 };
 
 extern randm rng;

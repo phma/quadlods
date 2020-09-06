@@ -3,7 +3,7 @@
 /* random.cpp - random numbers                        */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -32,7 +32,7 @@
 #if defined(_WIN32)
 randm::randm()
 {
-  ucnum=usnum=0;
+  ucnum=usnum=bitcnt=0;
 }
 
 randm::~randm()
@@ -112,6 +112,20 @@ double randm::expsrandom()
 double randm::expcrandom()
 {
   return -log((ucrandom()+0.5)/256.);
+}
+
+bool randm::brandom()
+{
+  bool ret;
+  if (bitcnt==0)
+  {
+    bitbuf=uirandom();
+    bitcnt=32;
+  }
+  ret=bitbuf&1;
+  bitbuf>>=1;
+  bitcnt--;
+  return ret;
 }
 
 randm rng;
