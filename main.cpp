@@ -573,7 +573,6 @@ void testRandom()
 {
   int hist[256],i;
   int done=0,max,min,maxstep=0;
-  manysum xsum,ysum,zsum;
   memset(hist,0,sizeof(hist));
   while (!done)
   {
@@ -597,6 +596,9 @@ void testRandom()
   }
   tassert(done==1);
   cout<<"Random test: max "<<max<<" min "<<min<<endl;
+  memset(hist,0,sizeof(hist));
+  for (i=0;i<40;i++)
+    hist[rng.rangerandom(251)]++;
   tassert(done==1);
 }
 

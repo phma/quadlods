@@ -25,14 +25,18 @@
 #define _CRT_RAND_S
 #include <cstdlib>
 #include <cstdio>
+#include <cassert>
 #include <cmath>
+#include <iostream>
 #include "random.h"
+using namespace std;
 
 // Cygwin does not define _WIN32, but does have /dev/urandom
 #if defined(_WIN32)
 randm::randm()
 {
   ucnum=usnum=bitcnt=0;
+  bigrange=1;
 }
 
 randm::~randm()
@@ -70,6 +74,7 @@ unsigned char randm::ucrandom()
 randm::randm()
 {
   randfil=fopen("/dev/urandom","rb");
+  bigrange=1;
 }
 
 randm::~randm()
@@ -125,6 +130,23 @@ bool randm::brandom()
   ret=bitbuf&1;
   bitbuf>>=1;
   bitcnt--;
+  return ret;
+}
+
+mpz_class randm::rangerandom(mpz_class range)
+{
+  mpz_class ret;
+  assert(range>0);
+  while (bigrange<16777216*range || bigacc%range==bigrange%range)
+  {
+    bigacc=(bigacc<<32)+uirandom();
+    bigrange<<=32;
+  }
+  cout<<bigacc<<'/'<<bigrange<<' ';
+  ret=bigacc%range;
+  bigrange/=range;
+  bigacc/=range;
+  cout<<bigacc<<'/'<<bigrange<<endl;
   return ret;
 }
 

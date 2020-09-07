@@ -21,6 +21,7 @@
  * and Lesser General Public License along with Quadlods. If not, see
  * <http://www.gnu.org/licenses/>.
  */
+#include <gmpxx.h>
 #include "config.h"
 
 class randm
@@ -34,6 +35,11 @@ public:
   double expsrandom();
   double expcrandom();
   bool brandom();
+  mpz_class rangerandom(mpz_class range);
+  unsigned int rangerandom(unsigned int range)
+  {
+    return rangerandom(mpz_class(range)).get_ui();
+  }
   ~randm();
 private:
 #if defined(_WIN32)
@@ -42,6 +48,7 @@ private:
   FILE *randfil;
 #endif
   unsigned int bitbuf,bitcnt;
+  mpz_class bigacc,bigrange;
 };
 
 extern randm rng;
