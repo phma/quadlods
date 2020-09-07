@@ -92,3 +92,15 @@ double Box::discrepancy()
   else
     return closedisc;
 }
+
+void Box::mutate(const std::vector<std::vector<double> > &points)
+/* Replaces one of the bounds, at random, with the corresponding coordinate
+ * of one of the points, at random.
+ */
+{
+  int pntnum=rng.rangerandom(points.size());
+  int coord=rng.rangerandom(bounds.size());
+  bounds[coord][rng.brandom()]=points[pntnum][coord];
+  if (bounds[coord][0]>bounds[coord][1])
+    swap(bounds[coord][0],bounds[coord][1]);
+}

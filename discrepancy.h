@@ -38,6 +38,7 @@ public:
   int in(const std::vector<double> &point);
   void countPoints(const std::vector<std::vector<double> > &points);
   double discrepancy();
+  void mutate(const std::vector<std::vector<double> > &points);
 private:
   static double mutationRate;
   std::vector<std::array<double,2> > bounds;
