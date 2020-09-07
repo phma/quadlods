@@ -596,10 +596,30 @@ void testRandom()
   }
   tassert(done==1);
   cout<<"Random test: max "<<max<<" min "<<min<<endl;
+  done=maxstep=0;
   memset(hist,0,sizeof(hist));
-  for (i=0;i<40;i++)
+  while (!done)
+  {
     hist[rng.rangerandom(251)]++;
+    for (max=i=0,min=16777777;i<251;i++)
+    {
+      if (hist[i]>max)
+	max=hist[i];
+      if (hist[i]<min)
+	min=hist[i];
+    }
+    if (max>16777215)
+      done=-1;
+    if (max-min>1.1*pow(max,1/3.) && max-min<0.9*pow(max,2/3.))
+      done=1;
+    if (max-maxstep>=16384)
+    {
+      maxstep=max;
+      //cout<<max<<' '<<min<<endl;
+    }
+  }
   tassert(done==1);
+  cout<<"Range random test: max "<<max<<" min "<<min<<endl;
 }
 
 void testSeed()

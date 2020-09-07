@@ -142,11 +142,9 @@ mpz_class randm::rangerandom(mpz_class range)
     bigacc=(bigacc<<32)+uirandom();
     bigrange<<=32;
   }
-  cout<<bigacc<<'/'<<bigrange<<' ';
   ret=bigacc%range;
   bigrange/=range;
   bigacc/=range;
-  cout<<bigacc<<'/'<<bigrange<<endl;
   return ret;
 }
 
