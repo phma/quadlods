@@ -33,6 +33,7 @@
 #include "main.h"
 #include "config.h"
 #include "ps.h"
+#include "random.h"
 #include "circletest.h"
 #include "filltest.h"
 #include "contfrac.h"
@@ -568,6 +569,37 @@ void quadPlot()
   ps.close();
 }
 
+void testRandom()
+{
+  int hist[256],i;
+  int done=0,max,min,maxstep=0;
+  manysum xsum,ysum,zsum;
+  memset(hist,0,sizeof(hist));
+  while (!done)
+  {
+    hist[rng.ucrandom()]++;
+    for (max=i=0,min=16777777;i<256;i++)
+    {
+      if (hist[i]>max)
+	max=hist[i];
+      if (hist[i]<min)
+	min=hist[i];
+    }
+    if (max>16777215)
+      done=-1;
+    if (max-min>1.1*pow(max,1/3.) && max-min<0.9*pow(max,2/3.))
+      done=1;
+    if (max-maxstep>=16384)
+    {
+      maxstep=max;
+      //cout<<max<<' '<<min<<endl;
+    }
+  }
+  tassert(done==1);
+  cout<<"Random test: max "<<max<<" min "<<min<<endl;
+  tassert(done==1);
+}
+
 void testSeed()
 {
   int n,i,j,seedlen;
@@ -835,6 +867,7 @@ void runTests()
   testContinuedFraction();
   testReverseScramble();
   testNegativeHalton();
+  testRandom();
   testSeed();
   testHaltonAccumulator();
 }
