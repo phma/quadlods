@@ -620,8 +620,30 @@ void testRandom()
   }
   tassert(done==1);
   cout<<"Range random test: max "<<max<<" min "<<min<<endl;
-  for (i=0;i<60;i++)
-    rng.frandom(mpq_class(1,3));
+  done=maxstep=0;
+  memset(hist,0,sizeof(hist));
+  while (!done)
+  {
+    hist[rng.frandom(mpq_class(1,3))]++;
+    for (max=i=0,min=16777777;i<2;i++)
+    {
+      if (hist[i]*(1+i)>max)
+	max=hist[i]*(1+i);
+      if (hist[i]*(1+i)<min)
+	min=hist[i]*(1+i);
+    }
+    if (max>16777215)
+      done=-1;
+    if (min>256 && max-min>1.1*pow(max,1/3.) && max-min<0.9*pow(max,2/3.))
+      done=1;
+    if (max-maxstep>=16384)
+    {
+      maxstep=max;
+      //cout<<max<<' '<<min<<endl;
+    }
+  }
+  tassert(done==1);
+  cout<<"Fractional random test: "<<hist[0]<<" zeros "<<hist[1]<<" ones\n";
 }
 
 void testSeed()

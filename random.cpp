@@ -158,7 +158,6 @@ bool randm::frandom(mpq_class prob)
   {
     upper0=bigrange*prob.get_num()/prob.get_den();
     lower1=(bigrange*prob.get_num()+prob.get_den()-1)/prob.get_den();
-    cout<<prob<<" [0.."<<upper0<<") ["<<lower1<<".."<<bigrange<<") "<<bigacc<<'/'<<bigrange;
     if (bigacc<upper0 || bigacc>=lower1)
       break;
     bigacc=(bigacc<<32)+uirandom();
@@ -172,7 +171,6 @@ bool randm::frandom(mpq_class prob)
     bigacc-=lower1;
     bigrange-=lower1;
   }
-  cout<<' '<<ret<<endl;
   return ret;
 }
 
