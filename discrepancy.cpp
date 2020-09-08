@@ -117,8 +117,8 @@ void Box::mutate(const std::vector<std::vector<double> > &points)
  */
 {
   int pntnum=rng.rangerandom(points.size());
-  int coord=rng.rangerandom(bounds.size());
-  bounds[coord][rng.brandom()]=points[pntnum][coord];
+  int coord=rng.rangerandom(bounds.size()+2);
+  bounds[coord][rng.brandom()]=(coord<bounds.size())?points[pntnum][coord]:(coord-bounds.size());
   if (bounds[coord][0]>bounds[coord][1])
     swap(bounds[coord][0],bounds[coord][1]);
 }
