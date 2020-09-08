@@ -148,4 +148,32 @@ mpz_class randm::rangerandom(mpz_class range)
   return ret;
 }
 
+bool randm::frandom(mpq_class prob)
+{
+  bool ret;
+  mpz_class upper0,lower1;
+  prob.canonicalize();
+  assert(prob>=0 && prob<=1);
+  while (true)
+  {
+    upper0=bigrange*prob.get_num()/prob.get_den();
+    lower1=(bigrange*prob.get_num()+prob.get_den()-1)/prob.get_den();
+    cout<<prob<<" [0.."<<upper0<<") ["<<lower1<<".."<<bigrange<<") "<<bigacc<<'/'<<bigrange;
+    if (bigacc<upper0 || bigacc>=lower1)
+      break;
+    bigacc=(bigacc<<32)+uirandom();
+    bigrange<<=32;
+  }
+  ret=bigacc<upper0;
+  if (ret)
+    bigrange=upper0;
+  else
+  {
+    bigacc-=lower1;
+    bigrange-=lower1;
+  }
+  cout<<' '<<ret<<endl;
+  return ret;
+}
+
 randm rng;

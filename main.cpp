@@ -620,6 +620,8 @@ void testRandom()
   }
   tassert(done==1);
   cout<<"Range random test: max "<<max<<" min "<<min<<endl;
+  for (i=0;i<60;i++)
+    rng.frandom(mpq_class(1,3));
 }
 
 void testSeed()

@@ -40,6 +40,7 @@ public:
   {
     return rangerandom(mpz_class(range)).get_ui();
   }
+  bool frandom(mpq_class prob);
   ~randm();
 private:
 #if defined(_WIN32)
