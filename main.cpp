@@ -33,6 +33,7 @@
 #include "main.h"
 #include "config.h"
 #include "ps.h"
+#include "random.h"
 #include "circletest.h"
 #include "filltest.h"
 #include "contfrac.h"
@@ -258,7 +259,7 @@ int parseScramble(string scramblestr)
   digs.push_back(digraphs("Gray"));
   digs.push_back(digraphs("Power"));
   digs.push_back(digraphs("Faure"));
-  digs.push_back(digraphs("novel")); // temporary name
+  digs.push_back(digraphs("tipwitch"));
   digs.push_back(digraphs("default"));
   match.resize(digs.size());
   for (i=0;i<676;i++)
@@ -300,7 +301,7 @@ int parseScramble(string scramblestr)
   if (match[6]==maxmatch)
   {
     nmatch++;
-    ret=QL_SCRAMBLE_RECUR;
+    ret=QL_SCRAMBLE_TIPWITCH;
   }
   if (match[7]==maxmatch)
   {
@@ -567,6 +568,83 @@ void quadPlot()
   quadplot(ps);
   ps.trailer();
   ps.close();
+}
+
+void testRandom()
+{
+  int hist[256],i;
+  int done=0,max,min,maxstep=0;
+  memset(hist,0,sizeof(hist));
+  while (!done)
+  {
+    hist[rng.ucrandom()]++;
+    for (max=i=0,min=16777777;i<256;i++)
+    {
+      if (hist[i]>max)
+	max=hist[i];
+      if (hist[i]<min)
+	min=hist[i];
+    }
+    if (max>16777215)
+      done=-1;
+    if (max-min>1.1*pow(max,1/3.) && max-min<0.9*pow(max,2/3.))
+      done=1;
+    if (max-maxstep>=16384)
+    {
+      maxstep=max;
+      //cout<<max<<' '<<min<<endl;
+    }
+  }
+  tassert(done==1);
+  cout<<"Random test: max "<<max<<" min "<<min<<endl;
+  done=maxstep=0;
+  memset(hist,0,sizeof(hist));
+  while (!done)
+  {
+    hist[rng.rangerandom(251)]++;
+    for (max=i=0,min=16777777;i<251;i++)
+    {
+      if (hist[i]>max)
+	max=hist[i];
+      if (hist[i]<min)
+	min=hist[i];
+    }
+    if (max>16777215)
+      done=-1;
+    if (max-min>1.1*pow(max,1/3.) && max-min<0.9*pow(max,2/3.))
+      done=1;
+    if (max-maxstep>=16384)
+    {
+      maxstep=max;
+      //cout<<max<<' '<<min<<endl;
+    }
+  }
+  tassert(done==1);
+  cout<<"Range random test: max "<<max<<" min "<<min<<endl;
+  done=maxstep=0;
+  memset(hist,0,sizeof(hist));
+  while (!done)
+  {
+    hist[rng.frandom(mpq_class(1,3))]++;
+    for (max=i=0,min=16777777;i<2;i++)
+    {
+      if (hist[i]*(1+i)>max)
+	max=hist[i]*(1+i);
+      if (hist[i]*(1+i)<min)
+	min=hist[i]*(1+i);
+    }
+    if (max>16777215)
+      done=-1;
+    if (min>256 && max-min>1.1*pow(max,1/3.) && max-min<0.9*pow(max,2/3.))
+      done=1;
+    if (max-maxstep>=16384)
+    {
+      maxstep=max;
+      //cout<<max<<' '<<min<<endl;
+    }
+  }
+  tassert(done==1);
+  cout<<"Fractional random test: "<<hist[0]<<" zeros "<<hist[1]<<" ones\n";
 }
 
 void testSeed()
@@ -836,6 +914,7 @@ void runTests()
   testContinuedFraction();
   testReverseScramble();
   testNegativeHalton();
+  testRandom();
   testSeed();
   testHaltonAccumulator();
 }
@@ -1308,7 +1387,7 @@ int main(int argc,char **argv)
     ("dimensions,d",po::value<int>(&ndims),"Number of dimensions")
     ("primes,p",po::value<string>(&primestr),"List of primes")
     ("resolution,r",po::value<string>(&resstr)->default_value("1e17"),"Resolution (H for Halton)")
-    ("scramble,s",po::value<string>(&scramblestr)->default_value("default"),"Scrambling: none, third, Thue-Morse, Gray, power, Faure, novel, default")
+    ("scramble,s",po::value<string>(&scramblestr)->default_value("default"),"Scrambling: none, third, Thue-Morse, Gray, power, Faure, tipwitch, default")
     ("niter,n",po::value<int>(&niter),"Number of iterations or lines of output")
     ("output,o",po::value<string>(&filename),"Output file");
   hidden.add_options()

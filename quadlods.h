@@ -35,7 +35,7 @@
 #define QL_SCRAMBLE_GRAY 3
 #define QL_SCRAMBLE_POWER 4
 #define QL_SCRAMBLE_FAURE 5
-#define QL_SCRAMBLE_RECUR 6
+#define QL_SCRAMBLE_TIPWITCH 6
 #define QL_SCRAMBLE_DEFAULT 255
 /* The scrambletype controls how to scramble the bits of the accumulator when
  * reading the generator. If acc is 0xc0de and denom is 0x10000, it returns:
@@ -49,6 +49,16 @@
  *
  * QL_SCRAMBLE_POWER is for Halton. It scrambles each digit by raising it to
  * a power relatively prime to the totient, leaving -1, 0, and 1 untouched.
+ * QL_SCRAMBLE_FAURE is the Faure permutation scrambling for Halton. The
+ * permutation is defined as follows: if n is even, take the permutation of n/2
+ * twice, double the numbers, and add 1 to the second half; if n is odd, stick
+ * a point in the middle, spreading the four quadrants apart.
+ * QL_SCRAMBLE_TIPWITCH uses a sequence of permutations computed by combining
+ * base reversal, flipping upside down, and interdigitating permutations.
+ * It is named for the tipitiwitchet, whose leaves have spikes on the edges,
+ * which interdigitate when it closes. I tried base-reversing "tippitiwitchet"
+ * and "aldrovanda" (a related plant), but the results were unpronounceable.
+ * Tipwitch is the default scrambling for Halton.
  */
 #define QL_MAX_DIMS 6542
 

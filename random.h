@@ -3,7 +3,7 @@
 /* random.h - random numbers                          */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -21,6 +21,7 @@
  * and Lesser General Public License along with Quadlods. If not, see
  * <http://www.gnu.org/licenses/>.
  */
+#include <gmpxx.h>
 #include "config.h"
 
 class randm
@@ -33,6 +34,13 @@ public:
   double expirandom();
   double expsrandom();
   double expcrandom();
+  bool brandom();
+  mpz_class rangerandom(mpz_class range);
+  unsigned int rangerandom(unsigned int range)
+  {
+    return rangerandom(mpz_class(range)).get_ui();
+  }
+  bool frandom(mpq_class prob);
   ~randm();
 private:
 #if defined(_WIN32)
@@ -40,6 +48,8 @@ private:
 #else
   FILE *randfil;
 #endif
+  unsigned int bitbuf,bitcnt;
+  mpz_class bigacc,bigrange;
 };
 
 extern randm rng;
