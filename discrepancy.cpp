@@ -125,5 +125,10 @@ void Box::mutate(const std::vector<std::vector<double> > &points)
 
 double discrepancy(const vector<vector<double> > &points)
 {
+  vector<Box> population;
+  int i,sz,nParents;
+  sz=points.size();
+  for (i=0;i<sz;i++)
+    population.push_back(Box(points[i],points[(i+1)%sz]));
   return 0;
 }
