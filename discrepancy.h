@@ -34,6 +34,7 @@ class Box
 {
 public:
   Box();
+  Box(std::vector<double> pnt0,std::vector<double> pnt1);
   Box(Box &mother,Box &father);
   int in(const std::vector<double> &point);
   void countPoints(const std::vector<std::vector<double> > &points);

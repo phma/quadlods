@@ -22,6 +22,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 #include <cmath>
+#include <cassert>
 #include "discrepancy.h"
 #include "random.h"
 
@@ -31,6 +32,22 @@ Box::Box()
 {
   pointsIn=pointsBound=pointsTotal=0;
   volume=NAN;
+}
+
+Box::Box(vector<double> pnt0,vector<double> pnt1)
+{
+  int i;
+  assert(pnt0.size()==pnt1.size());
+  pointsIn=pointsBound=pointsTotal=0;
+  volume=NAN;
+  bounds.resize(pnt0.size());
+  for (i=0;i<pnt0.size();i++)
+  {
+    bounds[i][0]=pnt0[i];
+    bounds[i][1]=pnt1[i];
+    if (bounds[i][0]>bounds[i][1])
+      swap(bounds[i][0],bounds[i][1]);
+  }
 }
 
 Box::Box(Box &mother,Box &father)
@@ -43,6 +60,7 @@ Box::Box(Box &mother,Box &father)
       bounds.push_back(father.bounds[i]);
     else
       bounds.push_back(mother.bounds[i]);
+  bounds.shrink_to_fit();
 }
 
 int Box::in(const vector<double> &point)
