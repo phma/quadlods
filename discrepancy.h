@@ -46,3 +46,5 @@ private:
   double volume;
   int pointsIn,pointsBound,pointsTotal;
 };
+
+double discrepancy(const std::vector<std::vector<double> > &points);

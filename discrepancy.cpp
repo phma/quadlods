@@ -122,3 +122,8 @@ void Box::mutate(const std::vector<std::vector<double> > &points)
   if (bounds[coord][0]>bounds[coord][1])
     swap(bounds[coord][0],bounds[coord][1]);
 }
+
+double discrepancy(const vector<vector<double> > &points)
+{
+  return 0;
+}
