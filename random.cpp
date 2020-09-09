@@ -137,7 +137,7 @@ mpz_class randm::rangerandom(mpz_class range)
 {
   mpz_class ret;
   assert(range>0);
-  while (bigrange<16777216*range || bigacc%range==bigrange%range)
+  while (bigrange<16777216*range || bigacc/range==bigrange/range)
   {
     bigacc=(bigacc<<32)+uirandom();
     bigrange<<=32;
