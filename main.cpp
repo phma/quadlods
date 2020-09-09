@@ -962,6 +962,10 @@ void computeDiscrepancy()
   quads[0].setscramble(scramble);
   for (i=0;i<niter;i++)
     points.push_back(quads[0].dgen());
+  if (points.size()<2)
+    cerr<<"Please specify number of points (at least 2) with -n\n";
+  else if (points[0].size()==0)
+    cerr<<"Please specify number of dimensions with -d or primes with -p\n";
   cout<<ldecimal(discrepancy(points))<<endl;
 }
 
