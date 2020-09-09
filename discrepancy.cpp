@@ -175,11 +175,18 @@ double discrepancy(const vector<vector<double> > &points)
   vector<Box> population;
   double lastdisc=-1;
   int i,sz,nParents,popLimit,niter=0,nsteady=0;
+  vector<double> all0,all1;
   sz=points.size();
   popLimit=5*sz+256;
+  for (i=0;i<points[0].size();i++)
+  {
+    all0.push_back(0);
+    all1.push_back(1);
+  }
   for (i=0;i<sz;i++)
     population.push_back(Box(points[i],points[(i+1)%sz]));
-  for (i=0;i<sz;i++)
+  population.push_back(Box(all0,all1));
+  for (i=0;i<=sz;i++)
     population[i].countPoints(points);
   while (nsteady<niter/2+10)
   {
