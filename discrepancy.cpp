@@ -181,7 +181,7 @@ double discrepancy(const vector<vector<double> > &points)
     population.push_back(Box(points[i],points[(i+1)%sz]));
   for (i=0;i<sz;i++)
     population[i].countPoints(points);
-  while (nsteady<niter/5+10)
+  while (nsteady<niter/2+10)
   {
     shuffle(population);
     nParents=population.size();
@@ -200,7 +200,10 @@ double discrepancy(const vector<vector<double> > &points)
     if (lastdisc==population[0].discrepancy())
       nsteady++;
     else
+    {
       lastdisc=population[0].discrepancy();
+      cout<<"iter "<<niter<<" disc "<<lastdisc<<endl;
+    }
   }
   return population[0].discrepancy();
 }
