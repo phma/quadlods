@@ -92,7 +92,7 @@ void Box::countPoints(const vector<vector<double> > &points)
     ptin=in(points[i]);
     if (ptin==1)
       pointsBound++;
-    if (ptin=2)
+    if (ptin==2)
       pointsIn++;
   }
 }
@@ -130,5 +130,7 @@ double discrepancy(const vector<vector<double> > &points)
   sz=points.size();
   for (i=0;i<sz;i++)
     population.push_back(Box(points[i],points[(i+1)%sz]));
-  return 0;
+  for (i=0;i<sz;i++)
+    population[i].countPoints(points);
+  return population[0].discrepancy();
 }
