@@ -163,9 +163,17 @@ void sort(vector<Box> &pop,int begin,int end,int popLimit)
   }
 }
 
+void shuffle(vector<Box> &pop)
+{
+  int i;
+  for (i=pop.size();i>1;i-=2)
+    swap(pop[i-1],pop[rng.rangerandom(i)]);
+}
+
 double discrepancy(const vector<vector<double> > &points)
 {
   vector<Box> population;
+  double lastdisc=-1;
   int i,sz,nParents,popLimit,niter=0,nsteady=0;
   sz=points.size();
   popLimit=5*sz+256;
@@ -175,6 +183,7 @@ double discrepancy(const vector<vector<double> > &points)
     population[i].countPoints(points);
   while (nsteady<niter/5+10)
   {
+    shuffle(population);
     nParents=population.size();
     for (i=0;i<nParents;i+=2)
       population.push_back(Box(population[i],population[i+1]));
@@ -188,7 +197,10 @@ double discrepancy(const vector<vector<double> > &points)
     if (population.size()>popLimit)
       population.resize(popLimit);
     niter++;
-    nsteady++;
+    if (lastdisc==population[0].discrepancy())
+      nsteady++;
+    else
+      lastdisc=population[0].discrepancy();
   }
   return population[0].discrepancy();
 }
