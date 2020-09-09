@@ -23,6 +23,7 @@
  */
 #include <cmath>
 #include <cassert>
+#include <iostream>
 #include "discrepancy.h"
 #include "random.h"
 
@@ -125,6 +126,43 @@ void Box::mutate(const std::vector<std::vector<double> > &points)
     swap(bounds[coord][0],bounds[coord][1]);
 }
 
+void sort(vector<Box> &pop,int begin,int end,int popLimit)
+/* Quicksort, but with some recursion omitted.
+ * If begin=0 or popLimit is in the interval, sort; else don't bother.
+ * The 0th element is the most discrepant, and everything before popLimit
+ * is more discrepant than everything after. Other than that, order
+ * doesn't matter.
+ */
+{
+  int i,j;
+  double pivot;
+  if ((begin==0 || (begin<=popLimit && end>=popLimit)) && end-begin>1)
+  {
+    i=begin;
+    j=end-1;
+    pivot=fabs(pop[(i+j)/2].discrepancy());;
+    while (i<j)
+    {
+      while (fabs(pop[i].discrepancy())>pivot)
+        i++;
+      while (fabs(pop[j].discrepancy())<pivot)
+        j--;
+      if (i<j)
+      {
+        swap(pop[i],pop[j]);
+        if (pop[i].discrepancy()==pop[j].discrepancy())
+          if (rng.brandom())
+            i++;
+          else
+            j--;
+      }
+    }
+    i=(i+j)/2;
+    sort(pop,begin,i,popLimit);
+    sort(pop,i+1,end,popLimit);
+  }
+}
+
 double discrepancy(const vector<vector<double> > &points)
 {
   vector<Box> population;
@@ -146,6 +184,7 @@ double discrepancy(const vector<vector<double> > &points)
         population[i].mutate(points);
       population[i].countPoints(points);
     }
+    sort(population,0,population.size(),popLimit);
     if (population.size()>popLimit)
       population.resize(popLimit);
     niter++;
