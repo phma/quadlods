@@ -41,7 +41,6 @@ public:
   double discrepancy();
   void mutate(const std::vector<std::vector<double> > &points);
 private:
-  static double mutationRate;
   std::vector<std::array<double,2> > bounds;
   double volume;
   int pointsIn,pointsBound,pointsTotal;

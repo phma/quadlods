@@ -28,6 +28,8 @@
 
 using namespace std;
 
+const mpq_class mutationRate(1,300);
+
 Box::Box()
 {
   pointsIn=pointsBound=pointsTotal=0;
@@ -138,6 +140,12 @@ double discrepancy(const vector<vector<double> > &points)
     nParents=population.size();
     for (i=0;i<nParents;i+=2)
       population.push_back(Box(population[i],population[i+1]));
+    for (i=nParents;i<population.size();i++)
+    {
+      if (rng.frandom(mutationRate))
+        population[i].mutate(points);
+      population[i].countPoints(points);
+    }
     if (population.size()>popLimit)
       population.resize(popLimit);
     niter++;
