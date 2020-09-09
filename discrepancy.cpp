@@ -29,7 +29,7 @@
 
 using namespace std;
 
-const mpq_class mutationRate(1,300);
+const mpq_class mutationRate(1,30);
 
 Box::Box()
 {
