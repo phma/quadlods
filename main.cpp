@@ -43,6 +43,7 @@
 #include "flowertest.h"
 #include "matrix.h"
 #include "interact.h"
+#include "discrepancy.h"
 
 #define tassert(x) testfail|=(!(x))
 
@@ -952,6 +953,18 @@ void textOutput()
     delete out;
 }
 
+void computeDiscrepancy()
+{
+  int i,j;
+  vector<vector<double> > points;
+  quads[0].init(ndims,resolution);
+  quads[0].init(primelist,resolution);
+  quads[0].setscramble(scramble);
+  for (i=0;i<niter;i++)
+    points.push_back(quads[0].dgen());
+  cout<<ldecimal(discrepancy(points))<<endl;
+}
+
 void writeshort(ostream &file,unsigned short i)
 {
   char buf[2];
@@ -1403,6 +1416,7 @@ int main(int argc,char **argv)
   commands.push_back(command("circle",testCircle,"Test pairs of primes by estimating area of circle"));
   commands.push_back(command("fill",testFill,"Graph how well sequence fills space"));
   commands.push_back(command("flower",testFlower,"Graph each dimension separately"));
+  commands.push_back(command("discrepancy",computeDiscrepancy,"Generate points and compute discrepancy"));
   commands.push_back(command("textout",textOutput,"Output a text stream of points"));
   commands.push_back(command("interact",interact,"Enter interactive mode"));
   try
