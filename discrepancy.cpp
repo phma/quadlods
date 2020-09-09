@@ -29,8 +29,6 @@
 
 using namespace std;
 
-const mpq_class mutationRate(1,30);
-
 Box::Box()
 {
   pointsIn=pointsBound=pointsTotal=0;
@@ -173,6 +171,7 @@ void shuffle(vector<Box> &pop)
 double discrepancy(const vector<vector<double> > &points)
 {
   vector<Box> population;
+  mpq_class mutationRate(1,points[0].size());
   double lastdisc=-1;
   int i,sz,nParents,popLimit,niter=0,nsteady=0;
   vector<double> all0,all1;
