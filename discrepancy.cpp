@@ -188,7 +188,7 @@ double discrepancy(const vector<vector<double> > &points)
   population.push_back(Box(all0,all1));
   for (i=0;i<=sz;i++)
     population[i].countPoints(points);
-  while (nsteady<niter/2+10)
+  while (nsteady<niter/2+10 || population.size()<popLimit)
   {
     shuffle(population);
     nParents=population.size();
