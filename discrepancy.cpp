@@ -126,11 +126,22 @@ void Box::mutate(const std::vector<std::vector<double> > &points)
 double discrepancy(const vector<vector<double> > &points)
 {
   vector<Box> population;
-  int i,sz,nParents;
+  int i,sz,nParents,popLimit,niter=0,nsteady=0;
   sz=points.size();
+  popLimit=5*sz+256;
   for (i=0;i<sz;i++)
     population.push_back(Box(points[i],points[(i+1)%sz]));
   for (i=0;i<sz;i++)
     population[i].countPoints(points);
+  while (nsteady<niter/5+10)
+  {
+    nParents=population.size();
+    for (i=0;i<nParents;i+=2)
+      population.push_back(Box(population[i],population[i+1]));
+    if (population.size()>popLimit)
+      population.resize(popLimit);
+    niter++;
+    nsteady++;
+  }
   return population[0].discrepancy();
 }
