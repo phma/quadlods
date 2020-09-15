@@ -194,6 +194,7 @@ double discrepancy(const vector<vector<double> > &points)
     population[i].countPoints(points);
   while (nsteady<niter/2+10 || population.size()<popLimit)
   {
+    timeStart=clk.now();
     shuffle(population);
     nParents=population.size();
     for (i=0;i<nParents;i+=2)
@@ -201,6 +202,8 @@ double discrepancy(const vector<vector<double> > &points)
     for (i=nParents;i<population.size();i++)
       if (rng.frandom(mutationRate))
         population[i].mutate(points);
+    elapsed=clk.now()-timeStart;
+    cout<<"Breeding took "<<elapsed.count()/1e6<<" ms\n";
     timeStart=clk.now();
     for (i=nParents;i<population.size();i++)
       population[i].countPoints(points);
