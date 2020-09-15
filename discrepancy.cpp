@@ -198,13 +198,12 @@ double discrepancy(const vector<vector<double> > &points)
     nParents=population.size();
     for (i=0;i<nParents;i+=2)
       population.push_back(Box(population[i],population[i+1]));
-    timeStart=clk.now();
     for (i=nParents;i<population.size();i++)
-    {
       if (rng.frandom(mutationRate))
         population[i].mutate(points);
+    timeStart=clk.now();
+    for (i=nParents;i<population.size();i++)
       population[i].countPoints(points);
-    }
     elapsed=clk.now()-timeStart;
     cout<<population.size()-nParents<<" new boxes took "<<elapsed.count()/1e6<<" ms\n";
     sort(population,0,population.size(),popLimit);
