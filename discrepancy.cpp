@@ -211,5 +211,5 @@ double discrepancy(const vector<vector<double> > &points)
       cout<<"iter "<<niter<<" disc "<<lastdisc<<endl;
     }
   }
-  return population[0].discrepancy();
+  return fabs(population[0].discrepancy());
 }
