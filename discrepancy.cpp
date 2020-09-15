@@ -24,10 +24,13 @@
 #include <cmath>
 #include <cassert>
 #include <iostream>
+#include <chrono>
 #include "discrepancy.h"
 #include "random.h"
 
 using namespace std;
+namespace cr=std::chrono;
+cr::steady_clock clk;
 
 Box::Box()
 {
@@ -175,6 +178,8 @@ double discrepancy(const vector<vector<double> > &points)
   double lastdisc=-1;
   int i,sz,nParents,popLimit,niter=0,nsteady=0;
   vector<double> all0,all1;
+  cr::nanoseconds elapsed;
+  cr::time_point<cr::steady_clock> timeStart;
   sz=points.size();
   popLimit=5*sz+256;
   for (i=0;i<points[0].size();i++)
@@ -193,12 +198,15 @@ double discrepancy(const vector<vector<double> > &points)
     nParents=population.size();
     for (i=0;i<nParents;i+=2)
       population.push_back(Box(population[i],population[i+1]));
+    timeStart=clk.now();
     for (i=nParents;i<population.size();i++)
     {
       if (rng.frandom(mutationRate))
         population[i].mutate(points);
       population[i].countPoints(points);
     }
+    elapsed=clk.now()-timeStart;
+    cout<<population.size()-nParents<<" new boxes took "<<elapsed.count()/1e6<<" ms\n";
     sort(population,0,population.size(),popLimit);
     if (population.size()>popLimit)
       population.resize(popLimit);
