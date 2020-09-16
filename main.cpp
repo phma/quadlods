@@ -33,6 +33,7 @@
 #include "main.h"
 #include "config.h"
 #include "ps.h"
+#include "threads.h"
 #include "random.h"
 #include "circletest.h"
 #include "filltest.h"
@@ -1395,11 +1396,14 @@ int main(int argc,char **argv)
   int cmd,i;
   string cmdstr;
   bool validArgs,validCmd=true;
+  int nthreads=thread::hardware_concurrency();
   po::options_description generic("Options");
   po::options_description hidden("Hidden options");
   po::options_description cmdline_options;
   po::positional_options_description p;
   po::variables_map vm;
+  if (nthreads<2)
+    nthreads=2;
   generic.add_options()
     ("dimensions,d",po::value<int>(&ndims),"Number of dimensions")
     ("primes,p",po::value<string>(&primestr),"List of primes")
@@ -1443,6 +1447,11 @@ int main(int argc,char **argv)
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==cmdstr)
       cmd=i;
+  nthreads=2;
+  if (nthreads<1)
+    nthreads=1;
+  startThreads(nthreads);
+  waitForThreads(TH_RUN);
   switch (nthprime(0)) // This initializes the list of primes.
   {
     case 2:
@@ -1469,5 +1478,7 @@ int main(int argc,char **argv)
   }
   for (i=0;i<0;i++)
     findMinMaxQuad(primes[i]);
+  waitForThreads(TH_STOP);
+  joinThreads();
   return !validArgs || !validCmd || testfail;
 }
