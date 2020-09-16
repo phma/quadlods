@@ -1447,7 +1447,6 @@ int main(int argc,char **argv)
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==cmdstr)
       cmd=i;
-  nthreads=2;
   if (nthreads<1)
     nthreads=1;
   startThreads(nthreads);

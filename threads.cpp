@@ -56,6 +56,7 @@ void startThreads(int n)
   for (i=0;i<n;i++)
   {
     sleepFraction[i]=0.5;
+    sleepTime[i]=1000;
     threads.push_back(thread(TinThread(),i));
     this_thread::sleep_for(chrono::milliseconds(10));
   }
@@ -70,15 +71,19 @@ void joinThreads()
 
 void sleep(int thread)
 {
-  sleepTime[thread]+=1+sleepTime[thread]/1e3;
-  cr::steady_clock::time_point wakeTime=clk.now()+cr::milliseconds(lrint(sleepTime[thread]));
+  sleepTime[thread]*=1.125;
+  if (sleepTime[thread]>32768)
+    sleepTime[thread]*=0.875;
+  this_thread::sleep_for(chrono::microseconds(lrint(sleepTime[thread])));
 }
 
 void unsleep(int thread)
 {
-  sleepTime[thread]-=1+sleepTime[thread]/1e3;
+  sleepTime[thread]*=0.875;
+  if (sleepTime[thread]<1)
+    sleepTime[thread]*=1.125;
   if (sleepTime[thread]<0 || std::isnan(sleepTime[thread]))
-    sleepTime[thread]=0;
+    sleepTime[thread]=1;
 }
 
 double maxSleepTime()
@@ -145,14 +150,17 @@ void TinThread::operator()(int thread)
     if (threadCommand==TH_RUN)
     {
       threadStatus[thread]=TH_RUN;
+      sleep(thread);
     }
     if (threadCommand==TH_PAUSE)
     { // The job is ongoing, but has to pause to write out the files.
       threadStatus[thread]=TH_PAUSE;
+      sleep(thread);
     }
     if (threadCommand==TH_WAIT)
     { // There is no job. The threads are waiting for a job.
       threadStatus[thread]=TH_WAIT;
+      sleep(thread);
     }
   }
   threadStatus[thread]=TH_STOP;
