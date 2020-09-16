@@ -23,6 +23,7 @@
  */
 #include <vector>
 #include <array>
+#include "threads.h"
 /* This computes the discrepancy using a genetic algorithm like that invented
  * by Manan Shah. Each individual is a box; its fitness is its discrepancy.
  * In each generation, the least fit boxes die, and the remaining boxes have
@@ -44,6 +45,26 @@ private:
   std::vector<std::array<double,2> > bounds;
   double volume;
   int pointsIn,pointsBound,pointsTotal;
+};
+
+struct BoxCountItem
+{
+  Box *box;
+  const std::vector<std::vector<double> > &points;
+};
+
+class BoxCountBlock
+{
+public:
+  void load(std::vector<Box> &population,int begin,int end,const std::vector<std::vector<double> > &points);
+  BoxCountItem getItem();
+  void countFinished();
+  bool done();
+private:
+  std::vector<Box> *pop;
+  int b,e,left;
+  const std::vector<std::vector<double> > *pts;
+  std::mutex mtx;
 };
 
 double discrepancy(const std::vector<std::vector<double> > &points);
