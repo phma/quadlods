@@ -27,10 +27,10 @@
 #include <chrono>
 #include "discrepancy.h"
 #include "random.h"
+#include "threads.h"
 
 using namespace std;
 namespace cr=std::chrono;
-cr::steady_clock clk;
 
 Box::Box()
 {

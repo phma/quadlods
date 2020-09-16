@@ -1,11 +1,17 @@
 project(quadlods)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.8.0)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+set(SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/quadlods)
 
 add_executable(quadlods main.cpp circletest.cpp contfrac.cpp
 	       discrepancy.cpp filltest.cpp flowertest.cpp
                histogram.cpp hstep.cpp interact.cpp
                ldecimal.cpp manysum.cpp matrix.cpp polyline.cpp ps.cpp
-               random.cpp xy.cpp)
+               random.cpp threads.cpp xy.cpp)
 add_library(quadlib0 STATIC quadlods.cpp)
 add_library(quadlib1 SHARED quadlods.cpp)
 add_custom_command(OUTPUT primes.dat COMMAND quadlods sortprimes)
@@ -31,16 +37,11 @@ install(TARGETS quadlib0 quadlib1 DESTINATION lib)
 install(FILES quadlods.h DESTINATION include)
 install(FILES ${PROJECT_BINARY_DIR}/primes.dat ${PROJECT_BINARY_DIR}/permute.dat DESTINATION share/quadlods)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS ON)
-set(SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/quadlods)
-
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(GMPXX REQUIRED)
 find_package(Boost REQUIRED COMPONENTS program_options locale)
-set(LIBS ${LIBS} ${GMP_LIBRARY} ${GMPXX_LIBRARIES} ${Boost_LIBRARIES})
+find_package(Threads)
+set(LIBS ${LIBS} ${GMP_LIBRARY} ${GMPXX_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
 target_link_libraries(quadlods ${LIBS} quadlib1)
 
 set(QUADLODS_MAJOR_VERSION 0)
