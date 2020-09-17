@@ -225,13 +225,14 @@ double discrepancy(const vector<vector<double> > &points)
   vector<Box> population;
   mpq_class mutationRate(1,points[0].size());
   double lastdisc=-1;
-  int i,sz,nParents,popLimit,niter=0,nsteady=0;
+  int i,sz,dim,nParents,popLimit,niter=0,nsteady=0;
   vector<double> all0,all1;
   cr::nanoseconds elapsed;
   cr::time_point<cr::steady_clock> timeStart;
   sz=points.size();
-  popLimit=5*sz+256;
-  for (i=0;i<points[0].size();i++)
+  dim=points[0].size();
+  popLimit=2*dim*sz+256;
+  for (i=0;i<dim;i++)
   {
     all0.push_back(0);
     all1.push_back(1);
