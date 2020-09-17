@@ -61,6 +61,10 @@ public:
   BoxCountItem getItem();
   void countFinished();
   bool done();
+  int getLeft()
+  {
+    return left;
+  }
 private:
   std::vector<Box> *pop;
   int b,e,left;
