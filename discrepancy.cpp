@@ -32,6 +32,7 @@
 using namespace std;
 namespace cr=std::chrono;
 
+vector<Box> emptyPop;
 BoxCountBlock boxCountBlock;
 
 Box::Box()
@@ -131,7 +132,7 @@ void Box::mutate(const std::vector<std::vector<double> > &points)
 
 BoxCountBlock::BoxCountBlock()
 {
-  pop=nullptr;
+  pop=&emptyPop;
   pts=nullptr;
   b=e=left=0;
 }
@@ -255,14 +256,7 @@ double discrepancy(const vector<vector<double> > &points)
     timeStart=clk.now();
     boxCountBlock.load(population,nParents,population.size(),points);
     while (!boxCountBlock.done())
-    {
-      BoxCountItem item=boxCountBlock.getItem();
-      if (item.box)
-      {
-	item.box->countPoints(item.points);
-	boxCountBlock.countFinished();
-      }
-    }
+      this_thread::sleep_for(chrono::milliseconds(1));
     elapsed=clk.now()-timeStart;
     cout<<population.size()-nParents<<" new boxes took "<<elapsed.count()/1e6<<" ms\n";
     sort(population,0,population.size(),popLimit);
@@ -278,4 +272,15 @@ double discrepancy(const vector<vector<double> > &points)
     }
   }
   return fabs(population[0].discrepancy());
+}
+
+bool countAnyBlock()
+{
+  BoxCountItem item=boxCountBlock.getItem();
+  if (item.box)
+  {
+    item.box->countPoints(item.points);
+    boxCountBlock.countFinished();
+  }
+  return item.box!=nullptr;
 }

@@ -70,4 +70,4 @@ private:
 
 double discrepancy(const std::vector<std::vector<double> > &points);
 
-extern BoxCountBlock boxCountBlock;
+bool countAnyBlock();

@@ -26,6 +26,7 @@
 #include "threads.h"
 #include "random.h"
 #include "manysum.h"
+#include "discrepancy.h"
 using namespace std;
 namespace cr=std::chrono;
 
@@ -150,7 +151,10 @@ void TinThread::operator()(int thread)
     if (threadCommand==TH_RUN)
     {
       threadStatus[thread]=TH_RUN;
-      sleep(thread);
+      if (countAnyBlock())
+	unsleep(thread);
+      else
+	sleep(thread);
     }
     if (threadCommand==TH_PAUSE)
     { // The job is ongoing, but has to pause to write out the files.
