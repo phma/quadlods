@@ -32,6 +32,8 @@
 using namespace std;
 namespace cr=std::chrono;
 
+BoxCountBlock boxCountBlock;
+
 Box::Box()
 {
   pointsIn=pointsBound=pointsTotal=0;
@@ -125,6 +127,13 @@ void Box::mutate(const std::vector<std::vector<double> > &points)
   bounds[coord][rng.brandom()]=(pntnum<points.size())?points[pntnum][coord]:(pntnum-points.size());
   if (bounds[coord][0]>bounds[coord][1])
     swap(bounds[coord][0],bounds[coord][1]);
+}
+
+BoxCountBlock::BoxCountBlock()
+{
+  pop=nullptr;
+  pts=nullptr;
+  b=e=left=0;
 }
 
 void BoxCountBlock::load(vector<Box> &population,int begin,int end,const vector<vector<double> > &points)

@@ -56,6 +56,7 @@ struct BoxCountItem
 class BoxCountBlock
 {
 public:
+  BoxCountBlock();
   void load(std::vector<Box> &population,int begin,int end,const std::vector<std::vector<double> > &points);
   BoxCountItem getItem();
   void countFinished();
@@ -68,3 +69,5 @@ private:
 };
 
 double discrepancy(const std::vector<std::vector<double> > &points);
+
+extern BoxCountBlock boxCountBlock;
