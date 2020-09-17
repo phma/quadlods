@@ -240,8 +240,9 @@ double discrepancy(const vector<vector<double> > &points)
   for (i=0;i<sz;i++)
     population.push_back(Box(points[i],points[(i+1)%sz]));
   population.push_back(Box(all0,all1));
-  for (i=0;i<=sz;i++)
-    population[i].countPoints(points);
+  boxCountBlock.load(population,0,population.size(),points);
+  while (!boxCountBlock.done())
+    this_thread::sleep_for(chrono::milliseconds(1));
   while (nsteady<niter/2+10 || population.size()<popLimit)
   {
     timeStart=clk.now();
