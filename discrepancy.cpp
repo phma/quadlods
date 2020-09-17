@@ -272,7 +272,15 @@ double discrepancy(const vector<vector<double> > &points)
     elapsed=clk.now()-timeStart;
     //cout<<population.size()-nParents<<" new boxes took "<<elapsed.count()/1e6<<" ms\n";
     sort(population,0,population.size(),popLimit);
-    if (population.size()>popLimit)
+    delenda.clear();
+    sz=population.size();
+    for (i=0;i<popLimit-1 && i<sz-1;i++)
+      if (population[i]==population[i+1])
+	delenda.push_back(i+1); // Eliminate duplicates
+    for (i=0;i<delenda.size();i++)
+      if (popLimit+i<sz)
+	swap(population[delenda[i]],population[i+popLimit]);
+    if (sz>popLimit)
       population.resize(popLimit);
     niter++;
     if (lastdisc==population[0].discrepancy())
