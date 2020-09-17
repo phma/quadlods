@@ -243,7 +243,7 @@ double discrepancy(const vector<vector<double> > &points)
   boxCountBlock.load(population,0,population.size(),points);
   while (!boxCountBlock.done())
     this_thread::sleep_for(chrono::milliseconds(1));
-  while (nsteady<niter/2+10 || population.size()<popLimit)
+  while (nsteady<niter/5+20 || population.size()<popLimit)
   {
     timeStart=clk.now();
     shuffle(population);
@@ -254,13 +254,13 @@ double discrepancy(const vector<vector<double> > &points)
       if (rng.frandom(mutationRate))
         population[i].mutate(points);
     elapsed=clk.now()-timeStart;
-    cout<<"Breeding took "<<elapsed.count()/1e6<<" ms\n";
+    //cout<<"Breeding took "<<elapsed.count()/1e6<<" ms\n";
     timeStart=clk.now();
     boxCountBlock.load(population,nParents,population.size(),points);
     while (!boxCountBlock.done())
       this_thread::sleep_for(chrono::milliseconds(1));
     elapsed=clk.now()-timeStart;
-    cout<<population.size()-nParents<<" new boxes took "<<elapsed.count()/1e6<<" ms\n";
+    //cout<<population.size()-nParents<<" new boxes took "<<elapsed.count()/1e6<<" ms\n";
     sort(population,0,population.size(),popLimit);
     if (population.size()>popLimit)
       population.resize(popLimit);
@@ -271,6 +271,7 @@ double discrepancy(const vector<vector<double> > &points)
     {
       lastdisc=population[0].discrepancy();
       cout<<"iter "<<niter<<" disc "<<lastdisc<<endl;
+      nsteady=0;
     }
   }
   return fabs(population[0].discrepancy());
