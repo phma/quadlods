@@ -253,8 +253,16 @@ double discrepancy(const vector<vector<double> > &points)
     elapsed=clk.now()-timeStart;
     cout<<"Breeding took "<<elapsed.count()/1e6<<" ms\n";
     timeStart=clk.now();
-    for (i=nParents;i<population.size();i++)
-      population[i].countPoints(points);
+    boxCountBlock.load(population,nParents,population.size(),points);
+    while (!boxCountBlock.done())
+    {
+      BoxCountItem item=boxCountBlock.getItem();
+      if (item.box)
+      {
+	item.box->countPoints(item.points);
+	boxCountBlock.countFinished();
+      }
+    }
     elapsed=clk.now()-timeStart;
     cout<<population.size()-nParents<<" new boxes took "<<elapsed.count()/1e6<<" ms\n";
     sort(population,0,population.size(),popLimit);
