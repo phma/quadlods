@@ -127,6 +127,45 @@ void Box::mutate(const std::vector<std::vector<double> > &points)
     swap(bounds[coord][0],bounds[coord][1]);
 }
 
+void BoxCountBlock::load(vector<Box> &population,int begin,int end,const vector<vector<double> > &points)
+{
+  mtx.lock();
+  pop=&population;
+  b=begin;
+  e=end;
+  left=e-b;
+  pts=&points;
+  mtx.unlock();
+}
+
+BoxCountItem BoxCountBlock::getItem()
+{
+  BoxCountItem ret{&(*pop)[b],*pts};
+  mtx.lock();
+  if (b<e)
+    ret.box=&(*pop)[b++];
+  else
+    ret.box=nullptr;
+  mtx.unlock();
+  return ret;
+}
+
+void BoxCountBlock::countFinished()
+{
+  mtx.lock();
+  left--;
+  mtx.unlock();
+}
+
+bool BoxCountBlock::done()
+{
+  bool ret;
+  mtx.lock();
+  ret=left==0 && b==e;
+  mtx.unlock();
+  return ret;
+}
+
 void sort(vector<Box> &pop,int begin,int end,int popLimit)
 /* Quicksort, but with some recursion omitted.
  * If begin=0 or popLimit is in the interval, sort; else don't bother.
