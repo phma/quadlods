@@ -41,6 +41,7 @@ public:
   void countPoints(const std::vector<std::vector<double> > &points);
   double discrepancy();
   void mutate(const std::vector<std::vector<double> > &points);
+  friend bool operator==(const Box &l,const Box &r);
 private:
   std::vector<std::array<double,2> > bounds;
   double volume;

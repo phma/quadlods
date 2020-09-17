@@ -130,6 +130,15 @@ void Box::mutate(const std::vector<std::vector<double> > &points)
     swap(bounds[coord][0],bounds[coord][1]);
 }
 
+bool operator==(const Box &l,const Box &r)
+{
+  int i;
+  bool ret=l.bounds.size()==r.bounds.size();
+  for (i=0;ret && i<l.bounds.size();i++)
+    ret=l.bounds[i][0]==r.bounds[i][0] && l.bounds[i][1]==r.bounds[i][1];
+  return ret;
+}
+
 BoxCountBlock::BoxCountBlock()
 {
   pop=&emptyPop;
@@ -223,6 +232,7 @@ void shuffle(vector<Box> &pop)
 double discrepancy(const vector<vector<double> > &points)
 {
   vector<Box> population;
+  vector<int> delenda;
   mpq_class mutationRate(1,points[0].size());
   double lastdisc=-1;
   int i,sz,dim,nParents,popLimit,niter=0,nsteady=0;
