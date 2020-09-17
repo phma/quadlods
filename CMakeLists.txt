@@ -8,7 +8,7 @@ set(CMAKE_CXX_EXTENSIONS ON)
 set(SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/quadlods)
 
 add_executable(quadlods main.cpp circletest.cpp contfrac.cpp
-	       discrepancy.cpp filltest.cpp flowertest.cpp
+	       discrepancy.cpp dotbaton.cpp filltest.cpp flowertest.cpp
                histogram.cpp hstep.cpp interact.cpp
                ldecimal.cpp manysum.cpp matrix.cpp polyline.cpp ps.cpp
                random.cpp threads.cpp xy.cpp)
