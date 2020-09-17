@@ -28,6 +28,7 @@
 #include "discrepancy.h"
 #include "random.h"
 #include "threads.h"
+#include "dotbaton.h"
 
 using namespace std;
 namespace cr=std::chrono;
@@ -229,10 +230,18 @@ void shuffle(vector<Box> &pop)
     swap(pop[i-1],pop[rng.rangerandom(i)]);
 }
 
+double prog(int nsteady,int niter)
+// Decreases to 0 as progress is made.
+{
+  int endpt=niter/5+20;
+  return ((double)endpt-nsteady)/endpt;
+}
+
 double discrepancy(const vector<vector<double> > &points)
 {
   vector<Box> population;
   vector<int> delenda;
+  DotBaton dotbaton;
   mpq_class mutationRate(1,points[0].size());
   double lastdisc=-1;
   int i,sz,dim,nParents,popLimit,niter=0,nsteady=0;
@@ -253,7 +262,7 @@ double discrepancy(const vector<vector<double> > &points)
   boxCountBlock.load(population,0,population.size(),points);
   while (!boxCountBlock.done())
     this_thread::sleep_for(chrono::milliseconds(1));
-  while (nsteady<niter/5+20 || population.size()<popLimit)
+  while (prog(nsteady,niter) || population.size()<popLimit)
   {
     timeStart=clk.now();
     shuffle(population);
@@ -268,7 +277,10 @@ double discrepancy(const vector<vector<double> > &points)
     timeStart=clk.now();
     boxCountBlock.load(population,nParents,population.size(),points);
     while (!boxCountBlock.done())
+    {
       this_thread::sleep_for(chrono::milliseconds(1));
+      dotbaton.update(prog(nsteady,niter),boxCountBlock.getLeft());
+    }
     elapsed=clk.now()-timeStart;
     //cout<<population.size()-nParents<<" new boxes took "<<elapsed.count()/1e6<<" ms\n";
     sort(population,0,population.size(),popLimit);
@@ -288,10 +300,11 @@ double discrepancy(const vector<vector<double> > &points)
     else
     {
       lastdisc=population[0].discrepancy();
-      cout<<"iter "<<niter<<" disc "<<lastdisc<<endl;
+      //cout<<"iter "<<niter<<" disc "<<lastdisc<<endl;
       nsteady=0;
     }
   }
+  dotbaton.update(0,0);
   return fabs(population[0].discrepancy());
 }
 
