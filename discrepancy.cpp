@@ -26,11 +26,13 @@
 #include <iostream>
 #include <chrono>
 #include "discrepancy.h"
+#include "quadlods.h"
 #include "random.h"
 #include "threads.h"
 #include "dotbaton.h"
 
 using namespace std;
+using namespace quadlods;
 namespace cr=std::chrono;
 
 vector<Box> emptyPop;
@@ -270,6 +272,8 @@ double discrepancy(const vector<vector<double> > &points)
   for (i=0;i<sz;i++)
     population.push_back(Box(points[i],points[(i+1)%sz]));
   population.push_back(Box(all0,all1));
+  for (i=0;i<sz*2;i++)
+    population.push_back(Box(points[i%sz],points[rng.rangerandom(sz)]));
   boxCountBlock.load(population,0,population.size(),points);
   while (!boxCountBlock.done())
     this_thread::sleep_for(chrono::milliseconds(1));
