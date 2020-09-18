@@ -92,7 +92,7 @@ void listCommands()
 {
   int i;
   cout<<"Quadlods version "<<VERSION<<" © "<<COPY_YEAR<<" Pierre Abbat\n"<<
-    "Quadratic-irrational (Richtmyer) low-discrepancy sequences\n"<<
+    "Quadratic-irrational (Richtmyer) and Halton low-discrepancy sequences\n"<<
     "Distributed under GPL v3 or later; library distributed under LGPL.\n"<<
     "This is free software with no warranty.\n";
   cout<<"Commands:\n";
