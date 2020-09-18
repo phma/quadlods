@@ -249,7 +249,7 @@ double prog(int nsteady,int niter)
 // Decreases to 0 as progress is made.
 {
   int endpt=niter/5+20;
-  return ((double)endpt-nsteady)/endpt;
+  return ((double)endpt-nsteady)/(endpt+0.5);
 }
 
 double discrepancy(const vector<vector<double> > &points)
