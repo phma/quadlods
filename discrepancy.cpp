@@ -230,6 +230,17 @@ void shuffle(vector<Box> &pop)
     swap(pop[i-1],pop[rng.rangerandom(i)]);
 }
 
+void dumpdisc(vector<Box> &pop)
+{
+  int i;
+  for (i=0;i<pop.size();i++)
+  {
+    cout<<i<<' '<<pop[i].discrepancy()<<"  ";
+    if (i==pop.size()-1 || i%5==4)
+      cout<<endl;
+  }
+}
+
 double prog(int nsteady,int niter)
 // Decreases to 0 as progress is made.
 {
