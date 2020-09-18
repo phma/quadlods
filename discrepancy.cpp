@@ -121,13 +121,15 @@ double Box::discrepancy()
     return closedisc;
 }
 
-void Box::mutate(const std::vector<std::vector<double> > &points)
+void Box::mutate(const std::vector<std::vector<double> > &points,int pntnum,int coord)
 /* Replaces one of the bounds, at random, with the corresponding coordinate
  * of one of the points, at random.
  */
 {
-  int pntnum=rng.rangerandom(points.size()+2);
-  int coord=rng.rangerandom(bounds.size());
+  if (pntnum<0)
+    pntnum=rng.rangerandom(points.size()+2);
+  if (coord<0)
+    coord=rng.rangerandom(bounds.size());
   bounds[coord][rng.brandom()]=(pntnum<points.size())?points[pntnum][coord]:(pntnum-points.size());
   if (bounds[coord][0]>bounds[coord][1])
     swap(bounds[coord][0],bounds[coord][1]);
@@ -212,7 +214,7 @@ void sort(vector<Box> &pop,int begin,int end,int popLimit)
       if (i<j)
       {
         swap(pop[i],pop[j]);
-        if (pop[i].discrepancy()==pop[j].discrepancy())
+        if (fabs(pop[i].discrepancy())==fabs(pop[j].discrepancy()))
           if (rng.brandom())
             i++;
           else
@@ -257,7 +259,7 @@ double discrepancy(const vector<vector<double> > &points)
   DotBaton dotbaton;
   mpq_class mutationRate(1,points[0].size());
   double lastdisc=-1;
-  int i,sz,dim,nParents,popLimit,niter=0,nsteady=0;
+  int i,j,sz,dim,nParents,popLimit,niter=0,nsteady=0;
   vector<double> all0,all1;
   cr::nanoseconds elapsed;
   cr::time_point<cr::steady_clock> timeStart;
@@ -274,6 +276,12 @@ double discrepancy(const vector<vector<double> > &points)
   population.push_back(Box(all0,all1));
   for (i=0;i<sz*2;i++)
     population.push_back(Box(points[i%sz],points[rng.rangerandom(sz)]));
+  for (i=0;i<sz;i++)
+    for (j=0;j<dim;j++)
+    {
+      population.push_back(Box(all0,all1));
+      population.back().mutate(points,i,j);
+    }
   boxCountBlock.load(population,0,population.size(),points);
   while (!boxCountBlock.done())
     this_thread::sleep_for(chrono::milliseconds(1));
