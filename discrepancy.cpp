@@ -284,7 +284,10 @@ double discrepancy(const vector<vector<double> > &points)
     }
   boxCountBlock.load(population,0,population.size(),points);
   while (!boxCountBlock.done())
+  {
     this_thread::sleep_for(chrono::milliseconds(1));
+    dotbaton.update(1e-7,boxCountBlock.getLeft());
+  }
   while (prog(nsteady,niter) || population.size()<popLimit)
   {
     timeStart=clk.now();
