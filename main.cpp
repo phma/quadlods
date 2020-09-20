@@ -116,7 +116,7 @@ double parseDouble(string intstr)
   size_t idx;
   ret=stod(intstr,&idx);
   if (idx<intstr.length())
-    throw(invalid_argument("parseInt"));
+    throw(invalid_argument("parseDouble"));
   return ret;
 }
 
