@@ -248,7 +248,7 @@ void dumpdisc(vector<Box> &pop)
 double prog(int nsteady,int niter)
 // Decreases to 0 as progress is made.
 {
-  int endpt=niter/5+20;
+  int endpt=niter/3+20;
   return ((double)endpt-nsteady)/(endpt+0.5);
 }
 
