@@ -514,8 +514,8 @@ void testScatter()
   quads[0].setscramble(scramble);
   quads[0].advance(-1);
   allinx=quads[0].size()*(quads[0].size()-1)/2;
-  for (i=0;resolution && i<quads[0].size();i++)
-    cout<<quads[0].getnum(i)<<'/'<<quads[0].getdenom(i)<<' '<<quads[0].getacc(i)<<endl;
+  //for (i=0;resolution && i<quads[0].size();i++)
+    //cout<<quads[0].getnum(i)<<'/'<<quads[0].getdenom(i)<<' '<<quads[0].getacc(i)<<endl;
   for (i=0;i<quads[0].size();i++)
     for (j=0;j<i;j++)
     {
