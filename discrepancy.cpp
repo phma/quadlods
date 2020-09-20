@@ -265,7 +265,7 @@ double discrepancy(const vector<vector<double> > &points)
   cr::time_point<cr::steady_clock> timeStart;
   sz=points.size();
   dim=points[0].size();
-  popLimit=2*dim*sz+256;
+  popLimit=3*dim*sz+256;
   for (i=0;i<dim;i++)
   {
     all0.push_back(0);
