@@ -42,6 +42,7 @@ find_package(GMPXX REQUIRED)
 find_package(Boost REQUIRED COMPONENTS program_options locale)
 find_package(Threads)
 set(LIBS ${LIBS} ${GMP_LIBRARY} ${GMPXX_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
+include_directories(${GMP_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 target_link_libraries(quadlods ${LIBS} quadlib1)
 
 set(QUADLODS_MAJOR_VERSION 0)
