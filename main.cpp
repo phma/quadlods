@@ -476,13 +476,18 @@ void findclosequad()
   cout<<"Use primes below "<<minlargerp<<endl;
 }
 
-/* Some bad pairs of primes:
+/* Some bad pairs of primes for Richtmyer:
  * 65027,65029
  * 59053,59051
  * 13691,13693
  * A set that is somewhat bad:
  * 5,4933,42533,57713 (CF expansions all begin n;1,1,1,1,1,1,1,1)
  * 42533,57713 is bad, but not as bad as 65027,65029.
+ * Twin primes, 2 and 4 more than a square:
+ * 3,5 227,229 1091,1093 2027,2029 3251,3253
+ * 13691,13693 21611,21613 59051,59053 65027,65029.
+ * All these have CF expansions of the form a;(a,b) and c;(a)
+ * where b=2a and a=2c-1.
  */
 
 void testCircle()
