@@ -32,10 +32,16 @@ endforeach(lang)
 # then for each language, run
 # $ msgmerge -U ${lang}/LC_MESSAGES/interact.po interact.po
 
+# Define NO_INSTALL when compiling for fuzzing. This avoids the error
+# "The install of the quadlods target requires changing an RPATH", which
+# occurs when using the AFL compiler wrapper with the Ninja generator.
+# There is no need to install a binary built for fuzzing.
+if (NOT DEFINED NO_INSTALL)
 install(TARGETS quadlods DESTINATION bin)
 install(TARGETS quadlib0 quadlib1 DESTINATION lib)
 install(FILES quadlods.h DESTINATION include)
 install(FILES ${PROJECT_BINARY_DIR}/primes.dat ${PROJECT_BINARY_DIR}/permute.dat DESTINATION share/quadlods)
+endif ()
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(GMPXX REQUIRED)
