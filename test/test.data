@@ -1,0 +1,27 @@
+init 0 5 1e17 none
+init 1 7 1e17 third
+init 2 6 1e17 morse
+init 3 5 1e17 gray
+init 999 4 1e17 the
+init 4 10 H none
+init 5 7 H power
+init 6 8 H faure
+init 7 5 h tipwitch
+form 1 hex
+form 2 rational
+form 3 hex rational
+form 4 decimal
+form 5 floating
+gene 0 40
+gene 1 33
+gene 7 25
+gene 5 43
+allele 6 88
+gene 2 10
+gene 3 15
+gene 6 22
+gene 4 34
+cfra 2 3 4 5 7
+cfra 0 0 1 0 5
+cfra 0 5 1 1 9
+exit
