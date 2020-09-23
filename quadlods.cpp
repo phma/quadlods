@@ -841,6 +841,7 @@ vector<mpq_class> Quadlods::readout()
   }
   for (i=0;mode==QL_MODE_HALTON && i<hacc.size();i++)
   {
+    p=nthprime(primeinx[i]);
     ret.push_back(haccReverseScramble(hacc[i],p,scrambletype,sign));
     ret[i].canonicalize();
   }
@@ -857,6 +858,7 @@ vector<double> Quadlods::dreadout()
   }
   for (i=0;mode==QL_MODE_HALTON && i<hacc.size();i++)
   {
+    p=nthprime(primeinx[i]);
     ret.push_back(haccReverseScramble(hacc[i],p,scrambletype,sign).get_d());
   }
   return ret;
