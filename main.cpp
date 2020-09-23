@@ -495,7 +495,7 @@ void testCircle()
   int i,j;
   if (niter>0)
   {
-    ps.open(filename.length()?filename:"circletest.ps");
+    ps.open(filename.length()?filename:"circle.ps");
     quads[0].init(ndims,resolution);
     quads[0].init(primelist,resolution);
     quads[0].setscramble(scramble);
@@ -512,7 +512,7 @@ void testScatter()
 {
   int i,j,inx,allinx;
   time_t now,then;
-  ps.open(filename.length()?filename:"scattertest.ps");
+  ps.open(filename.length()?filename:"scatter.ps");
   ps.prolog();
   quads[0].init(ndims,resolution);
   quads[0].init(primelist,resolution);
@@ -541,7 +541,7 @@ void testScatter()
 void testFill()
 {
   int i,j;
-  ps.open(filename.length()?filename:"filltest.ps");
+  ps.open(filename.length()?filename:"fill.ps");
   quads[0].init(ndims,resolution);
   quads[0].init(primelist,resolution);
   quads[0].setscramble(scramble);
@@ -554,7 +554,7 @@ void testFill()
 void testFlower()
 {
   int i,j;
-  ps.open(filename.length()?filename:"flowertest.ps");
+  ps.open(filename.length()?filename:"flower.ps");
   quads[0].init(ndims,resolution);
   quads[0].init(primelist,resolution);
   quads[0].setscramble(scramble);
