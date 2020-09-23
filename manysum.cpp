@@ -3,7 +3,7 @@
 /* manysum.cpp - add many numbers                     */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -90,6 +90,7 @@ manysum& manysum::operator+=(double x)
     else
       x=0;
   }
+  return *this;
 }
 
 manysum& manysum::operator-=(double x)
