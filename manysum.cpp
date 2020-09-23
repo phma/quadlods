@@ -39,7 +39,7 @@ double manysum::total()
 {
   map<int,double>::iterator i;
   double t;
-  for (t=0,i=bucket.begin();i!=bucket.end();i++)
+  for (t=0,i=bucket.begin();i!=bucket.end();++i)
     t+=i->second;
   return t;
 }
@@ -47,7 +47,7 @@ double manysum::total()
 void manysum::dump()
 {
   map<int,double>::iterator i;
-  for (i=bucket.begin();i!=bucket.end();i++)
+  for (i=bucket.begin();i!=bucket.end();++i)
     cout<<i->first<<' '<<i->second<<endl;
 }
 
@@ -56,7 +56,7 @@ void manysum::prune()
   vector<int> delenda;
   int j;
   map<int,double>::iterator i;
-  for (i=bucket.begin();i!=bucket.end();i++)
+  for (i=bucket.begin();i!=bucket.end();++i)
     if (i->second==0)
       delenda.push_back(i->first);
   for (j=0;j<delenda.size();j++)

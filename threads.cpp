@@ -50,7 +50,7 @@ double busyFraction()
 
 void startThreads(int n)
 {
-  int i,m;
+  int i;
   threadCommand=TH_WAIT;
   sleepTime.resize(n);
   sleepFraction.resize(n);

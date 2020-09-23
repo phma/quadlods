@@ -200,7 +200,7 @@ void filltest(Quadlods &quad,int iters,PostScript &ps)
   xticks(1,iters,ps);
   cout<<"halfsteps size "<<halfsteps.size()<<" detGraph size "<<detGraph.size()<<endl;
   ps.startline();
-  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
+  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,++it)
     if (*it)
       ps.lineto(log(*it)/log(iters)*3,(detGraph[i]-lo)/scale-1);
   ps.endline();
@@ -226,7 +226,7 @@ void filltest(Quadlods &quad,int iters,PostScript &ps)
   }
   xticks(1,iters,ps);
   ps.startline();
-  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
+  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,++it)
     if (*it)
       ps.lineto(log(*it)/log(iters)*3,(ballGraph[i]-blo)/scale-1);
   ps.endline();
@@ -252,7 +252,7 @@ void filltest(Quadlods &quad,int iters,PostScript &ps)
   }
   xticks(1,iters,ps);
   ps.startline();
-  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,it++)
+  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,++it)
     if (*it)
       ps.lineto(log(*it)/log(iters)*3,(normGraph[i]-nlo)/scale-1);
   ps.endline();

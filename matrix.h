@@ -3,7 +3,7 @@
 /* matrix.h - matrices                                */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -81,6 +81,6 @@ public:
 };
 
 matrix invert(matrix m);
-matrix rowvector(const std::vector<double> v);
-matrix columnvector(const std::vector<double> v);
+matrix rowvector(const std::vector<double> &v);
+matrix columnvector(const std::vector<double> &v);
 #endif

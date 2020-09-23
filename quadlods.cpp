@@ -211,8 +211,7 @@ bool quadlods::isPerm(vector<unsigned short> &perm)
 vector<unsigned short> quadlods::readRow(int prime)
 {
   ifstream permuteFile(string(SHARE_DIR)+"/permute.dat",ios::binary);
-  int i,j,p,pos;
-  unsigned short n;
+  int i,j,pos;
   vector<unsigned short> stairs,skipStairs,perm0,perm1,ret;
   pos=permuteFileIndex[prime];
   if (pos<0)
@@ -334,7 +333,7 @@ bool quadlods::incHacc(std::vector<unsigned short> &hacc,int pp,int increment,in
  * and returns the sign of the result (true is negative).
  */
 {
-  int i,limb,carry;
+  int i,limb;
   for (i=pos;increment;i++)
   {
     while (hacc.size()<=i)
@@ -636,7 +635,7 @@ int ContinuedFraction::maximumTerm() const
   return max;
 }
 
-bool operator<(const PrimeContinuedFraction a,const PrimeContinuedFraction b)
+bool operator<(const PrimeContinuedFraction &a,const PrimeContinuedFraction &b)
 {
   double aavg=a.cf.averageTerm(),bavg=b.cf.averageTerm();
   int amax=a.cf.maximumTerm(),bmax=b.cf.maximumTerm();
@@ -833,7 +832,7 @@ mpz_class Quadlods::gethacc(int n)
 
 vector<mpq_class> Quadlods::readout()
 {
-  int i,p,pp;
+  int i,p;
   vector<mpq_class> ret;
   for (i=0;mode==QL_MODE_RICHTMYER && i<num.size();i++)
   {
@@ -842,7 +841,6 @@ vector<mpq_class> Quadlods::readout()
   }
   for (i=0;mode==QL_MODE_HALTON && i<hacc.size();i++)
   {
-    pp=primePower(p=nthprime(primeinx[i]))[1];
     ret.push_back(haccReverseScramble(hacc[i],p,scrambletype,sign));
     ret[i].canonicalize();
   }
@@ -851,7 +849,7 @@ vector<mpq_class> Quadlods::readout()
 
 vector<double> Quadlods::dreadout()
 {
-  int i,p,pp;
+  int i,p;
   vector<double> ret;
   for (i=0;mode==QL_MODE_RICHTMYER && i<num.size();i++)
   {
@@ -859,7 +857,6 @@ vector<double> Quadlods::dreadout()
   }
   for (i=0;mode==QL_MODE_HALTON && i<hacc.size();i++)
   {
-    pp=primePower(p=nthprime(primeinx[i]))[1];
     ret.push_back(haccReverseScramble(hacc[i],p,scrambletype,sign).get_d());
   }
   return ret;

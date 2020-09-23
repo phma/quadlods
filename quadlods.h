@@ -93,7 +93,7 @@ class PrimeContinuedFraction
 public:
   int prime;
   ContinuedFraction cf;
-  friend bool operator<(const PrimeContinuedFraction a,const PrimeContinuedFraction b);
+  friend bool operator<(const PrimeContinuedFraction &a,const PrimeContinuedFraction &b);
 };
 
 class Quadlods

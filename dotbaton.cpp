@@ -31,7 +31,7 @@ char batonChars[4]={'-','/','|','\\'};
 
 DotBaton::DotBaton()
 {
-  lastDots=lastBaton=0;
+  lastProgress=lastDots=lastBaton=0;
 }
 
 void DotBaton::update(double progress,int activity)

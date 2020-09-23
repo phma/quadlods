@@ -3,7 +3,7 @@
 /* flowertest.cpp - draw flower diagrams of sequence  */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018,2019 Pierre Abbat.
+/* Copyright 2018-2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -37,8 +37,7 @@ void flowertest(Quadlods &quad,int iters,PostScript &ps)
  * asteraceous flower head.
  */
 {
-  int i,j,k,inx,allinx;
-  char buf[24];
+  int i,j,inx,allinx;
   time_t now,then;
   Quadlods sel1;
   vector<int> pinx1;
@@ -90,9 +89,7 @@ void quadplot(PostScript &ps)
  * between (m/2)² and (m/2+1)² and are congruent to 2 or 3 mod 4.
  */
 {
-  int i,j,k,inx;
-  char buf[24];
-  time_t now,then;
+  int i,j;
   double point;
   double ang,r,x,y;
   double a,comb=1.625;

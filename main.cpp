@@ -373,7 +373,7 @@ void testcoverage()
  * Remaining factor: 1.
  */
 {
-  int i,j,x,y,z,inx;
+  int i,x,y,z,inx;
   Quadlods cov;
   bitset<87828936> *histo;
   vector<mpq_class> point;
@@ -458,8 +458,8 @@ void findclosequad()
 {
   map<double,int>::iterator j;
   vector<double> qlist;
-  int i,k,p,lastp,closep0,closep1;
-  double q,lastq,closeness,closeq0,closeq1;
+  int i,k,p;
+  double q;
   singleq.clear();
   minlargerp=65536;
   for (i=0;i<QL_MAX_DIMS;i++)
@@ -468,7 +468,7 @@ void findclosequad()
     q=nthquad(i);
     singleq[q]=p;
   }
-  for (j=singleq.begin();j!=singleq.end();j++)
+  for (j=singleq.begin();j!=singleq.end();++j)
     qlist.push_back(j->first);
   for (i=0;i<QL_MAX_DIMS;i++)
     for (k=0;k<i;k++)
@@ -492,7 +492,6 @@ void findclosequad()
 
 void testCircle()
 {
-  int i,j;
   if (niter>0)
   {
     ps.open(filename.length()?filename:"circle.ps");
@@ -540,7 +539,6 @@ void testScatter()
 
 void testFill()
 {
-  int i,j;
   ps.open(filename.length()?filename:"fill.ps");
   quads[0].init(ndims,resolution);
   quads[0].init(primelist,resolution);
@@ -553,7 +551,6 @@ void testFill()
 
 void testFlower()
 {
-  int i,j;
   ps.open(filename.length()?filename:"flower.ps");
   quads[0].init(ndims,resolution);
   quads[0].init(primelist,resolution);
@@ -566,7 +563,6 @@ void testFlower()
 
 void quadPlot()
 {
-  int i,j;
   ps.open(filename.length()?filename:"quadplot.ps");
   quads[0].init(ndims,resolution);
   quads[0].init(primelist,resolution);
@@ -961,7 +957,7 @@ void textOutput()
 
 void computeDiscrepancy()
 {
-  int i,j;
+  int i;
   vector<vector<double> > points;
   quads[0].init(ndims,resolution);
   quads[0].init(primelist,resolution);
@@ -1015,7 +1011,7 @@ vector<int> stepStairs(int p,int s)
   for (i=0;i<=s;i++)
     sret.insert(scrambledig(ret[i],p));
   ret.clear();
-  for (j=sret.begin();j!=sret.end();j++)
+  for (j=sret.begin();j!=sret.end();++j)
     ret.push_back(*j);
   return ret;
 }
@@ -1151,7 +1147,6 @@ quadirr findMinMaxQuad(int p)
   int i,j,k,l;
   quadirr q,ret;
   QuadMax eqc;
-  double rv;
   int minmaxterm=100000;
   ContinuedFraction cf;
   int triesSince=0;
@@ -1234,13 +1229,13 @@ void checkEquivClasses(int p)
 	    }
   }
   //cout<<classes.size()<<" equivalence classes:\n";
-  for (it=classes.begin();it!=classes.end();it++)
+  for (it=classes.begin();it!=classes.end();++it)
   {
     cf=contFrac(q=it->second);
     if (cf.maximumTerm()<minmaxterm)
       minmaxterm=cf.maximumTerm();
   }
-  for (it=classes.begin();it!=classes.end();it++)
+  for (it=classes.begin();it!=classes.end();++it)
   {
     cf=contFrac(q=it->second);
     if (cf.maximumTerm()==minmaxterm)
@@ -1313,7 +1308,7 @@ void sortPrimes()
     pcf.insert(pcf0);
     hist<<log(pcf0.cf.averageTerm());
   }
-  for (n=1,k=pcf.begin();k!=pcf.end();n++,k++)
+  for (n=1,k=pcf.begin();k!=pcf.end();++n,++k)
   {
     writeshort(primeFile,k->prime);
     writeshort(primeFile,k->cf.terms.size());

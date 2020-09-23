@@ -3,7 +3,7 @@
 /* circletest.cpp - test sequence on quarter circles  */
 /*                                                    */
 /******************************************************/
-/* Copyright 2017-2019 Pierre Abbat.
+/* Copyright 2017-2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -56,7 +56,7 @@ void circletest(Quadlods &quad,int iters,PostScript &ps)
   vector<vector<double> > rrelError;
   vector<vector<int> > primepairs;
   vector<errorrec> errorrecs;
-  double relativeError,maxError,scale;
+  double relativeError,scale;
   allinx=quad.size()*(quad.size()-1)/2;
   incircle.resize(quad.size()*(quad.size()-1)/2);
   rrelError.resize(quad.size()*(quad.size()-1)/2);

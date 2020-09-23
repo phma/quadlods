@@ -275,7 +275,6 @@ void cmdForm(string command)
 {
   int n,fmt,fmt1,replyCode=200;
   string replyText=boost::locale::gettext("OK");
-  vector<mpq_class> tuple;
   try
   {
     n=parseInt(firstWord(command));

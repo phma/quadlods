@@ -3,7 +3,7 @@
 /* histogram.cpp - streaming histogram                */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -77,7 +77,7 @@ vector<double> logTick(double decadeWidth,bool num)
   }
   else
     retset.insert(log(0.1));
-  for (it=retset.begin();it!=retset.end();it++)
+  for (it=retset.begin();it!=retset.end();++it)
     ret.push_back(*it);
   return ret;
 }
