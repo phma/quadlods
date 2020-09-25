@@ -34,7 +34,7 @@ using namespace std;
 double rootBallVolume(int n)
 /* Returns the nth root of the volume of a unit n-ball. For n greater than 200
  * or so, computing the volume of a ball between the LD points would naïvely
- * consist of raising the nth power of a distance, which could be up to 14,
+ * consist of multiplying the nth power of a distance, which could be 14 or more,
  * by the volume of the unit n-ball, which underflows. This avoids the underflow
  * as long as possible.
  */
