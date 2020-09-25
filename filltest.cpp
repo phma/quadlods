@@ -58,6 +58,19 @@ double distsq(vector<double> a,vector<double> b)
  * closest generated point so far. The n vectors form a square matrix. Its
  * determinant should decrease at a known rate; the determinant of the
  * normalized vectors should have a known distribution depending only on n.
+ *
+ * Around the n random points in n-space, put the largest open ball that does
+ * not contain any generated point. Its volume should be about 1/i, where i
+ * is the number of points generated so far. The second graph is of i times
+ * the average of the volumes of the n balls. It should end close to 1.
+ *
+ * The third graph is the determinant, normalized so that for low-discrepancy
+ * sequences, it should end close to 1. It indicates that the vectors from the
+ * n random points to the closest generated points are pointing in all directions.
+ * If the points form planes, as happens with the unscrambled sequences from
+ * the twin primes 3251,3253,13691,13693,21611,21613,59051,59053,65027,65029
+ * in both Richtmyer and Halton, the vectors will be close to perpendicular to
+ * the planes, and the determinant will be small.
  */
 void filltest(Quadlods &quad,int iters,PostScript &ps)
 {
