@@ -77,7 +77,7 @@ void filltest(Quadlods &quad,int iters,PostScript &ps)
   time_t now,then;
   for (k=0;k<3;k++)
     while (points[k].size()<sz)
-    {
+    { // Select n random points in n-space without replacement, three times
       i=points[k].size();
       points[k].resize(i+1);
       disp[k].resize(i+1);
