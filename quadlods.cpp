@@ -588,7 +588,7 @@ int quadlods::nthprime(int n)
     return primes[n];
 }
 
-double quadlods::nthquad(int n)
+double quadlods::nthquad(int n,bool mod1)
 {
   mpz_class nmid,dmid;
   if (n<0 || n>=primes.size())
@@ -601,6 +601,8 @@ double quadlods::nthquad(int n)
     {
       compquad(nthprime(n),27/DBL_EPSILON,nmid,dmid);
     }
+    if (mod1)
+      nmid%=dmid;
     return mpq_class(nmid,dmid).get_d();
   }
 }

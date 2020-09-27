@@ -68,7 +68,7 @@ namespace quadlods
   extern std::map<unsigned,std::vector<unsigned short> > reverseScrambleTable;
   unsigned gcd(unsigned a,unsigned b);
   int nthprime(int n);
-  double nthquad(int n);
+  double nthquad(int n,bool mod1=false);
   unsigned relprime(unsigned n);
   unsigned scrambledig(unsigned dig,unsigned p);
   unsigned faureperm(unsigned dig,unsigned p);
@@ -117,6 +117,10 @@ public:
   int size()
   {
     return mode?hacc.size():acc.size();
+  }
+  int getMode()
+  {
+    return mode;
   }
   mpz_class getnum(int n)
   {

@@ -30,6 +30,7 @@
 #include "histogram.h"
 #include "random.h"
 using namespace std;
+using namespace quadlods;
 
 double rootBallVolume(int n)
 /* Returns the nth root of the volume of a unit n-ball. For n greater than 200
@@ -74,7 +75,7 @@ double distsq(vector<double> a,vector<double> b)
  */
 void filltest(Quadlods &quad,int iters,PostScript &ps)
 {
-  int i,j,k,l,sz=quad.size(),decades;
+  int i,j,k,l,sz=quad.size(),decades,byte;
   char buf[24];
   set<int>::iterator it;
   array<vector<vector<double> >,3> points,disp;
@@ -96,7 +97,16 @@ void filltest(Quadlods &quad,int iters,PostScript &ps)
       disp[k].resize(i+1);
       for (j=0;j<sz;j++)
       {
-	points[k][i].push_back((rng.ucrandom()+0.5)/256);
+	byte=rng.ucrandom();
+	/* Use binary fractions when testing Richtmyer and quadratic irrationals
+	 * when testing Halton. Using binary fractions when testing 1D Halton
+	 * with base=2 will result in hitting the random points within
+	 * 512 iterations.
+	 */
+	if (quad.getMode()==QL_MODE_RICHTMYER)
+	  points[k][i].push_back((byte+0.5)/256);
+	else
+	  points[k][i].push_back(nthquad(byte,true));
 	disp[k][i].push_back(1);
       }
       for (j=0;j<i;j++)
