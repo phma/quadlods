@@ -34,8 +34,7 @@ mutex startMutex;
 int threadCommand;
 vector<thread> threads;
 vector<int> threadStatus; // Bit 8 indicates whether the thread is sleeping.
-vector<double> sleepTime,sleepFraction;
-int currentAction;
+vector<double> sleepTime;
 
 cr::steady_clock clk;
 
@@ -53,10 +52,8 @@ void startThreads(int n)
   int i;
   threadCommand=TH_WAIT;
   sleepTime.resize(n);
-  sleepFraction.resize(n);
   for (i=0;i<n;i++)
   {
-    sleepFraction[i]=0.5;
     sleepTime[i]=1000;
     threads.push_back(thread(QuadThread(),i));
     this_thread::sleep_for(chrono::milliseconds(10));
