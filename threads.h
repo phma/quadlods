@@ -78,7 +78,7 @@ int getThreadStatus();
 void waitForThreads(int newStatus);
 void waitForQueueEmpty();
 
-class TinThread
+class QuadThread
 {
 public:
   void operator()(int thread);

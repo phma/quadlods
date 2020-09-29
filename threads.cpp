@@ -58,7 +58,7 @@ void startThreads(int n)
   {
     sleepFraction[i]=0.5;
     sleepTime[i]=1000;
-    threads.push_back(thread(TinThread(),i));
+    threads.push_back(thread(QuadThread(),i));
     this_thread::sleep_for(chrono::milliseconds(10));
   }
 }
@@ -136,7 +136,7 @@ void waitForThreads(int newStatus)
   } while (n);
 }
 
-void TinThread::operator()(int thread)
+void QuadThread::operator()(int thread)
 {
   startMutex.lock();
   if (threadStatus.size()!=thread)
