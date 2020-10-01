@@ -1396,20 +1396,19 @@ int main(int argc,char **argv)
   int cmd,i;
   string cmdstr;
   bool validArgs,validCmd=true;
-  int nthreads=thread::hardware_concurrency();
+  int nthreads;
   po::options_description generic("Options");
   po::options_description hidden("Hidden options");
   po::options_description cmdline_options;
   po::positional_options_description p;
   po::variables_map vm;
-  if (nthreads<2)
-    nthreads=2;
   generic.add_options()
     ("dimensions,d",po::value<int>(&ndims),"Number of dimensions")
     ("primes,p",po::value<string>(&primestr),"List of primes")
     ("resolution,r",po::value<string>(&resstr)->default_value("1e17"),"Resolution (H for Halton)")
     ("scramble,s",po::value<string>(&scramblestr)->default_value("default"),"Scrambling: none, third, Thue-Morse, Gray, power, Faure, tipwitch, default")
     ("niter,n",po::value<int>(&niter),"Number of iterations or lines of output")
+    ("threads,t",po::value<int>(&nthreads)->default_value(thread::hardware_concurrency()),"Number of threads")
     ("output,o",po::value<string>(&filename),"Output file");
   hidden.add_options()
     ("command",po::value<string>(&cmdstr),"Command");
@@ -1447,8 +1446,13 @@ int main(int argc,char **argv)
   for (cmd=-1,i=0;i<commands.size();i++)
     if (commands[i].word==cmdstr)
       cmd=i;
-  if (nthreads<1)
+  if (nthreads<0)
     nthreads=1;
+  /* Fuzzing should be done with 0 threads, but calculating discrepancy
+   * hangs if doen with 0 threads.
+   */
+  if (cmd==9 && nthreads==0) // discrepancy
+    nthreads=thread::hardware_concurrency();
   startThreads(nthreads);
   waitForThreads(TH_RUN);
   switch (nthprime(0)) // This initializes the list of primes.
