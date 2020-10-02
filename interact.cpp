@@ -21,6 +21,19 @@
  * and Lesser General Public License along with Quadlods. If not, see
  * <http://www.gnu.org/licenses/>.
  */
+/* On 2020-10-01 I fuzzed interact for 16 hours; afl++ found 23 hangs
+ * and no crashes. All the hangs fell in one of three classes:
+ * • Initialize a generator, then generate a huge number of tuples.
+ * • Initialize a generator with a huge number of dimensions, then generate.
+ * • Compute a continued fraction with a huge period.
+ * Examples:
+ * init 0 5 1e17 gray
+ * gene 0 2010709
+ * init 1 52222222 1e17 gray
+ * gene 1 20
+ * cfra 0 1 1 1 622222222 20
+ * These validly take a long time; they are not bugs.
+ */
 #include <iostream>
 #include <cassert>
 #include <boost/locale.hpp>

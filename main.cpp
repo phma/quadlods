@@ -1449,7 +1449,7 @@ int main(int argc,char **argv)
   if (nthreads<0)
     nthreads=1;
   /* Fuzzing should be done with 0 threads, but calculating discrepancy
-   * hangs if doen with 0 threads.
+   * hangs if done with 0 threads.
    */
   if (cmd==9 && nthreads==0) // discrepancy
     nthreads=thread::hardware_concurrency();
