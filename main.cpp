@@ -513,30 +513,37 @@ void testScatter()
 {
   int i,j,inx,allinx;
   time_t now,then;
-  ps.open(filename.length()?filename:"scatter.ps");
-  ps.prolog();
-  quads[0].init(ndims,resolution);
-  quads[0].init(primelist,resolution);
-  quads[0].setscramble(scramble);
-  quads[0].advance(-1);
-  allinx=quads[0].size()*(quads[0].size()-1)/2;
-  //for (i=0;resolution && i<quads[0].size();i++)
-    //cout<<quads[0].getnum(i)<<'/'<<quads[0].getdenom(i)<<' '<<quads[0].getacc(i)<<endl;
-  for (i=0;i<quads[0].size();i++)
-    for (j=0;j<i;j++)
-    {
-      inx=i*(i-1)/2+j;
-      plotxy(quads[0],i,j);
-      now=time(nullptr);
-      if (now!=then)
+  if (niter>0 && (ndims>0 || primelist.size()))
+  {
+    ps.open(filename.length()?filename:"scatter.ps");
+    ps.prolog();
+    quads[0].init(ndims,resolution);
+    quads[0].init(primelist,resolution);
+    quads[0].setscramble(scramble);
+    quads[0].advance(-1);
+    allinx=quads[0].size()*(quads[0].size()-1)/2;
+    //for (i=0;resolution && i<quads[0].size();i++)
+      //cout<<quads[0].getnum(i)<<'/'<<quads[0].getdenom(i)<<' '<<quads[0].getacc(i)<<endl;
+    for (i=0;i<quads[0].size();i++)
+      for (j=0;j<i;j++)
       {
-        cout<<rint((double)inx/allinx*100)<<"% \r";
-        cout.flush();
-        then=now;
+	inx=i*(i-1)/2+j;
+	plotxy(quads[0],i,j);
+	now=time(nullptr);
+	if (now!=then)
+	{
+	  cout<<rint((double)inx/allinx*100)<<"% \r";
+	  cout.flush();
+	  then=now;
+	}
       }
-    }
-  ps.trailer();
-  ps.close();
+    ps.trailer();
+    ps.close();
+  }
+  if (niter<=0)
+    cerr<<"Please specify number of iterations with -n\n";
+  if (ndims<=0 && primelist.size()==0)
+    cerr<<"Please specify number of dimensions with -d or primes with -p\n";
 }
 
 void testFill()
