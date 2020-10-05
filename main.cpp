@@ -548,26 +548,40 @@ void testScatter()
 
 void testFill()
 {
-  ps.open(filename.length()?filename:"fill.ps");
-  quads[0].init(ndims,resolution);
-  quads[0].init(primelist,resolution);
-  quads[0].setscramble(scramble);
-  quads[0].advance(-1);
-  filltest(quads[0],niter,ps);
-  ps.trailer();
-  ps.close();
+  if (niter>0 && (ndims>0 || primelist.size()))
+  {
+    ps.open(filename.length()?filename:"fill.ps");
+    quads[0].init(ndims,resolution);
+    quads[0].init(primelist,resolution);
+    quads[0].setscramble(scramble);
+    quads[0].advance(-1);
+    filltest(quads[0],niter,ps);
+    ps.trailer();
+    ps.close();
+  }
+  if (niter<=0)
+    cerr<<"Please specify number of iterations with -n\n";
+  if (ndims<=0 && primelist.size()==0)
+    cerr<<"Please specify number of dimensions with -d or primes with -p\n";
 }
 
 void testFlower()
 {
-  ps.open(filename.length()?filename:"flower.ps");
-  quads[0].init(ndims,resolution);
-  quads[0].init(primelist,resolution);
-  quads[0].setscramble(scramble);
-  quads[0].advance(-1);
-  flowertest(quads[0],niter,ps);
-  ps.trailer();
-  ps.close();
+  if (niter>0 && (ndims>0 || primelist.size()))
+  {
+    ps.open(filename.length()?filename:"flower.ps");
+    quads[0].init(ndims,resolution);
+    quads[0].init(primelist,resolution);
+    quads[0].setscramble(scramble);
+    quads[0].advance(-1);
+    flowertest(quads[0],niter,ps);
+    ps.trailer();
+    ps.close();
+  }
+  if (niter<=0)
+    cerr<<"Please specify number of iterations with -n\n";
+  if (ndims<=0 && primelist.size()==0)
+    cerr<<"Please specify number of dimensions with -d or primes with -p\n";
 }
 
 void quadPlot()
