@@ -492,7 +492,7 @@ void findclosequad()
 
 void testCircle()
 {
-  if (niter>0)
+  if (niter>0 && (ndims>0 || primelist.size()))
   {
     ps.open(filename.length()?filename:"circle.ps");
     quads[0].init(ndims,resolution);
@@ -503,8 +503,10 @@ void testCircle()
     ps.trailer();
     ps.close();
   }
-  else
+  if (niter<=0)
     cerr<<"Please specify number of iterations with -n\n";
+  if (ndims<=0 && primelist.size()==0)
+    cerr<<"Please specify number of dimensions with -d or primes with -p\n";
 }
 
 void testScatter()
