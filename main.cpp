@@ -956,42 +956,52 @@ void textOutput()
   int i,j;
   ostream *out;
   vector<double> point;
-  quads[0].init(ndims,resolution);
-  quads[0].init(primelist,resolution);
-  quads[0].setscramble(scramble);
-  if (filename.length())
-    out=new ofstream(filename);
-  else
-    out=&cout;
-  for (i=0;i<niter;i++)
+  if (niter>0 && (ndims>0 || primelist.size()))
   {
-    point=quads[0].dgen();
-    for (j=0;j<point.size();j++)
+    quads[0].init(ndims,resolution);
+    quads[0].init(primelist,resolution);
+    quads[0].setscramble(scramble);
+    if (filename.length())
+      out=new ofstream(filename);
+    else
+      out=&cout;
+    for (i=0;i<niter;i++)
     {
-      if (j)
-	*out<<' ';
-      *out<<ldecimal(point[j]);
+      point=quads[0].dgen();
+      for (j=0;j<point.size();j++)
+      {
+	if (j)
+	  *out<<' ';
+	*out<<ldecimal(point[j]);
+      }
+      *out<<endl;
     }
-    *out<<endl;
+    if (filename.length())
+      delete out;
   }
-  if (filename.length())
-    delete out;
+  if (niter<=0)
+    cerr<<"Please specify number of iterations with -n\n";
+  if (ndims<=0 && primelist.size()==0)
+    cerr<<"Please specify number of dimensions with -d or primes with -p\n";
 }
 
 void computeDiscrepancy()
 {
   int i;
   vector<vector<double> > points;
-  quads[0].init(ndims,resolution);
-  quads[0].init(primelist,resolution);
-  quads[0].setscramble(scramble);
-  for (i=0;i<niter;i++)
-    points.push_back(quads[0].dgen());
-  if (points.size()<2)
+  if (niter>1 && (ndims>0 || primelist.size()))
+  {
+    quads[0].init(ndims,resolution);
+    quads[0].init(primelist,resolution);
+    quads[0].setscramble(scramble);
+    for (i=0;i<niter;i++)
+      points.push_back(quads[0].dgen());
+    cout<<ldecimal(discrepancy(points))<<endl;
+  }
+  if (niter<2)
     cerr<<"Please specify number of points (at least 2) with -n\n";
-  else if (points[0].size()==0)
+  if (ndims<=0 && primelist.size()==0)
     cerr<<"Please specify number of dimensions with -d or primes with -p\n";
-  cout<<ldecimal(discrepancy(points))<<endl;
 }
 
 void writeshort(ostream &file,unsigned short i)
