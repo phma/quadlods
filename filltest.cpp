@@ -3,7 +3,7 @@
 /* filltest.cpp - test how well numbers fill space    */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018,2019 Pierre Abbat.
+/* Copyright 2018-2020 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -44,12 +44,23 @@ double rootBallVolume(int n)
 }
 
 double distsq(vector<double> a,vector<double> b)
+// Computes the distance with opposite faces identified.
 {
   vector<double> d;
   int i;
+  double d1,d2;
   assert(a.size()==b.size());
   for (i=0;i<a.size();i++)
-    d.push_back(sqr(a[i]-b[i]));
+  {
+    d1=a[i]-b[i];
+    if (a[i]>b[i])
+      d2=(a[i]-1)-b[i];
+    else
+      d2=a[i]-(b[i]-1);
+    if (fabs(d1)>fabs(d2))
+      d1=d2;
+    d.push_back(sqr(d1));
+  }
   return pairwisesum(d);
 }
 
