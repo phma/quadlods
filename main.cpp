@@ -488,6 +488,9 @@ void findclosequad()
  * 13691,13693 21611,21613 59051,59053 65027,65029.
  * All these have CF expansions of the form a;(a,b) and c;(a)
  * where b=2a and a=2c-1.
+ * Any large enough pair of twin primes is bad for Halton, and even
+ * when Faure-scrambled, such pairs as 21839,21841 (close to 65536/3)
+ * are bad.
  */
 
 void testCircle()
