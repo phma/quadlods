@@ -53,6 +53,7 @@ void flowertest(Quadlods &quad,int iters,PostScript &ps)
     sel1=select(quad,pinx1);
     ps.startpage();
     ps.setscale(-sqrt(iters),-sqrt(iters),sqrt(iters),sqrt(iters));
+    ps.write(0.8*sqrt(iters),0.8*sqrt(iters),to_string(sel1.getprime(0)));
     for (i=0;i<iters;i++)
     {
       point=sel1.dgen();
