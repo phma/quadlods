@@ -31,6 +31,8 @@
  */
 #define sizeMismatch 1
 
+double areaInCircle(double minx,double miny,double maxx,double maxy);
+
 class Box
 {
 public:

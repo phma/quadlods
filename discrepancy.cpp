@@ -38,6 +38,14 @@ namespace cr=std::chrono;
 vector<Box> emptyPop;
 BoxCountBlock boxCountBlock;
 
+double areaInCircle(double minx,double miny,double maxx,double maxy)
+/* Computes the area of the part of a rectangle that is inside the unit circle.
+ * Used when computing the discrepancy of a flower plot.
+ */
+{
+  return 0;
+}
+
 Box::Box()
 {
   pointsIn=pointsBound=pointsTotal=0;
