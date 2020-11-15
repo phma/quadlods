@@ -954,6 +954,7 @@ void testAreaInCircle()
 {
   test1AreaInCircle(-0.8,-0.8,0.8,0.8,2.487588218416656);
   test1AreaInCircle(-1,-1,-0.8,-0.8,0);
+  test1AreaInCircle(0.8,0.6,1,1,0);
 }
 
 void runTests()
