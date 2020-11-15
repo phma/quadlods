@@ -938,6 +938,11 @@ void testHaltonAccumulator()
   tassert(septHacc.back()==551);
 }
 
+void testAreaInCircle()
+{
+  cout<<"Area="<<areaInCircle(-0.8,-0.8,0.8,0.8)<<endl;
+}
+
 void runTests()
 {
   testContinuedFraction();
@@ -946,6 +951,7 @@ void runTests()
   testRandom();
   testSeed();
   testHaltonAccumulator();
+  testAreaInCircle();
 }
 
 void runLongTests()
