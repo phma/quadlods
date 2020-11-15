@@ -1538,5 +1538,7 @@ int main(int argc,char **argv)
     findMinMaxQuad(primes[i]);
   waitForThreads(TH_STOP);
   joinThreads();
+  if (testfail)
+    cerr<<"Test failed\n";
   return !validArgs || !validCmd || testfail;
 }
