@@ -47,7 +47,7 @@ double clipToCircle(double x0,double x1,double y)
       x2=-x2;
     if ((x1-x2)*(x2-x0)>=0)
       x0=x2;
-    else
+    else if (fabs(x0)>fabs(x1))
       x0=x1;
   }
   return x0;
