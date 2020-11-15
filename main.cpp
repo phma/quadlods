@@ -968,6 +968,17 @@ void test4AreaInCircle(double x0,double x1,double x2,double y0,double y1,double 
   }
 }
 
+double pythFrac[]=
+{ // In double, (5,12,13) is just greater than 1, while (9,40,41) is just less than 1.
+  -1,
+  -40/41.,-24/25.,-35/37.,-12/13.,-15/17.,-4/5.,-21/29.,
+  -20/29.,-3/5.,-8/17.,-5/13.,-12/37.,-7/25.,-9/41.,
+  0,
+  9/41.,7/25.,12/37.,5/13.,8/17.,3/5.,20/29.,
+  21/29.,4/5.,15/17.,12/13.,35/37.,24/25.,40/41.,
+  1
+};
+
 void testAreaInCircle()
 {
   test1AreaInCircle(-0.8,-0.8,0.8,0.8,2.487588218416656);
