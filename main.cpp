@@ -993,10 +993,24 @@ double pythFrac[]=
 
 void testAreaInCircle()
 {
+  int i,j,k,l;
+  vector<double> point;
   test1AreaInCircle(-0.8,-0.8,0.8,0.8,2.487588218416656);
   test1AreaInCircle(-1,-1,-0.8,-0.8,0);
   test1AreaInCircle(0.8,0.6,1,1,0);
-  test4AreaInCircle(-0.8,-0.6,0.6,-1,-0.8,0);
+  quads[0].init(2,resolution);
+  quads[0].setscramble(scramble);
+  for (i=1;i<31;i++)
+    for (j=0;j<i;j++)
+      for (k=1;k<31;k++)
+	for (l=0;l<k;l++)
+	{
+	  point=quads[0].dgen();
+	  point[0]=2*point[0]-1;
+	  point[1]=2*point[1]-1;
+	  test4AreaInCircle(pythFrac[i],point[0],pythFrac[j],
+			    pythFrac[k],point[1],pythFrac[l]);
+	}
 }
 
 void runTests()
