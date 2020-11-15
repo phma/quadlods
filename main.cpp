@@ -954,6 +954,18 @@ void test4AreaInCircle(double x0,double x1,double x2,double y0,double y1,double 
 {
   double area[5];
   double diff;
+  if (x0>x1)
+    swap(x0,x1);
+  if (x1>x2)
+    swap(x1,x2);
+  if (x0>x1)
+    swap(x0,x1);
+  if (y0>y1)
+    swap(y0,y1);
+  if (y1>y2)
+    swap(y1,y2);
+  if (y0>y1)
+    swap(y0,y1);
   area[4]=areaInCircle(x0,y0,x2,y2);
   area[0]=areaInCircle(x0,y0,x1,y1);
   area[1]=areaInCircle(x0,y1,x1,y2);
