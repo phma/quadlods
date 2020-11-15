@@ -954,6 +954,7 @@ void test4AreaInCircle(double x0,double x1,double x2,double y0,double y1,double 
 {
   double area[5];
   double diff;
+  int i;
   if (x0>x1)
     swap(x0,x1);
   if (x1>x2)
@@ -977,6 +978,11 @@ void test4AreaInCircle(double x0,double x1,double x2,double y0,double y1,double 
     cout<<"x "<<x0<<' '<<x1<<' '<<x2<<" y "<<y0<<' '<<y1<<' '<<y2<<endl;
     cout<<"Areas differ by "<<diff<<endl;
     testfail=true;
+  }
+  for (i=0;i<5;i++)
+  {
+    tassert(area[i]>=0);
+    tassert(area[i]<355/113.);
   }
 }
 
