@@ -38,11 +38,35 @@ namespace cr=std::chrono;
 vector<Box> emptyPop;
 BoxCountBlock boxCountBlock;
 
+double clipToCircle(double x0,double x1,double y)
+{
+  if (x0*x0+y*y>1)
+  {
+    double x2=sqrt(1-y*y);
+    if (x2*x0<0)
+      x2=-x2;
+    if ((x1-x2)*(x2-x0)>=0)
+      x0=x2;
+    else
+      x0=x1;
+  }
+  return x0;
+}
+
 double areaInCircle(double minx,double miny,double maxx,double maxy)
 /* Computes the area of the part of a rectangle that is inside the unit circle.
  * Used when computing the discrepancy of a flower plot.
  */
 {
+  double maxylef,minylef,minxbot,maxxbot,minyrig,maxyrig,maxxtop,minxtop;
+  maxylef=clipToCircle(maxy,miny,minx);
+  minylef=clipToCircle(miny,maxy,minx);
+  minxbot=clipToCircle(minx,maxx,miny);
+  maxxbot=clipToCircle(maxx,minx,miny);
+  minyrig=clipToCircle(miny,maxy,maxx);
+  maxyrig=clipToCircle(maxy,miny,maxx);
+  maxxtop=clipToCircle(maxx,minx,maxy);
+  minxtop=clipToCircle(minx,maxx,maxy);
   return 0;
 }
 
