@@ -59,6 +59,7 @@ double areaInCircle(double minx,double miny,double maxx,double maxy)
  */
 {
   double maxylef,minylef,minxbot,maxxbot,minyrig,maxyrig,maxxtop,minxtop;
+  double leftri,bottri,rigtri,toptri;
   maxylef=clipToCircle(maxy,miny,minx);
   minylef=clipToCircle(miny,maxy,minx);
   minxbot=clipToCircle(minx,maxx,miny);
@@ -67,7 +68,11 @@ double areaInCircle(double minx,double miny,double maxx,double maxy)
   maxyrig=clipToCircle(maxy,miny,maxx);
   maxxtop=clipToCircle(maxx,minx,maxy);
   minxtop=clipToCircle(minx,maxx,maxy);
-  return 0;
+  leftri=minx*(minylef-maxylef)/2;
+  bottri=miny*(minxbot-maxxbot)/2;
+  rigtri=maxx*(maxyrig-minyrig)/2;
+  toptri=maxy*(maxxtop-minxtop)/2;
+  return leftri+bottri+rigtri+toptri;
 }
 
 Box::Box()
