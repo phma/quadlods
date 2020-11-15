@@ -938,9 +938,21 @@ void testHaltonAccumulator()
   tassert(septHacc.back()==551);
 }
 
+void test1AreaInCircle(double minx,double miny,double maxx,double maxy,double rightArea)
+{
+  double area=areaInCircle(minx,miny,maxx,maxy);
+  cout<<"Area="<<ldecimal(area);
+  if (rightArea>=0)
+  {
+    cout<<", should be "<<ldecimal(rightArea);
+    tassert(fabs(area-rightArea)<1e-9);
+  }
+  cout<<endl;
+}
+
 void testAreaInCircle()
 {
-  cout<<"Area="<<areaInCircle(-0.8,-0.8,0.8,0.8)<<endl;
+  test1AreaInCircle(-0.8,-0.8,0.8,0.8,2.487588218416656);
 }
 
 void runTests()
