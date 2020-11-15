@@ -950,11 +950,30 @@ void test1AreaInCircle(double minx,double miny,double maxx,double maxy,double ri
   cout<<endl;
 }
 
+void test4AreaInCircle(double x0,double x1,double x2,double y0,double y1,double y2)
+{
+  double area[5];
+  double diff;
+  area[4]=areaInCircle(x0,y0,x2,y2);
+  area[0]=areaInCircle(x0,y0,x1,y1);
+  area[1]=areaInCircle(x0,y1,x1,y2);
+  area[2]=areaInCircle(x1,y0,x2,y1);
+  area[3]=areaInCircle(x1,y1,x2,y2);
+  diff=area[4]-area[0]-area[1]-area[2]-area[3];
+  if (fabs(diff)>1e-9)
+  {
+    cout<<"x "<<x0<<' '<<x1<<' '<<x2<<" y "<<y0<<' '<<y1<<' '<<y2<<endl;
+    cout<<"Areas differ by "<<diff<<endl;
+    testfail=true;
+  }
+}
+
 void testAreaInCircle()
 {
   test1AreaInCircle(-0.8,-0.8,0.8,0.8,2.487588218416656);
   test1AreaInCircle(-1,-1,-0.8,-0.8,0);
   test1AreaInCircle(0.8,0.6,1,1,0);
+  test4AreaInCircle(-0.8,-0.6,0.6,-1,-0.8,0);
 }
 
 void runTests()
