@@ -53,6 +53,18 @@ double clipToCircle(double x0,double x1,double y)
   return x0;
 }
 
+double sectorArea(double x0,double y0,double x1,double y1)
+{
+  if (x0+x1<0) // avoid branch cut of atan2
+  {
+    x0=-x0;
+    y0=-y0;
+    x1=-x1;
+    y1=-y1;
+  }
+  return (atan2(y1,x1)-atan2(y0,x0))/2;
+}
+
 double areaInCircle(double minx,double miny,double maxx,double maxy)
 /* Computes the area of the part of a rectangle that is inside the unit circle.
  * Used when computing the discrepancy of a flower plot.
@@ -60,6 +72,7 @@ double areaInCircle(double minx,double miny,double maxx,double maxy)
 {
   double maxylef,minylef,minxbot,maxxbot,minyrig,maxyrig,maxxtop,minxtop;
   double leftri,bottri,rigtri,toptri;
+  double blsect,brsect,trsect,tlsect;
   maxylef=clipToCircle(maxy,miny,minx);
   minylef=clipToCircle(miny,maxy,minx);
   minxbot=clipToCircle(minx,maxx,miny);
@@ -72,7 +85,11 @@ double areaInCircle(double minx,double miny,double maxx,double maxy)
   bottri=miny*(minxbot-maxxbot)/2;
   rigtri=maxx*(maxyrig-minyrig)/2;
   toptri=maxy*(maxxtop-minxtop)/2;
-  return leftri+bottri+rigtri+toptri;
+  blsect=sectorArea(minx,minylef,minxbot,miny);
+  brsect=sectorArea(maxxbot,miny,maxx,minyrig);
+  trsect=sectorArea(maxx,maxyrig,maxxtop,maxy);
+  tlsect=sectorArea(minxtop,maxy,minx,maxylef);
+  return (leftri+bottri+rigtri+toptri)+(blsect+brsect+trsect+tlsect);
 }
 
 Box::Box()
