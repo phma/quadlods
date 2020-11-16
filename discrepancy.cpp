@@ -73,6 +73,7 @@ double areaInCircle(double minx,double miny,double maxx,double maxy)
   double maxylef,minylef,minxbot,maxxbot,minyrig,maxyrig,maxxtop,minxtop;
   double leftri,bottri,rigtri,toptri;
   double blsect,brsect,trsect,tlsect;
+  double negsect=0,possect=0;
   maxylef=clipToCircle(maxy,miny,minx);
   minylef=clipToCircle(miny,maxy,minx);
   minxbot=clipToCircle(minx,maxx,miny);
@@ -89,8 +90,24 @@ double areaInCircle(double minx,double miny,double maxx,double maxy)
   brsect=sectorArea(maxxbot,miny,maxx,minyrig);
   trsect=sectorArea(maxx,maxyrig,maxxtop,maxy);
   tlsect=sectorArea(minxtop,maxy,minx,maxylef);
-  assert((leftri+bottri+rigtri+toptri)+(blsect+brsect+trsect+tlsect)>=0);
-  return (leftri+bottri+rigtri+toptri)+(blsect+brsect+trsect+tlsect);
+  if (blsect>0)
+    possect+=blsect;
+  else
+    negsect+=blsect;
+  if (brsect>0)
+    possect+=brsect;
+  else
+    negsect+=brsect;
+  if (trsect>0)
+    possect+=trsect;
+  else
+    negsect+=trsect;
+  if (tlsect>0)
+    possect+=tlsect;
+  else
+    negsect+=tlsect;
+  assert((leftri+bottri+rigtri+toptri)+(possect+negsect)>=0);
+  return (leftri+bottri+rigtri+toptri)+(possect+negsect);
 }
 
 Box::Box()
