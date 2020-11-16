@@ -89,6 +89,7 @@ double areaInCircle(double minx,double miny,double maxx,double maxy)
   brsect=sectorArea(maxxbot,miny,maxx,minyrig);
   trsect=sectorArea(maxx,maxyrig,maxxtop,maxy);
   tlsect=sectorArea(minxtop,maxy,minx,maxylef);
+  assert((leftri+bottri+rigtri+toptri)+(blsect+brsect+trsect+tlsect)>=0);
   return (leftri+bottri+rigtri+toptri)+(blsect+brsect+trsect+tlsect);
 }
 
