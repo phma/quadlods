@@ -32,6 +32,7 @@
 #define sizeMismatch 1
 
 double areaInCircle(double minx,double miny,double maxx,double maxy);
+void setFlowerDisc(bool fd);
 
 class Box
 {
