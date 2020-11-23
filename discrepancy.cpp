@@ -116,6 +116,7 @@ double areaInCircle(double minx,double miny,double maxx,double maxy)
   ret=(leftri+bottri+rigtri+toptri)+(possect+negsect);
   if (fabs(ret)<=DBL_EPSILON)
     ret=0;
+  assert(ret>=0);
   return ret;
 }
 
@@ -184,7 +185,7 @@ void Box::countPoints(const vector<vector<double> > &points)
   int i,ptin;
   volume=1;
   if (flowerDisc[0])
-    volume=areaInCircle(bounds[0][0],bounds[0][1],bounds[1][0],bounds[1][1])/M_PI;
+    volume=areaInCircle(bounds[0][0],bounds[1][0],bounds[0][1],bounds[1][1])/M_PI;
   else
     for (i=0;i<bounds.size();i++)
       volume*=bounds[i][1]-bounds[i][0];
@@ -361,8 +362,8 @@ double discrepancy(const vector<vector<double> > &points)
   popLimit=3*dim*sz+256;
   for (i=0;i<dim;i++)
   {
-    all0.push_back(0);
-    all1.push_back(1);
+    all0.push_back(flowerDisc[0]);
+    all1.push_back(flowerDisc[1]);
   }
   for (i=0;i<sz;i++)
     population.push_back(Box(points[i],points[(i+1)%sz]));
