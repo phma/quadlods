@@ -27,6 +27,8 @@
 #include <cmath>
 #include "flowertest.h"
 #include "histogram.h"
+#include "discrepancy.h"
+#include "ldecimal.h"
 
 using namespace std;
 using namespace quadlods;
@@ -41,8 +43,10 @@ void flowertest(Quadlods &quad,int iters,PostScript &ps)
   time_t now,then;
   Quadlods sel1;
   vector<int> pinx1;
-  vector<double> point;
-  double ang,r;
+  vector<double> point,fpoint;
+  vector<vector<double> > points;
+  double ang,r,disc;
+  setFlowerDisc(true);
   ps.setpaper(a4land,0);
   ps.prolog();
   allinx=iters*quad.size();
@@ -54,12 +58,17 @@ void flowertest(Quadlods &quad,int iters,PostScript &ps)
     ps.startpage();
     ps.setscale(-sqrt(iters),-sqrt(iters),sqrt(iters),sqrt(iters));
     ps.write(0.8*sqrt(iters),0.8*sqrt(iters),to_string(sel1.getprime(0)));
+    points.clear();
     for (i=0;i<iters;i++)
     {
       point=sel1.dgen();
       r=sqrt(i+0.5);
       ang=2*M_PI*point[0];
       ps.dot(r*cos(ang),r*sin(ang));
+      fpoint.clear();
+      fpoint.push_back(r*cos(ang)/sqrt(iters));
+      fpoint.push_back(r*sin(ang)/sqrt(iters));
+      points.push_back(fpoint);
       if (((i-iters)&255)==255)
       {
 	now=time(nullptr);
@@ -72,6 +81,8 @@ void flowertest(Quadlods &quad,int iters,PostScript &ps)
 	}
       }
     }
+    disc=discrepancy(points);
+    cout<<ldecimal(disc)<<endl;
     ps.endpage();
   }
 }
