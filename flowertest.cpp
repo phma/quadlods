@@ -33,7 +33,7 @@
 using namespace std;
 using namespace quadlods;
 
-void flowertest(Quadlods &quad,int iters,PostScript &ps)
+void flowertest(Quadlods &quad,int iters,PostScript &ps,bool disc2d)
 /* Draw a flower diagram of the sequence. The flower diagram of an unscrambled
  * sequence with step φ (from prime 5) is the pattern of flowers in an
  * asteraceous flower head.
@@ -81,8 +81,11 @@ void flowertest(Quadlods &quad,int iters,PostScript &ps)
 	}
       }
     }
-    disc=discrepancy(points);
-    ps.write(0.8*sqrt(iters),0.75*sqrt(iters),ldecimal(disc));
+    if (disc2d)
+    {
+      disc=discrepancy(points);
+      ps.write(0.8*sqrt(iters),0.75*sqrt(iters),ldecimal(disc));
+    }
     ps.endpage();
   }
 }
