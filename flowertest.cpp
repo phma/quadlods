@@ -82,7 +82,7 @@ void flowertest(Quadlods &quad,int iters,PostScript &ps)
       }
     }
     disc=discrepancy(points);
-    cout<<ldecimal(disc)<<endl;
+    ps.write(0.8*sqrt(iters),0.75*sqrt(iters),ldecimal(disc));
     ps.endpage();
   }
 }
