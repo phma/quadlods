@@ -10,7 +10,7 @@ Before 0.2.0:
 •Add a Halton mode to the generator. ✓
 
 Before 0.2.1:
-•Compute the discrepancy of a flower plot.
+•Compute the discrepancy of a flower plot. ✓
 •Graph the discrepancy of a sequence versus the number of points.
 
 Before 0.3.0:

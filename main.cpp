@@ -85,7 +85,7 @@ vector<int> primelist;
 string scramblestr;
 int ndims,niter,scramble;
 string filename;
-bool useMinMax=false;
+bool useMinMax=false,disc2d=false;
 int maxStairStep;
 
 void listCommands()
@@ -577,7 +577,7 @@ void testFlower()
     quads[0].init(primelist,resolution);
     quads[0].setscramble(scramble);
     quads[0].advance(-1);
-    flowertest(quads[0],niter,ps);
+    flowertest(quads[0],niter,ps,disc2d);
     ps.trailer();
     ps.close();
   }
@@ -1527,6 +1527,7 @@ int main(int argc,char **argv)
     ("scramble,s",po::value<string>(&scramblestr)->default_value("default"),"Scrambling: none, third, Thue-Morse, Gray, power, Faure, tipwitch, default")
     ("niter,n",po::value<int>(&niter),"Number of iterations or lines of output")
     ("threads,t",po::value<int>(&nthreads)->default_value(thread::hardware_concurrency()),"Number of threads")
+    ("disc","Compute discrepancy of plot")
     ("output,o",po::value<string>(&filename),"Output file");
   hidden.add_options()
     ("command",po::value<string>(&cmdstr),"Command");
@@ -1554,6 +1555,7 @@ int main(int argc,char **argv)
     resolution=parseResolution(resstr);
     if (!(resolution>=0))
       cerr<<"Invalid resolution (should be positive number or H): "<<resstr<<endl;
+    disc2d=vm.count("disc")>0;
     validArgs=parsePrimeList() && scramble>=0 && resolution>=0;
   }
   catch (exception &e)

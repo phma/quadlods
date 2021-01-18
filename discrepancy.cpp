@@ -37,6 +37,13 @@ namespace cr=std::chrono;
 
 vector<Box> emptyPop;
 BoxCountBlock boxCountBlock;
+double flowerDisc[2]={0,1};
+/* When computing the discrepancy of a flower plot, these changes apply:
+ * • This array is set to {-1,1}.
+ * • The number of dimensions is two.
+ * • The lower limit of bounds is -1.
+ * • Areas are clipped to the unit circle.
+ */
 
 double clipToCircle(double x0,double x1,double y)
 {
@@ -109,7 +116,17 @@ double areaInCircle(double minx,double miny,double maxx,double maxy)
   ret=(leftri+bottri+rigtri+toptri)+(possect+negsect);
   if (fabs(ret)<=DBL_EPSILON)
     ret=0;
+  assert(ret>=0);
   return ret;
+}
+
+void setFlowerDisc(bool fd)
+{
+  if (fd)
+    flowerDisc[0]=-1;
+  else
+    flowerDisc[0]=0;
+  flowerDisc[1]=1;
 }
 
 Box::Box()
@@ -167,8 +184,11 @@ void Box::countPoints(const vector<vector<double> > &points)
 {
   int i,ptin;
   volume=1;
-  for (i=0;i<bounds.size();i++)
-    volume*=bounds[i][1]-bounds[i][0];
+  if (flowerDisc[0])
+    volume=areaInCircle(bounds[0][0],bounds[1][0],bounds[0][1],bounds[1][1])/M_PI;
+  else
+    for (i=0;i<bounds.size();i++)
+      volume*=bounds[i][1]-bounds[i][0];
   pointsIn=pointsBound=0;
   pointsTotal=points.size();
   for (i=0;i<points.size();i++)
@@ -204,7 +224,7 @@ void Box::mutate(const std::vector<std::vector<double> > &points,int pntnum,int 
     pntnum=rng.rangerandom(points.size()+2);
   if (coord<0)
     coord=rng.rangerandom(bounds.size());
-  bounds[coord][rng.brandom()]=(pntnum<points.size())?points[pntnum][coord]:(pntnum-points.size());
+  bounds[coord][rng.brandom()]=(pntnum<points.size())?points[pntnum][coord]:(flowerDisc[pntnum-points.size()]);
   if (bounds[coord][0]>bounds[coord][1])
     swap(bounds[coord][0],bounds[coord][1]);
 }
@@ -342,8 +362,8 @@ double discrepancy(const vector<vector<double> > &points)
   popLimit=3*dim*sz+256;
   for (i=0;i<dim;i++)
   {
-    all0.push_back(0);
-    all1.push_back(1);
+    all0.push_back(flowerDisc[0]);
+    all1.push_back(flowerDisc[1]);
   }
   for (i=0;i<sz;i++)
     population.push_back(Box(points[i],points[(i+1)%sz]));

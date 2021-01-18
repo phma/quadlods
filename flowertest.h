@@ -25,5 +25,5 @@
 #include "quadlods.h"
 #include "ps.h"
 
-void flowertest(Quadlods &quad,int iters,PostScript &ps);
+void flowertest(Quadlods &quad,int iters,PostScript &ps,bool disc2d);
 void quadplot(PostScript &ps);
