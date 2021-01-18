@@ -23,6 +23,7 @@
  */
 #ifndef XY_H
 #define XY_H
+#include <cmath>
 
 class xy
 {
