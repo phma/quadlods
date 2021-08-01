@@ -18,6 +18,7 @@
  */
 #ifndef CONFIG_H
 #define CONFIG_H
+#cmakedefine FFTW_FOUND
 #define VERSION "@QUADLODS_VERSION@"
 #define COPY_YEAR @COPY_YEAR@
 #define SHARE_DIR "@SHARE_DIR@"
