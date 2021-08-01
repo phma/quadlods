@@ -99,7 +99,8 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
 /* Plot the Fourier transforms of the sequence.
  */
 {
-  int i,j,inx,allinx;
+  int i,j,inx,allinx,decades;
+  char buf[24];
   time_t now,then;
   Quadlods sel1;
   vector<int> pinx1;
@@ -109,6 +110,7 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
   mpq_class half(1,2);
   map<int,Bucket> buckets;
   double ang,r,disc;
+  double hi,lo,scale;
   setFlowerDisc(true);
   ps.setpaper(a4land,0);
   ps.prolog();
@@ -120,8 +122,6 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
     pinx1.push_back(j);
     sel1=select(quad,pinx1);
     ps.startpage();
-    ps.setscale(-sqrt(iters),-sqrt(iters),sqrt(iters),sqrt(iters));
-    ps.write(0.8*sqrt(iters),0.8*sqrt(iters),to_string(sel1.getprime(0)));
     fpoint.clear();
     buckets.clear();
     for (i=0;i<iters;i++)
@@ -148,6 +148,8 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
       spectrum[j].push_back(hypot(transform[i],transform[iters-i]));
     if (2*i==iters)
       spectrum[j].push_back(transform[i]);
+    hi=-INFINITY;
+    lo=INFINITY;
     for (i=0;i<spectrum[j].size();i++)
     {
       inx=(i*BUCKETS)/spectrum[j].size();
@@ -155,12 +157,37 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
       {
 	buckets[inx].maxy=spectrum[j][i];
 	buckets[inx].maxx=i;
+	if (spectrum[j][i]>hi)
+	  hi=spectrum[j][i];
       }
       if (spectrum[j][i]>0 && spectrum[j][i]<buckets[inx].miny)
       {
 	buckets[inx].miny=spectrum[j][i];
 	buckets[inx].minx=i;
+	if (spectrum[j][i]<lo)
+	  lo=spectrum[j][i];
       }
+    }
+    hi=ceil (log(hi)/log(10))*log(10);
+    lo=floor(log(lo)/log(10))*log(10);
+    ps.setscale(0,-1,3,1);
+    ps.write(0,1,to_string(sel1.getprime(0)));
+    scale=(hi-lo)/2;
+    ps.startline();
+    ps.lineto(0,-1);
+    ps.lineto(3,-1);
+    ps.lineto(3,1);
+    ps.lineto(0,1);
+    ps.endline(true);
+    decades=rint((hi-lo)/log(10));
+    for (i=0;i<=decades;i++)
+    {
+      sprintf(buf,"%g",exp(lo)*pow(10,i));
+      ps.write(3.1,i*2./decades-1,buf);
+      ps.startline();
+      ps.lineto(3,i*2./decades-1);
+      ps.lineto(3.1,i*2./decades-1);
+      ps.endline();
     }
     ps.endpage();
   }
