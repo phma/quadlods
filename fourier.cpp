@@ -97,8 +97,9 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
   time_t now,then;
   Quadlods sel1;
   vector<int> pinx1;
-  vector<double> point,fpoint;
-  vector<vector<double> > points;
+  vector<mpq_class> point;
+  vector<double> fpoint,transform,spectrum;
+  mpq_class half(1,2);
   double ang,r,disc;
   setFlowerDisc(true);
   ps.setpaper(a4land,0);
@@ -112,17 +113,12 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
     ps.startpage();
     ps.setscale(-sqrt(iters),-sqrt(iters),sqrt(iters),sqrt(iters));
     ps.write(0.8*sqrt(iters),0.8*sqrt(iters),to_string(sel1.getprime(0)));
-    points.clear();
+    fpoint.clear();
     for (i=0;i<iters;i++)
     {
-      point=sel1.dgen();
-      r=sqrt(i+0.5);
-      ang=2*M_PI*point[0];
-      ps.dot(r*cos(ang),r*sin(ang));
-      fpoint.clear();
-      fpoint.push_back(r*cos(ang)/sqrt(iters));
-      fpoint.push_back(r*sin(ang)/sqrt(iters));
-      points.push_back(fpoint);
+      point=sel1.gen();
+      point[0]-=half;
+      fpoint.push_back(point[0].get_d()*window(i,iters));
       if (((i-iters)&255)==255)
       {
 	now=time(nullptr);
@@ -135,6 +131,14 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
 	}
       }
     }
+    transform=fft(fpoint);
+    spectrum.clear();
+    spectrum.reserve(iters/2+1);
+    spectrum.push_back(transform[0]);
+    for (i=1;2*i<iters;i++)
+      spectrum.push_back(hypot(transform[i],transform[iters-i]));
+    if (2*i==iters)
+      spectrum.push_back(transform[i]);
     ps.endpage();
   }
 }
