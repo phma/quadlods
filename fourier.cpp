@@ -89,6 +89,12 @@ double window(int i,int iters)
   return 1-cos((i+0.5)/iters*M_PI*2);
 }
 
+Bucket::Bucket()
+{
+  miny=INFINITY;
+  maxy=-INFINITY;
+}
+
 void fouriertest(Quadlods &quad,int iters,PostScript &ps)
 /* Plot the Fourier transforms of the sequence.
  */
@@ -101,6 +107,7 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
   vector<double> fpoint,transform;
   vector<vector<double> > spectrum;
   mpq_class half(1,2);
+  map<int,Bucket> buckets;
   double ang,r,disc;
   setFlowerDisc(true);
   ps.setpaper(a4land,0);
@@ -116,6 +123,7 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
     ps.setscale(-sqrt(iters),-sqrt(iters),sqrt(iters),sqrt(iters));
     ps.write(0.8*sqrt(iters),0.8*sqrt(iters),to_string(sel1.getprime(0)));
     fpoint.clear();
+    buckets.clear();
     for (i=0;i<iters;i++)
     {
       point=sel1.gen();
@@ -140,6 +148,20 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
       spectrum[j].push_back(hypot(transform[i],transform[iters-i]));
     if (2*i==iters)
       spectrum[j].push_back(transform[i]);
+    for (i=0;i<spectrum[j].size();i++)
+    {
+      inx=(i*BUCKETS)/spectrum[j].size();
+      if (spectrum[j][i]>0 && spectrum[j][i]>buckets[inx].maxy)
+      {
+	buckets[inx].maxy=spectrum[j][i];
+	buckets[inx].maxx=i;
+      }
+      if (spectrum[j][i]>0 && spectrum[j][i]<buckets[inx].miny)
+      {
+	buckets[inx].miny=spectrum[j][i];
+	buckets[inx].minx=i;
+      }
+    }
     ps.endpage();
   }
 }

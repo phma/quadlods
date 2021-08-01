@@ -25,5 +25,12 @@
 #include "quadlods.h"
 #include "ps.h"
 
+struct Bucket
+{
+  int minx,maxx;
+  double miny,maxy;
+  Bucket();
+};
+
 void destroyPlans();
 void fouriertest(Quadlods &quad,int iters,PostScript &ps);
