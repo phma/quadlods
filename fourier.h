@@ -25,4 +25,5 @@
 #include "quadlods.h"
 #include "ps.h"
 
+void destroyPlans();
 void fouriertest(Quadlods &quad,int iters,PostScript &ps);

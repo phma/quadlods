@@ -25,13 +25,69 @@
 #include <iomanip>
 #include <ctime>
 #include <cmath>
-#include "flowertest.h"
+#include <fftw3.h>
+#include "fourier.h"
 #include "histogram.h"
 #include "discrepancy.h"
 #include "ldecimal.h"
 
+#define BUCKETS 2971
+/* for graphing. On A4 landscape, this produces more than 10
+ * vertical lines per millimeter.
+ */
+
 using namespace std;
 using namespace quadlods;
+
+map<int,fftw_plan> plans;
+map<int,double *> inmem,outmem;
+
+fftw_plan makePlan(int n)
+// fftw_plan is a pointer to plan_s, so it can be checked as bool
+{
+  if (!plans[n])
+  {
+    inmem[n]=fftw_alloc_real(n);
+    outmem[n]=fftw_alloc_real(n);
+    plans[n]=fftw_plan_r2r_1d(n,inmem[n],outmem[n],FFTW_R2HC,FFTW_ESTIMATE);
+  }
+  return plans[n];
+}
+
+void destroyPlans()
+{
+  map<int,fftw_plan>::iterator i;
+  map<int,double *>::iterator j;
+  for (i=plans.begin();i!=plans.end();i++)
+    fftw_destroy_plan(i->second);
+  for (j=inmem.begin();j!=inmem.end();j++)
+    fftw_free(j->second);
+  for (j=outmem.begin();j!=outmem.end();j++)
+    fftw_free(j->second);
+  plans.clear();
+  inmem.clear();
+  outmem.clear();
+}
+
+vector<double> fft(vector<double> input)
+/* The output is calibrated so that the frequency-domain terms are independent
+ * of the size of the input.
+ */
+{
+  vector<double> output(input);
+  int i,sz=input.size();
+  fftw_plan plan=makePlan(sz);
+  memcpy(inmem[sz],&input[0],sz*sizeof(double));
+  fftw_execute(plan);
+  for (i=0;i<sz;i++)
+    output[i]=outmem[sz][i]/sz;
+  return output;
+}
+
+double window(int i,int iters)
+{
+  return 1-cos((i+0.5)/iters*M_PI*2);
+}
 
 void fouriertest(Quadlods &quad,int iters,PostScript &ps)
 /* Plot the Fourier transforms of the sequence.
