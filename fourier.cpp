@@ -98,13 +98,15 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
   Quadlods sel1;
   vector<int> pinx1;
   vector<mpq_class> point;
-  vector<double> fpoint,transform,spectrum;
+  vector<double> fpoint,transform;
+  vector<vector<double> > spectrum;
   mpq_class half(1,2);
   double ang,r,disc;
   setFlowerDisc(true);
   ps.setpaper(a4land,0);
   ps.prolog();
   allinx=iters*quad.size();
+  spectrum.resize(quad.size());
   for (j=0;j<quad.size();j++)
   {
     pinx1.clear();
@@ -132,13 +134,12 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
       }
     }
     transform=fft(fpoint);
-    spectrum.clear();
-    spectrum.reserve(iters/2+1);
-    spectrum.push_back(transform[0]);
+    spectrum[j].reserve(iters/2+1);
+    spectrum[j].push_back(transform[0]);
     for (i=1;2*i<iters;i++)
-      spectrum.push_back(hypot(transform[i],transform[iters-i]));
+      spectrum[j].push_back(hypot(transform[i],transform[iters-i]));
     if (2*i==iters)
-      spectrum.push_back(transform[i]);
+      spectrum[j].push_back(transform[i]);
     ps.endpage();
   }
 }
