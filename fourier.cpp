@@ -110,7 +110,7 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
   mpq_class half(1,2);
   map<int,Bucket> buckets;
   double ang,r,disc;
-  double hi,lo,scale;
+  double hi,lo,scale,xscale;
   setFlowerDisc(true);
   ps.setpaper(a4land,0);
   ps.prolog();
@@ -173,6 +173,7 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
     ps.setscale(0,-1,3,1);
     ps.write(0,1,to_string(sel1.getprime(0)));
     scale=(hi-lo)/2;
+    xscale=3./spectrum[j].size();
     ps.startline();
     ps.lineto(0,-1);
     ps.lineto(3,-1);
@@ -189,6 +190,17 @@ void fouriertest(Quadlods &quad,int iters,PostScript &ps)
       ps.lineto(3.1,i*2./decades-1);
       ps.endline();
     }
+    ps.startline();
+    for (i=0;i<BUCKETS;i++)
+      if (buckets[i].maxy>0)
+      {
+	if (buckets[i].minx<buckets[i].maxx)
+	  ps.lineto(buckets[i].minx*xscale,(log(buckets[i].miny)-lo)/scale-1);
+	ps.lineto(buckets[i].maxx*xscale,(log(buckets[i].maxy)-lo)/scale-1);
+	if (buckets[i].minx>buckets[i].maxx)
+	  ps.lineto(buckets[i].minx*xscale,(log(buckets[i].miny)-lo)/scale-1);
+      }
+    ps.endline();
     ps.endpage();
   }
 }
