@@ -42,6 +42,7 @@
 #include "histogram.h"
 #include "manysum.h"
 #include "flowertest.h"
+#include "fourier.h"
 #include "matrix.h"
 #include "interact.h"
 #include "discrepancy.h"
@@ -578,6 +579,25 @@ void testFlower()
     quads[0].setscramble(scramble);
     quads[0].advance(-1);
     flowertest(quads[0],niter,ps,disc2d);
+    ps.trailer();
+    ps.close();
+  }
+  if (niter<=0)
+    cerr<<"Please specify number of iterations with -n\n";
+  if (ndims<=0 && primelist.size()==0)
+    cerr<<"Please specify number of dimensions with -d or primes with -p\n";
+}
+
+void testFourier()
+{
+  if (niter>0 && (ndims>0 || primelist.size()))
+  {
+    ps.open(filename.length()?filename:"fourier.ps");
+    quads[0].init(ndims,resolution);
+    quads[0].init(primelist,resolution);
+    quads[0].setscramble(scramble);
+    quads[0].advance(-1);
+    fouriertest(quads[0],niter,ps);
     ps.trailer();
     ps.close();
   }
@@ -1542,6 +1562,7 @@ int main(int argc,char **argv)
   commands.push_back(command("circle",testCircle,"Test pairs of primes by estimating area of circle"));
   commands.push_back(command("fill",testFill,"Graph how well sequence fills space"));
   commands.push_back(command("flower",testFlower,"Graph each dimension separately"));
+  commands.push_back(command("fourier",testFourier,"Plot log spectrum of each dimension"));
   commands.push_back(command("discrepancy",computeDiscrepancy,"Generate points and compute discrepancy"));
   commands.push_back(command("textout",textOutput,"Output a text stream of points"));
   commands.push_back(command("interact",interact,"Enter interactive mode"));
