@@ -3,7 +3,7 @@
 /* discrepancy.cpp - compute discrepancy              */
 /*                                                    */
 /******************************************************/
-/* Copyright 2020 Pierre Abbat.
+/* Copyright 2020,2021 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -36,6 +36,7 @@ using namespace quadlods;
 namespace cr=std::chrono;
 
 vector<Box> emptyPop;
+vector<Box> population;
 BoxCountBlock boxCountBlock;
 double flowerDisc[2]={0,1};
 /* When computing the discrepancy of a flower plot, these changes apply:
@@ -346,9 +347,13 @@ double prog(int nsteady,int niter)
   return ((double)endpt-nsteady)/(endpt+0.5);
 }
 
-double discrepancy(const vector<vector<double> > &points)
+double discrepancy(const vector<vector<double> > &points,bool keepPop)
+/* Computes the discrepancy (or an upper bound) of the points. keepPop is for
+ * incrementally computing the discrepancy of a long list of points. The next
+ * call will assume that all points up to Box::pointsTotal are the same as
+ * in this call.
+ */
 {
-  vector<Box> population;
   vector<int> delenda;
   DotBaton dotbaton;
   mpq_class mutationRate(1,points[0].size());
@@ -425,6 +430,8 @@ double discrepancy(const vector<vector<double> > &points)
     }
   }
   dotbaton.update(0,0);
+  if (!keepPop)
+    population.clear();
   return fabs(population[0].discrepancy());
 }
 

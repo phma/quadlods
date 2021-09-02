@@ -3,7 +3,7 @@
 /* discrepancy.h - compute discrepancy                */
 /*                                                    */
 /******************************************************/
-/* Copyright 2020 Pierre Abbat.
+/* Copyright 2020,2021 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -76,6 +76,6 @@ private:
   std::mutex mtx;
 };
 
-double discrepancy(const std::vector<std::vector<double> > &points);
+double discrepancy(const std::vector<std::vector<double> > &points,bool keepPop=false);
 
 bool countAnyBlock();
