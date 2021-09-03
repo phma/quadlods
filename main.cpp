@@ -1109,6 +1109,25 @@ void computeDiscrepancy()
     cerr<<"Please specify number of dimensions with -d or primes with -p\n";
 }
 
+void plotDiscrepancy()
+{
+  int i;
+  vector<vector<double> > points;
+  if (niter>1 && (ndims>0 || primelist.size()))
+  {
+    quads[0].init(ndims,resolution);
+    quads[0].init(primelist,resolution);
+    quads[0].setscramble(scramble);
+    for (i=0;i<niter;i++)
+      points.push_back(quads[0].dgen());
+    cout<<ldecimal(discrepancy(points))<<endl;
+  }
+  if (niter<2)
+    cerr<<"Please specify number of points (at least 2) with -n\n";
+  if (ndims<=0 && primelist.size()==0)
+    cerr<<"Please specify number of dimensions with -d or primes with -p\n";
+}
+
 void writeshort(ostream &file,unsigned short i)
 {
   char buf[2];
@@ -1516,10 +1535,17 @@ void primesqrt2()
 int main(int argc,char **argv)
 /* Commands:
  * sortprimes	Write a list of primes sorted by average continued fraction term
+ * scramblehalton Compute permutations for scrambling Halton
  * test		Test the program
+ * longtest	Run long tests
+ * quadplot	Plot quadratic irrationals mod 1
  * scatter	Draw scatterplots of pairs of dimensions of a sequence
  * circle	Test how well pairs of dimensions estimate the area of a circle
  * fill		Graph how well a sequence fills space
+ * flower	Draw flower plots
+ * fourier	Plot Fourier transform of each dimension
+ * discrepancy	Generate points and compute discrepancy
+ * discplot	Plot discrepancy versus number of points
  * textout	Output a text file for the star_discrepancy program
  * interact	Run interactively
  * Options:
@@ -1564,6 +1590,7 @@ int main(int argc,char **argv)
   commands.push_back(command("flower",testFlower,"Graph each dimension separately"));
   commands.push_back(command("fourier",testFourier,"Plot log spectrum of each dimension"));
   commands.push_back(command("discrepancy",computeDiscrepancy,"Generate points and compute discrepancy"));
+  commands.push_back(command("discplot",plotDiscrepancy,"Plot discrepancy versus number of points"));
   commands.push_back(command("textout",textOutput,"Output a text stream of points"));
   commands.push_back(command("interact",interact,"Enter interactive mode"));
   try
