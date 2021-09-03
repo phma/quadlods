@@ -43,6 +43,10 @@ public:
   int in(const std::vector<double> &point);
   void countPoints(const std::vector<std::vector<double> > &points);
   double discrepancy();
+  int getPointsTotal()
+  {
+    return pointsTotal;
+  }
   void mutate(const std::vector<std::vector<double> > &points,int pntnum=-1,int coord=-1);
   friend bool operator==(const Box &l,const Box &r);
 private:

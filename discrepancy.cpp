@@ -348,7 +348,7 @@ double prog(int nsteady,int niter)
 }
 
 double discrepancy(const vector<vector<double> > &points,bool keepPop)
-/* Computes the discrepancy (or an upper bound) of the points. keepPop is for
+/* Computes the discrepancy (or a lower bound) of the points. keepPop is for
  * incrementally computing the discrepancy of a long list of points. The next
  * call will assume that all points up to Box::pointsTotal are the same as
  * in this call.
@@ -358,10 +358,12 @@ double discrepancy(const vector<vector<double> > &points,bool keepPop)
   DotBaton dotbaton;
   mpq_class mutationRate(1,points[0].size());
   double lastdisc=-1;
-  int i,j,sz,dim,nParents,popLimit,niter=0,nsteady=0;
+  int i,j,prevsz=0,sz,dim,nParents,popLimit,niter=0,nsteady=0;
   vector<double> all0,all1;
   cr::nanoseconds elapsed;
   cr::time_point<cr::steady_clock> timeStart;
+  if (population.size())
+    prevsz=population[0].getPointsTotal();
   sz=points.size();
   dim=points[0].size();
   popLimit=3*dim*sz+256;
@@ -375,7 +377,7 @@ double discrepancy(const vector<vector<double> > &points,bool keepPop)
   population.push_back(Box(all0,all1));
   for (i=0;i<sz*2;i++)
     population.push_back(Box(points[i%sz],points[rng.rangerandom(sz)]));
-  for (i=0;i<sz;i++)
+  for (i=prevsz;i<sz;i++)
     for (j=0;j<dim;j++)
     {
       population.push_back(Box(all0,all1));
