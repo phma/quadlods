@@ -380,7 +380,10 @@ double discrepancy(const vector<vector<double> > &points,bool keepPop)
   for (i=prevsz;i<sz;i++)
     for (j=0;j<dim;j++)
     {
-      population.push_back(Box(all0,all1));
+      if (prevsz)
+	population.push_back(population[rng.rangerandom(prevsz)]);
+      else
+	population.push_back(Box(all0,all1));
       population.back().mutate(points,i,j);
     }
   boxCountBlock.load(population,0,population.size(),points);
