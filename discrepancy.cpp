@@ -446,7 +446,9 @@ double discrepancy(const vector<vector<double> > &points,bool keepPop)
   dotbaton.update(0,0);
   for (i=0;i<3 && i<population.size();i++)
     population[i].dump();
-  if (!keepPop)
+  if (keepPop)
+    population.resize(3);
+  else
     population.clear();
   return fabs(population[0].discrepancy());
 }
