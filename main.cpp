@@ -3,7 +3,7 @@
 /* main.cpp - main program                            */
 /*                                                    */
 /******************************************************/
-/* Copyright 2014,2016,2018-2020 Pierre Abbat.
+/* Copyright 2014,2016,2018-2021 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -32,6 +32,7 @@
 #include <boost/program_options.hpp>
 #include "main.h"
 #include "config.h"
+#include "hstep.h"
 #include "ps.h"
 #include "threads.h"
 #include "random.h"
@@ -1112,6 +1113,8 @@ void computeDiscrepancy()
 void plotDiscrepancy()
 {
   int i;
+  set<int> halfsteps=hsteps(1,niter);
+  set<int>::iterator it;
   vector<vector<double> > points;
   if (niter>1 && (ndims>0 || primelist.size()))
   {
@@ -1119,8 +1122,11 @@ void plotDiscrepancy()
     quads[0].init(primelist,resolution);
     quads[0].setscramble(scramble);
     for (i=0;i<niter;i++)
+    {
       points.push_back(quads[0].dgen());
-    cout<<ldecimal(discrepancy(points))<<endl;
+      if (halfsteps.count(i))
+	cout<<i<<' '<<ldecimal(discrepancy(points,true))<<endl;
+    }
   }
   if (niter<2)
     cerr<<"Please specify number of points (at least 2) with -n\n";
