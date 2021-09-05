@@ -230,6 +230,15 @@ void Box::mutate(const std::vector<std::vector<double> > &points,int pntnum,int 
     swap(bounds[coord][0],bounds[coord][1]);
 }
 
+void Box::dump()
+{
+  int i;
+  printf("%5.3f %d,%d/%d",volume,pointsIn,pointsBound,pointsTotal);
+  for (i=0;i<bounds.size();i++)
+    printf(" [%5.3f,%5.3f]",bounds[i][0],bounds[i][1]);
+  printf("\n");
+}
+
 bool operator==(const Box &l,const Box &r)
 {
   int i;
@@ -377,7 +386,7 @@ double discrepancy(const vector<vector<double> > &points,bool keepPop)
   population.push_back(Box(all0,all1));
   for (i=0;i<sz*2;i++)
     population.push_back(Box(points[i%sz],points[rng.rangerandom(sz)]));
-  for (i=prevsz;i<sz;i++)
+  for (i=0;i<sz;i++)
     for (j=0;j<dim;j++)
     {
       if (prevsz)
@@ -435,6 +444,8 @@ double discrepancy(const vector<vector<double> > &points,bool keepPop)
     }
   }
   dotbaton.update(0,0);
+  for (i=0;i<3 && i<population.size();i++)
+    population[i].dump();
   if (!keepPop)
     population.clear();
   return fabs(population[0].discrepancy());

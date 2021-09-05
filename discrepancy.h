@@ -48,6 +48,7 @@ public:
     return pointsTotal;
   }
   void mutate(const std::vector<std::vector<double> > &points,int pntnum=-1,int coord=-1);
+  void dump();
   friend bool operator==(const Box &l,const Box &r);
 private:
   std::vector<std::array<double,2> > bounds;
