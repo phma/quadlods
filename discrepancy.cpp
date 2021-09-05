@@ -375,7 +375,7 @@ double discrepancy(const vector<vector<double> > &points,bool keepPop)
     prevsz=population[0].getPointsTotal();
   sz=points.size();
   dim=points[0].size();
-  popLimit=3*dim*sz+256;
+  popLimit=3*dim*sz+8192;
   for (i=0;i<dim;i++)
   {
     all0.push_back(flowerDisc[0]);
