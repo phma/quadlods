@@ -1124,8 +1124,8 @@ void plotDiscrepancy()
     for (i=0;i<niter;i++)
     {
       points.push_back(quads[0].dgen());
-      if (halfsteps.count(i))
-	cout<<i<<' '<<ldecimal(discrepancy(points,true))<<endl;
+      if (halfsteps.count(i+1))
+	cout<<i+1<<' '<<ldecimal(discrepancy(points,true))<<endl;
     }
   }
   if (niter<2)
