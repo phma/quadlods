@@ -1116,8 +1116,11 @@ void plotDiscrepancy()
   set<int> halfsteps=hsteps(1,niter);
   set<int>::iterator it;
   vector<vector<double> > points;
+  vector<int> npts;
+  vector<double> disc;
   if (niter>1 && (ndims>0 || primelist.size()))
   {
+    ps.open(filename.length()?filename:"discrepancy.ps");
     quads[0].init(ndims,resolution);
     quads[0].init(primelist,resolution);
     quads[0].setscramble(scramble);
@@ -1125,8 +1128,14 @@ void plotDiscrepancy()
     {
       points.push_back(quads[0].dgen());
       if (halfsteps.count(i+1))
-	cout<<i+1<<' '<<ldecimal(discrepancy(points,true))<<endl;
+      {
+	npts.push_back(i+1);
+	disc.push_back(discrepancy(points,true));
+	cout<<i+1<<' '<<ldecimal(disc.back())<<endl;
+      }
     }
+    ps.setpaper(a4land,0);
+    ps.prolog();
   }
   if (niter<2)
     cerr<<"Please specify number of points (at least 2) with -n\n";
