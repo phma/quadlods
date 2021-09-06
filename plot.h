@@ -21,3 +21,7 @@
  * and Lesser General Public License along with Quadlods. If not, see
  * <http://www.gnu.org/licenses/>.
  */
+
+#include "ps.h"
+
+void logLogPlot(PostScript &ps,std::vector<int> xcoords,std::vector<double> ycoords);
