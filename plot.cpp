@@ -21,3 +21,50 @@
  * and Lesser General Public License along with Quadlods. If not, see
  * <http://www.gnu.org/licenses/>.
  */
+
+#include "plot.h"
+#include "hstep.h"
+using namespace std;
+
+void logLogPlot(PostScript &ps,std::vector<int> xcoords,std::vector<double> ycoords)
+{
+  int i,j,k,l,sz=xcoords.size(),decades,byte,iters=0;
+  char buf[24];
+  double hi=-INFINITY,lo=INFINITY,scale;
+  for (i=0;i<sz;i++)
+  {
+    if (ycoords[i]>hi)
+      hi=ycoords[i];
+    if (ycoords[i]<lo)
+      lo=ycoords[i];
+    if (xcoords[i]>iters)
+      iters=xcoords[i];
+  }
+  hi=ceil (hi/log(10))*log(10);
+  lo=floor(lo/log(10))*log(10);
+  ps.startpage();
+  ps.setscale(0,-1,3,1);
+  scale=(hi-lo)/2;
+  ps.startline();
+  ps.lineto(0,-1);
+  ps.lineto(3,-1);
+  ps.lineto(3,1);
+  ps.lineto(0,1);
+  ps.endline(true);
+  decades=rint((hi-lo)/log(10));
+  for (i=0;i<=decades;i++)
+  {
+    sprintf(buf,"%g",exp(lo)*pow(10,i));
+    ps.write(3.1,i*2./decades-1,buf);
+    ps.startline();
+    ps.lineto(3,i*2./decades-1);
+    ps.lineto(3.1,i*2./decades-1);
+    ps.endline();
+  }
+  xticks(1,iters,ps);
+  ps.startline();
+  for (i=0;i<sz;i++)
+    ps.lineto(log(xcoords[i])/log(iters)*3,(log(ycoords[i])-lo)/scale-1);
+  ps.endline();
+  ps.endpage();
+}
