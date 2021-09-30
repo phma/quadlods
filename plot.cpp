@@ -27,6 +27,7 @@
 using namespace std;
 
 void logLogPlot(PostScript &ps,std::vector<int> xcoords,std::vector<double> ycoords)
+// ycoords are logarithms.
 {
   int i,j,k,l,sz=xcoords.size(),decades,byte,iters=0;
   char buf[24];
@@ -64,7 +65,7 @@ void logLogPlot(PostScript &ps,std::vector<int> xcoords,std::vector<double> ycoo
   xticks(1,iters,ps);
   ps.startline();
   for (i=0;i<sz;i++)
-    ps.lineto(log(xcoords[i])/log(iters)*3,(log(ycoords[i])-lo)/scale-1);
+    ps.lineto(log(xcoords[i])/log(iters)*3,(ycoords[i]-lo)/scale-1);
   ps.endline();
   ps.endpage();
 }

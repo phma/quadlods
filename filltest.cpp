@@ -3,7 +3,7 @@
 /* filltest.cpp - test how well numbers fill space    */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018-2020 Pierre Abbat.
+/* Copyright 2018-2021 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -29,6 +29,7 @@
 #include "matrix.h"
 #include "histogram.h"
 #include "random.h"
+#include "plot.h"
 using namespace std;
 using namespace quadlods;
 
@@ -98,8 +99,11 @@ void filltest(Quadlods &quad,int iters,PostScript &ps)
   double rbv=rootBallVolume(sz);
   matrix actualSize(sz,sz),normalized(sz,sz);
   set<int> halfsteps=hsteps(1,iters);
+  vector<int> halfstepsv;
   manysum weights,reldets,balls;
   time_t now,then;
+  for (it=halfsteps.begin();it!=halfsteps.end();++it)
+    halfstepsv.push_back(*it);
   for (k=0;k<3;k++)
     while (points[k].size()<sz)
     { // Select n random points in n-space without replacement, three times
@@ -212,85 +216,9 @@ void filltest(Quadlods &quad,int iters,PostScript &ps)
   }
   nhi=ceil (nhi/log(10))*log(10);
   nlo=floor(nlo/log(10))*log(10);
-  ps.startpage();
-  ps.setscale(0,-1,3,1);
-  scale=(hi-lo)/2;
-  ps.startline();
-  ps.lineto(0,-1);
-  ps.lineto(3,-1);
-  ps.lineto(3,1);
-  ps.lineto(0,1);
-  ps.endline(true);
-  decades=rint((hi-lo)/log(10));
-  for (i=0;i<=decades;i++)
-  {
-    sprintf(buf,"%g",exp(lo)*pow(10,i));
-    ps.write(3.1,i*2./decades-1,buf);
-    ps.startline();
-    ps.lineto(3,i*2./decades-1);
-    ps.lineto(3.1,i*2./decades-1);
-    ps.endline();
-  }
-  xticks(1,iters,ps);
-  cout<<"halfsteps size "<<halfsteps.size()<<" detGraph size "<<detGraph.size()<<endl;
-  ps.startline();
-  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,++it)
-    if (*it)
-      ps.lineto(log(*it)/log(iters)*3,(detGraph[i]-lo)/scale-1);
-  ps.endline();
-  ps.endpage();
-  ps.startpage();
-  ps.setscale(0,-1,3,1);
-  scale=(bhi-blo)/2;
-  ps.startline();
-  ps.lineto(0,-1);
-  ps.lineto(3,-1);
-  ps.lineto(3,1);
-  ps.lineto(0,1);
-  ps.endline(true);
-  decades=rint((bhi-blo)/log(10));
-  for (i=0;i<=decades;i++)
-  {
-    sprintf(buf,"%g",exp(blo)*pow(10,i));
-    ps.write(3.1,i*2./decades-1,buf);
-    ps.startline();
-    ps.lineto(3,i*2./decades-1);
-    ps.lineto(3.1,i*2./decades-1);
-    ps.endline();
-  }
-  xticks(1,iters,ps);
-  ps.startline();
-  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,++it)
-    if (*it)
-      ps.lineto(log(*it)/log(iters)*3,(ballGraph[i]-blo)/scale-1);
-  ps.endline();
-  ps.endpage();
-  ps.startpage();
-  ps.setscale(0,-1,3,1);
-  scale=(nhi-nlo)/2;
-  ps.startline();
-  ps.lineto(0,-1);
-  ps.lineto(3,-1);
-  ps.lineto(3,1);
-  ps.lineto(0,1);
-  ps.endline(true);
-  decades=rint((nhi-nlo)/log(10));
-  for (i=0;i<=decades;i++)
-  {
-    sprintf(buf,"%g",exp(nlo)*pow(10,i));
-    ps.write(3.1,i*2./decades-1,buf);
-    ps.startline();
-    ps.lineto(3,i*2./decades-1);
-    ps.lineto(3.1,i*2./decades-1);
-    ps.endline();
-  }
-  xticks(1,iters,ps);
-  ps.startline();
-  for (it=halfsteps.begin(),i=0;it!=halfsteps.end();i++,++it)
-    if (*it)
-      ps.lineto(log(*it)/log(iters)*3,(normGraph[i]-nlo)/scale-1);
-  ps.endline();
-  ps.endpage();
+  logLogPlot(ps,halfstepsv,detGraph);
+  logLogPlot(ps,halfstepsv,ballGraph);
+  logLogPlot(ps,halfstepsv,normGraph);
   //cout<<"Average relative determinant "<<reldets.total()/weights.total()<<endl;
   cout<<"Average total ball volume "<<balls.total()/weights.total()<<endl;
 }
