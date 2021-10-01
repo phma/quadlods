@@ -22,6 +22,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+#include <set>
 #include "ps.h"
 
 void logLogPlot(PostScript &ps,std::vector<int> xcoords,std::vector<double> ycoords);
+void logLogPlot(PostScript &ps,std::set<int> xcoords,std::vector<double> ycoords);

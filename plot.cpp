@@ -26,7 +26,7 @@
 #include "hstep.h"
 using namespace std;
 
-void logLogPlot(PostScript &ps,std::vector<int> xcoords,std::vector<double> ycoords)
+void logLogPlot(PostScript &ps,vector<int> xcoords,vector<double> ycoords)
 // ycoords are logarithms.
 {
   int i,j,k,l,sz=xcoords.size(),decades,byte,iters=0;
@@ -69,3 +69,13 @@ void logLogPlot(PostScript &ps,std::vector<int> xcoords,std::vector<double> ycoo
   ps.endline();
   ps.endpage();
 }
+
+void logLogPlot(PostScript &ps,set<int> xcoords,vector<double> ycoords)
+{
+  vector<int> xcoordsv;
+  set<int>::iterator it;
+  for (it=xcoords.begin();it!=xcoords.end();++it)
+    xcoordsv.push_back(*it);
+  logLogPlot(ps,xcoordsv,ycoords);
+}
+
