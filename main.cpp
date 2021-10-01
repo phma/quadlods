@@ -44,6 +44,7 @@
 #include "manysum.h"
 #include "flowertest.h"
 #include "fourier.h"
+#include "plot.h"
 #include "matrix.h"
 #include "interact.h"
 #include "discrepancy.h"
@@ -1117,6 +1118,7 @@ void plotDiscrepancy()
   set<int>::iterator it;
   vector<vector<double> > points;
   vector<int> npts;
+  double lastdisc;
   vector<double> disc;
   if (niter>1 && (ndims>0 || primelist.size()))
   {
@@ -1130,12 +1132,14 @@ void plotDiscrepancy()
       if (halfsteps.count(i+1))
       {
 	npts.push_back(i+1);
-	disc.push_back(discrepancy(points,true));
-	cout<<i+1<<' '<<ldecimal(disc.back())<<endl;
+	lastdisc=discrepancy(points,true);
+	disc.push_back(log(lastdisc));
+	cout<<i+1<<' '<<ldecimal(lastdisc)<<endl;
       }
     }
     ps.setpaper(a4land,0);
     ps.prolog();
+    logLogPlot(ps,halfsteps,disc);
   }
   if (niter<2)
     cerr<<"Please specify number of points (at least 2) with -n\n";
