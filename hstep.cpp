@@ -3,7 +3,7 @@
 /* hstep.cpp - half step sequences                    */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2021 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -45,10 +45,11 @@ set<int> hsteps(int start,int iters)
  */
 {
   set<int> ret;
-  int i,n;
+  int i;
+  unsigned n;
   for (i=-12;i<372;i++)
   {
-    n=rint(hstep(i));
+    n=rint(iters/hstep(i));
     if (n>=start && n<=iters)
       ret.insert(n);
   }
