@@ -1132,11 +1132,13 @@ void plotDiscrepancy()
       if (halfsteps.count(i+1))
       {
 	npts.push_back(i+1);
+	cout<<i+1<<' ';
 	lastdisc=discrepancy(points,true);
 	disc.push_back(log(lastdisc));
-	cout<<i+1<<' '<<ldecimal(lastdisc)<<endl;
+	cout<<'\r';
       }
     }
+    cout<<endl;
     ps.setpaper(a4land,0);
     ps.prolog();
     logLogPlot(ps,halfsteps,disc);
