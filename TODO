@@ -13,6 +13,9 @@ Before 0.2.1:
 •Compute the discrepancy of a flower plot. ✓
 •Graph the discrepancy of a sequence versus the number of points. ✓
 
+Before 0.2.2:
+•Reduce the size of PostScript scatterplots.
+
 Before 0.3.0:
 •Investigate constructing continued fractions with long periods and small terms. ✓
 •Investigate all equivalence classes of quadratic irrationals based on the square root of a prime, where two irrationals are equivalent if their continued fraction tails are identical, with possibly different head lengths.
