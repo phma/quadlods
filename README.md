@@ -37,6 +37,8 @@ A program called "quadlods" accompanies the library. With it, you can test a set
 
 `quadlods test` and `quadlods longtest` test the program.
 
+`quadlods quadplot` plots the quadratic irrationals in a polar graph. r is the square root of the index in A322289; θ is the irrational mod 1, times 2π.
+
 `quadlods scatter` produces a scatter plot for each pair of quads; a 10-dimensional set produces 45 pages. Recommended number of iterations is 30000, with the plot getting too dark after 100000. You can see the effect of scrambling.
 
 `quadlods circle` plots the error of finding the area of two quarter-circles with each pair of quads. Again, the number of pages is a triangular number. Good pairs have a variety of forms and the error does not exceed 21.25 and is usually less than 5; bad pairs have a graph like one side of a trumpet, with a large error. Recommended number of iterations is 1048576.
@@ -45,7 +47,11 @@ A program called "quadlods" accompanies the library. With it, you can test a set
 
 `quadlods flower` draws a flower plot of each component of a sequence. Recommended number of iterations is 30000.
 
+`quadlods fourier` plots the Fourier transform of each component of a sequence.
+
 `quadlods discrepancy` computes a lower bound of the discrepancy of a sequence. If two runs on the same sequence give the same number, and no run gives a larger number, it's probably the true discrepancy.
+
+`quadlods discplot` plots the lower bound of the discrepancy versus the number of points.
 
 `quadlods textout` outputs a sequence in text.
 
