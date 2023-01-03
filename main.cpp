@@ -3,7 +3,7 @@
 /* main.cpp - main program                            */
 /*                                                    */
 /******************************************************/
-/* Copyright 2014,2016,2018-2021 Pierre Abbat.
+/* Copyright 2014,2016,2018-2021,2023 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -45,6 +45,7 @@
 #include "flowertest.h"
 #include "fourier.h"
 #include "plot.h"
+#include "pairpoint.h"
 #include "matrix.h"
 #include "interact.h"
 #include "discrepancy.h"
