@@ -68,6 +68,7 @@ public:
 private:
   std::deque<PairPoint> pairPoints;
   std::vector<Layer> layers;
+  friend class PostScript;
 };
 
 #endif

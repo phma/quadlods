@@ -3,7 +3,7 @@
 /* ps.h - PostScript output                           */
 /*                                                    */
 /******************************************************/
-/* Copyright 2014,2016-2018 Pierre Abbat.
+/* Copyright 2014,2016-2018,2023 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -28,6 +28,7 @@
 #include <fstream>
 #include "xy.h"
 #include "polyline.h"
+#include "pairpoint.h"
 
 struct papersize
 {
