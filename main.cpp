@@ -352,6 +352,7 @@ void plotxy(Quadlods& quad,int xdim,int ydim)
   char buf[24];
   vector<double> point;
   Quadlods sel2;
+  PairCompressor pc;
   vector<int> pinx2;
   pinx2.push_back(xdim);
   pinx2.push_back(ydim);
@@ -366,8 +367,9 @@ void plotxy(Quadlods& quad,int xdim,int ydim)
     point=sel2.dgen();
     x=point[0];
     y=point[1];
-    ps.dot(x,y);
+    pc.insert(xy(x,y));
   }
+  ps.draw(pc);
   ps.endpage();
 }
 

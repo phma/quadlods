@@ -57,6 +57,7 @@ public:
   {
     next=0;
   }
+  void insert(const xy &pnt,int32_t n);
   std::map<int64_t,PairDot> dots;
   int64_t next;
 };
@@ -65,6 +66,7 @@ class PairCompressor
 {
 public:
   PairCompressor();
+  void insert(const xy &pnt);
 private:
   std::deque<PairPoint> pairPoints;
   std::vector<Layer> layers;

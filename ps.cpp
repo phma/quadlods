@@ -3,7 +3,7 @@
 /* ps.cpp - PostScript output                         */
 /*                                                    */
 /******************************************************/
-/* Copyright 2014,2016-2018 Pierre Abbat.
+/* Copyright 2014,2016-2018,2023 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -259,6 +259,15 @@ void PostScript::plot(polyline pl,bool fill)
   if (!pl.isopen())
     *psfile<<"closepath ";
   *psfile<<(fill?"fill":"stroke")<<endl;
+}
+
+void PostScript::draw(PairCompressor pnts)
+{
+  int i;
+  map<int64_t,PairDot>::iterator j;
+  for (i=0;i<pnts.layers.size();i++)
+    for (j=pnts.layers[i].dots.begin();j!=pnts.layers[i].dots.end();++j)
+      dot(j->second.location.getx(),j->second.location.gety());
 }
 
 void PostScript::write(double x,double y,string text)

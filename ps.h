@@ -69,6 +69,7 @@ public:
   void lineto(double x,double y);
   void endline(bool closed=false);
   void plot(polyline pl,bool fill=false);
+  void draw(PairCompressor pnts);
   void write(double x,double y,std::string text);
   void centerWrite(xy pnt,std::string text);
   void comment(std::string text);
