@@ -1,6 +1,6 @@
 /******************************************************/
 /*                                                    */
-/* pairpoint.h - pairs of points in scatter plot      */
+/* pairpoint.cpp - pairs of points in scatter plot    */
 /*                                                    */
 /******************************************************/
 /* Copyright 2023 Pierre Abbat.
@@ -22,30 +22,15 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PAIRPOINT_H
-#define PAIRPOINT_H
+#include <cmath>
+#include "pairpoint.h"
+using namespace std;
 
-#include <deque>
-#include <cstdint>
-#include "xy.h"
-
-struct PairPoint
-/* A PairPoint represents a single point, if sep is NaN and sub is -1,
- * or two PairPoints indexed by sub, separated by sep. It is used for
- * compressing scatter plots.
- */
+PairCompressor::PairCompressor()
 {
-  uint32_t level; // 0=single point 3=eight points etc.
-  int32_t sub;
-  xy sep;
-};
-
-class PairCompressor
-{
-public:
-  PairCompressor();
-private:
-  std::deque<PairPoint> pairPoints;
-};
-
-#endif
+  PairPoint pairPoint;
+  pairPoint.level=0;
+  pairPoint.sub=-1;
+  pairPoint.sep=xy(NAN,NAN);
+  pairPoints.push_back(pairPoint);
+}
