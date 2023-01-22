@@ -26,6 +26,8 @@
 #define PAIRPOINT_H
 
 #include <deque>
+#include <vector>
+#include <map>
 #include <cstdint>
 #include "xy.h"
 
@@ -40,12 +42,32 @@ struct PairPoint
   xy sep;
 };
 
+struct PairDot
+/* A PairDot is an instance of PairPoint at a location in 2-space.
+ */
+{
+  int32_t inx;
+  xy location;
+};
+
+class Layer
+{
+public:
+  Layer()
+  {
+    next=0;
+  }
+  std::map<int64_t,PairDot> dots;
+  int64_t next;
+};
+
 class PairCompressor
 {
 public:
   PairCompressor();
 private:
   std::deque<PairPoint> pairPoints;
+  std::vector<Layer> layers;
 };
 
 #endif
