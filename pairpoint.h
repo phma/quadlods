@@ -25,14 +25,17 @@
 #ifndef PAIRPOINT_H
 #define PAIRPOINT_H
 
+#include <deque>
+
 struct PairPoint
-/* A PairPoint represents either two points separated by (x,y), if sub is null,
- * or two PairPoints pointed to by sub, separated by (x,y). It is used for
+/* A PairPoint represents a single point, if sep is NaN and sub is -1,
+ * or two PairPoints indexed by sub, separated by sep. It is used for
  * compressing scatter plots.
  */
 {
-  double x,y;
-  PairPoint *sub;
+  uint32_t level; // 0=single point 3=eight points etc.
+  int32_t sub;
+  xy sep;
 };
 
 #endif
