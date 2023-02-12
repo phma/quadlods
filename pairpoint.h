@@ -46,7 +46,7 @@ struct PairDot
 /* A PairDot is an instance of PairPoint at a location in 2-space.
  */
 {
-  int32_t inx;
+  int32_t inx; // index to PairCompressor::pairPoints
   xy location;
 };
 
