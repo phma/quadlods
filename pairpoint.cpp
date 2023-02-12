@@ -44,6 +44,38 @@ PairCompressor::PairCompressor()
   layers.push_back(Layer());
 }
 
+void PairCompressor::findNewPair(int layerNum)
+/* Finds two pairs of points with the same difference in the current layer.
+ * The last point added, which l will point to, must not differ by a known
+ * difference from another point in the same layer. All points, if pairs,
+ * must represent identical patterns (represented by inx). Replaces the
+ * pairs found in this layer by single points in the next layer, unless
+ * two of them share a point, in which case it replaces one pair.
+ */
+{
+  map<int64_t,PairDot>::iterator i,j,k,l;
+  xy twidiff,diff;
+  bool found=false;
+  l=layers[layerNum].dots.end();
+  --l;
+  for (k=layers[layerNum].dots.begin();k!=l;++k)
+    for (j=layers[layerNum].dots.begin();k->second.inx==l->second.inx && j!=k;++j)
+      for (i=layers[layerNum].dots.begin();j->second.inx==l->second.inx && i!=l;++i)
+	if (i->second.inx==l->second.inx)
+	{
+	  diff=l->second.location-k->second.location;
+	  twidiff=diff-j->second.location+i->second.location;
+	  if (diff.length()>1e-4 && twidiff.length()<1e-6)
+	  {
+	    found=true;
+	    goto foundit;
+	  }
+	}
+  foundit:
+  diff=(diff-i->second.location+j->second.location)/2;
+  // ...
+}
+
 void PairCompressor::insert(const xy &pnt)
 {
   layers[0].insert(pnt,0);

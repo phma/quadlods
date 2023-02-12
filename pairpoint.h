@@ -68,6 +68,7 @@ public:
   PairCompressor();
   void insert(const xy &pnt);
 private:
+  void findNewPair(int layerNum);
   std::deque<PairPoint> pairPoints;
   std::vector<Layer> layers;
   friend class PostScript;
