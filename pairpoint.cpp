@@ -44,6 +44,37 @@ PairCompressor::PairCompressor()
   layers.push_back(Layer());
 }
 
+bool PairCompressor::findOldPair(int layerNum)
+{
+  map<int64_t,PairDot>::iterator k,l;
+  xy diff;
+  xy location;
+  int i;
+  bool found=false;
+  l=layers[layerNum].dots.end();
+  --l;
+  for (k=layers[layerNum].dots.begin();k!=l;++k)
+    for (i=0;k->second.inx==l->second.inx && i<pairPoints.size();++i)
+      if (pairPoints[i].sub==l->second.inx)
+      {
+	diff=l->second.location-k->second.location;
+	if ((diff-pairPoints[i].sep).length()<1.5e-6 ||
+	    (diff+pairPoints[i].sep).length()<1.5e-6)
+	  found=true;
+	if (found)
+	  goto foundit;
+      }
+  foundit:
+  if (found)
+  {
+    location=(k->second.location+l->second.location-diff)/2;
+    layers[layerNum+1].insert(location,i);
+    layers[layerNum].dots.erase(k);
+    layers[layerNum].dots.erase(l);
+  }
+  return found;
+}
+
 void PairCompressor::findNewPair(int layerNum)
 /* Finds two pairs of points with the same difference in the current layer.
  * The last point added, which l will point to, must not differ by a known
@@ -79,6 +110,7 @@ void PairCompressor::findNewPair(int layerNum)
     diff=(diff-i->second.location+j->second.location)/2;
     newPair.level=layerNum+1;
     newPair.sub=l->second.inx;
+    newPair.sep=diff;
     newDot.inx=pairPoints.size();
     pairPoints.push_back(newPair);
     if (layers.size()<=layerNum+1)

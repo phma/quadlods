@@ -68,6 +68,7 @@ public:
   PairCompressor();
   void insert(const xy &pnt);
 private:
+  bool findOldPair(int layerNum);
   void findNewPair(int layerNum);
   std::deque<PairPoint> pairPoints;
   std::vector<Layer> layers;
