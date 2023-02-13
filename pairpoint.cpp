@@ -54,7 +54,9 @@ void PairCompressor::findNewPair(int layerNum)
  */
 {
   map<int64_t,PairDot>::iterator i,j,k,l;
+  PairPoint newPair;
   xy twidiff,diff;
+  PairDot newDot;
   bool found=false;
   l=layers[layerNum].dots.end();
   --l;
@@ -72,8 +74,34 @@ void PairCompressor::findNewPair(int layerNum)
 	  }
 	}
   foundit:
-  diff=(diff-i->second.location+j->second.location)/2;
-  // ...
+  if (found)
+  {
+    diff=(diff-i->second.location+j->second.location)/2;
+    newPair.level=layerNum+1;
+    newPair.sub=l->second.inx;
+    newDot.inx=pairPoints.size();
+    pairPoints.push_back(newPair);
+    if (layers.size()<=layerNum+1)
+      layers.push_back(Layer());
+    if (j==k) //FIXME j should go up to k, but no farther, in the loop
+    {
+      newDot.location=(i->second.location+j->second.location-diff)/2;
+      layers[layerNum+1].insert(newDot.location,newDot.inx);
+      layers[layerNum].dots.erase(i);
+      layers[layerNum].dots.erase(j);
+    }
+    else
+    {
+      newDot.location=(i->second.location+j->second.location-diff)/2;
+      layers[layerNum+1].insert(newDot.location,newDot.inx);
+      newDot.location=(k->second.location+l->second.location-diff)/2;
+      layers[layerNum+1].insert(newDot.location,newDot.inx);
+      layers[layerNum].dots.erase(i);
+      layers[layerNum].dots.erase(j);
+      layers[layerNum].dots.erase(k);
+      layers[layerNum].dots.erase(l);
+    }
+  }
 }
 
 void PairCompressor::insert(const xy &pnt)
