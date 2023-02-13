@@ -281,11 +281,10 @@ void PostScript::draw(PairCompressor &pnts)
     subStr=".";
     if (pnts.pairPoints[i].sub)
       subStr+=to_string(pnts.pairPoints[i].sub)+'-';
-    *psfile<<"/."<<i<<"- % ( x y )\n";
-    *psfile<<"{\n";
-    *psfile<<"  1 index "<<ldecimal(scale*pnts.pairPoints[i].sep.getx())<<" add";
-    *psfile<<" 1 index "<<ldecimal(scale*pnts.pairPoints[i].sep.gety())<<" add ";
-    *psfile<<subStr<<' '<<subStr<<"\n} def\n\n";
+    *psfile<<"/."<<i<<"- {";
+    *psfile<<" 1 index "<<ldecimal(scale*pnts.pairPoints[i].sep.getx(),PAPERRES/100)<<" add";
+    *psfile<<" 1 index "<<ldecimal(scale*pnts.pairPoints[i].sep.gety(),PAPERRES/100)<<" add ";
+    *psfile<<subStr<<' '<<subStr<<" } def\n";
   }
   for (i=0;i<pnts.layers.size();i++)
     for (j=pnts.layers[i].dots.begin();j!=pnts.layers[i].dots.end();++j)
