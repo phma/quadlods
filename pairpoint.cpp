@@ -139,4 +139,6 @@ void PairCompressor::findNewPair(int layerNum)
 void PairCompressor::insert(const xy &pnt)
 {
   layers[0].insert(pnt,0);
+  if (!findOldPair(0))
+    findNewPair(0);
 }
