@@ -64,12 +64,13 @@ public:
   void setcolor(double r,double g,double b);
   void setscale(double minx,double miny,double maxx,double maxy,int ori=0);
   void dot(double x,double y);
+  void subdot(double x,double y,int n);
   void line2p(xy pnt1,xy pnt2);
   void startline();
   void lineto(double x,double y);
   void endline(bool closed=false);
   void plot(polyline pl,bool fill=false);
-  void draw(PairCompressor pnts);
+  void draw(PairCompressor &pnts);
   void write(double x,double y,std::string text);
   void centerWrite(xy pnt,std::string text);
   void comment(std::string text);

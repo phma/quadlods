@@ -211,6 +211,15 @@ void PostScript::dot(double x,double y)
   *psfile<<endl;
 }
 
+void PostScript::subdot(double x,double y,int n)
+{
+  assert(psfile);
+  *psfile<<fixed<<setprecision(2)<<xscale(x)<<' '<<yscale(y)<<" .";
+  if (n)
+    *psfile<<n<<'-';
+  *psfile<<endl;
+}
+
 void PostScript::line2p(xy pnt1,xy pnt2)
 {
   pnt1=turn(pnt1,orientation);
@@ -261,13 +270,26 @@ void PostScript::plot(polyline pl,bool fill)
   *psfile<<(fill?"fill":"stroke")<<endl;
 }
 
-void PostScript::draw(PairCompressor pnts)
+void PostScript::draw(PairCompressor &pnts)
 {
   int i;
   map<int64_t,PairDot>::iterator j;
+  string subStr;
+  assert(*psfile);
+  for (i=1;i<pnts.pairPoints.size();i++)
+  {
+    subStr=".";
+    if (pnts.pairPoints[i].sub)
+      subStr+=to_string(pnts.pairPoints[i].sub)+'-';
+    *psfile<<"/."<<i<<"- % ( x y )\n";
+    *psfile<<"{\n";
+    *psfile<<"  1 index "<<ldecimal(scale*pnts.pairPoints[i].sep.getx())<<" add";
+    *psfile<<" 1 index "<<ldecimal(scale*pnts.pairPoints[i].sep.gety())<<" add ";
+    *psfile<<subStr<<' '<<subStr<<"\n} def\n\n";
+  }
   for (i=0;i<pnts.layers.size();i++)
     for (j=pnts.layers[i].dots.begin();j!=pnts.layers[i].dots.end();++j)
-      dot(j->second.location.getx(),j->second.location.gety());
+      subdot(j->second.location.getx(),j->second.location.gety(),j->second.inx);
 }
 
 void PostScript::write(double x,double y,string text)
