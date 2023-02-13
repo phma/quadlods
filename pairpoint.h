@@ -69,7 +69,7 @@ public:
   void insert(const xy &pnt);
 private:
   bool findOldPair(int layerNum);
-  void findNewPair(int layerNum);
+  bool findNewPair(int layerNum);
   std::deque<PairPoint> pairPoints;
   std::vector<Layer> layers;
   friend class PostScript;

@@ -75,7 +75,7 @@ bool PairCompressor::findOldPair(int layerNum)
   return found;
 }
 
-void PairCompressor::findNewPair(int layerNum)
+bool PairCompressor::findNewPair(int layerNum)
 /* Finds two pairs of points with the same difference in the current layer.
  * The last point added, which l will point to, must not differ by a known
  * difference from another point in the same layer. All points, if pairs,
@@ -134,11 +134,13 @@ void PairCompressor::findNewPair(int layerNum)
       layers[layerNum].dots.erase(l);
     }
   }
+  return found;
 }
 
 void PairCompressor::insert(const xy &pnt)
 {
+  int i=0;
   layers[0].insert(pnt,0);
-  if (!findOldPair(0))
-    findNewPair(0);
+  while (findOldPair(i) || findNewPair(i))
+    i++;
 }
