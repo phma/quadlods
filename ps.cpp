@@ -290,7 +290,14 @@ void PostScript::draw(PairCompressor &pnts)
   }
   for (i=0;i<pnts.layers.size();i++)
     for (j=pnts.layers[i].dots.begin();j!=pnts.layers[i].dots.end();++j)
+    {
       subdot(j->second.location.getx(),j->second.location.gety(),j->second.inx);
+      if (j->second.location.getx()+pnts.pairPoints[j->second.inx].lowleft.getx()<0 ||
+	  j->second.location.gety()+pnts.pairPoints[j->second.inx].lowleft.gety()<0 ||
+	  j->second.location.getx()+pnts.pairPoints[j->second.inx].upright.getx()>1 ||
+	  j->second.location.gety()+pnts.pairPoints[j->second.inx].upright.gety()>1)
+	*psfile<<"% "<<j->second.location.getx()<<','<<j->second.location.gety()<<" Out of range\n";
+    }
 }
 
 void PostScript::write(double x,double y,string text)
