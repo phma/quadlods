@@ -31,6 +31,8 @@
 #include <cstdint>
 #include "xy.h"
 
+#define PBUCKETS 400
+
 struct PairPoint
 /* A PairPoint represents a single point, if sep is NaN and sub is -1,
  * or two PairPoints indexed by sub, separated by sep. It is used for
@@ -50,6 +52,12 @@ struct PairDot
   xy location;
 };
 
+struct DotDiff
+{
+  int64_t a,b;
+  xy diff; // dots[a]-dots[b]; they must have the same inx
+};
+
 class Layer
 {
 public:
@@ -59,6 +67,7 @@ public:
   }
   void insert(const xy &pnt,int32_t n);
   std::map<int64_t,PairDot> dots;
+  std::vector<DotDiff> diffs[PBUCKETS];
   int64_t next;
 };
 

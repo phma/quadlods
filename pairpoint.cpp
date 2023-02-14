@@ -26,11 +26,32 @@
 #include "pairpoint.h"
 using namespace std;
 
+int buck(xy pnt)
+/* Returns a number from 0 to 399, which is the bucket that pnt goes in.
+ * pnt.x and pnt.y are both in (-1,1) and nonzero. Multiplies by π², which
+ * is transcendental, to avoid both quadratic irrationals (Richtmyer) and
+ * rationals (Halton) falling on the lines between squares. -pnt is in
+ * bucket 399-buck(pnt).
+ */
+{
+  return floor(pnt.getx()*M_PI*M_PI)+20*floor(pnt.gety()*M_PI*M_PI)+210;
+}
+
 void Layer::insert(const xy &pnt,int32_t n)
 {
   PairDot pairDot;
+  map<int64_t,PairDot>::iterator i;
+  DotDiff dotDiff;
   pairDot.location=pnt;
   pairDot.inx=n;
+  dotDiff.a=next;
+  for (i=dots.begin();i!=dots.end();++i)
+    if (i->second.inx==n)
+    {
+      dotDiff.b=i->first;
+      dotDiff.diff=pnt-i->second.location;
+      diffs[buck(dotDiff.diff)].push_back(dotDiff);
+    }
   dots[next++]=pairDot;
 }
 
