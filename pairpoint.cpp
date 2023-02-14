@@ -23,6 +23,7 @@
  */
 
 #include <cmath>
+#include <iostream>
 #include "pairpoint.h"
 using namespace std;
 
@@ -112,6 +113,8 @@ bool PairCompressor::findNewPair(int layerNum)
   bool found=false;
   l=layers[layerNum].dots.end();
   --l;
+  if (l->second.location.getx()==447./2048)
+    cout<<"2028\n";
   for (k=layers[layerNum].dots.begin();k!=l;++k)
     for (j=layers[layerNum].dots.begin();k->second.inx==l->second.inx && j!=k;++j)
       for (i=layers[layerNum].dots.begin();j->second.inx==l->second.inx && i!=l;++i)
