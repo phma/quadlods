@@ -45,13 +45,13 @@ void Layer::insert(const xy &pnt,int32_t n)
   pairDot.location=pnt;
   pairDot.inx=n;
   dotDiff.a=next;
-  for (i=dots.begin();i!=dots.end();++i)
+  /*for (i=dots.begin();i!=dots.end();++i)
     if (i->second.inx==n)
     {
       dotDiff.b=i->first;
       dotDiff.diff=pnt-i->second.location;
       diffs[buck(dotDiff.diff)].push_back(dotDiff);
-    }
+    }*/
   dots[next++]=pairDot;
 }
 
