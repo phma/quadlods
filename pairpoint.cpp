@@ -89,7 +89,7 @@ bool PairCompressor::findOldPair(int layerNum)
   foundit:
   if (found)
   {
-    location=(k->second.location+l->second.location-diff)/2;
+    location=(k->second.location+l->second.location-pairPoints[i].sep)/2;
     if (location.getx()==447./2048 && fabs(diff.getx())==64./2048)
       cout<<"2028+2044\n";
     layers[layerNum+1].insert(location,i);
