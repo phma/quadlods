@@ -42,6 +42,7 @@ struct PairPoint
   uint32_t level; // 0=single point 3=eight points etc.
   int32_t sub;
   xy sep;
+  xy lowleft,upright;
 };
 
 struct PairDot

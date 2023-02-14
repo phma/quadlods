@@ -132,6 +132,8 @@ bool PairCompressor::findNewPair(int layerNum)
     newPair.level=layerNum+1;
     newPair.sub=l->second.inx;
     newPair.sep=diff;
+    newPair.lowleft=pairPoints[newPair.sub].lowleft+xy(min(diff.getx(),0.),min(diff.gety(),0.));
+    newPair.upright=pairPoints[newPair.sub].upright+xy(max(diff.getx(),0.),max(diff.gety(),0.));
     newDot.inx=pairPoints.size();
     pairPoints.push_back(newPair);
     if (layers.size()<=layerNum+1)
