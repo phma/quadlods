@@ -90,8 +90,6 @@ bool PairCompressor::findOldPair(int layerNum)
   if (found)
   {
     location=(k->second.location+l->second.location-pairPoints[i].sep)/2;
-    if (location.getx()==447./2048 && fabs(diff.getx())==64./2048)
-      cout<<"2028+2044\n";
     layers[layerNum+1].insert(location,i);
     layers[layerNum].dots.erase(k);
     layers[layerNum].dots.erase(l);
@@ -115,10 +113,6 @@ bool PairCompressor::findNewPair(int layerNum)
   bool found=false;
   l=layers[layerNum].dots.end();
   --l;
-  if (l->second.location.getx()==447./2048)
-    cout<<"2028\n";
-  if (l->second.location.getx()==511./2048)
-    cout<<"2044\n";
   for (k=layers[layerNum].dots.begin();k!=l;++k)
     for (j=layers[layerNum].dots.begin();k->second.inx==l->second.inx && j!=k;++j)
       for (i=layers[layerNum].dots.begin();j->second.inx==l->second.inx && i!=l;++i)

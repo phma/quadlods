@@ -284,18 +284,18 @@ void PostScript::draw(PairCompressor &pnts)
     *psfile<<"/."<<i<<"- {";
     *psfile<<" 1 index "<<ldecimal(scale*pnts.pairPoints[i].sep.getx(),PAPERRES/100)<<" add";
     *psfile<<" 1 index "<<ldecimal(scale*pnts.pairPoints[i].sep.gety(),PAPERRES/100)<<" add ";
-    *psfile<<subStr<<' '<<subStr<<" } def ";
-    *psfile<<"% "<<pnts.pairPoints[i].lowleft.getx()<<','<<pnts.pairPoints[i].lowleft.gety();
-    *psfile<<" - "<<pnts.pairPoints[i].upright.getx()<<','<<pnts.pairPoints[i].upright.gety()<<endl;
+    *psfile<<subStr<<' '<<subStr<<" } def\n";
+    //*psfile<<"% "<<pnts.pairPoints[i].lowleft.getx()<<','<<pnts.pairPoints[i].lowleft.gety();
+    //*psfile<<" - "<<pnts.pairPoints[i].upright.getx()<<','<<pnts.pairPoints[i].upright.gety()<<endl;
   }
   for (i=0;i<pnts.layers.size();i++)
     for (j=pnts.layers[i].dots.begin();j!=pnts.layers[i].dots.end();++j)
     {
       subdot(j->second.location.getx(),j->second.location.gety(),j->second.inx);
-      if (j->second.location.getx()+pnts.pairPoints[j->second.inx].lowleft.getx()<0 ||
-	  j->second.location.gety()+pnts.pairPoints[j->second.inx].lowleft.gety()<0 ||
-	  j->second.location.getx()+pnts.pairPoints[j->second.inx].upright.getx()>1 ||
-	  j->second.location.gety()+pnts.pairPoints[j->second.inx].upright.gety()>1)
+      if (j->second.location.getx()+pnts.pairPoints[j->second.inx].lowleft.getx()<-1e-9 ||
+	  j->second.location.gety()+pnts.pairPoints[j->second.inx].lowleft.gety()<-1e-9 ||
+	  j->second.location.getx()+pnts.pairPoints[j->second.inx].upright.getx()>1+1e-9 ||
+	  j->second.location.gety()+pnts.pairPoints[j->second.inx].upright.gety()>1+1e-9)
 	*psfile<<"% "<<j->second.location.getx()<<','<<j->second.location.gety()<<" Out of range\n";
     }
 }
