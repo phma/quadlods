@@ -24,6 +24,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <set>
 #include "pairpoint.h"
 using namespace std;
 
@@ -117,7 +118,11 @@ bool PairCompressor::findNewPair(int layerNum)
  */
 {
   map<int64_t,PairDot>::iterator iit,jit,kit,lit;
-  int i,j,k,l;
+  int i,j,k,l,bucket;
+  vector<xy> ldiffs;
+  vector<int> lother;
+  set<int> buckets;
+  set<int>::iterator sit;
   PairPoint newPair;
   xy twidiff,diff;
   PairDot newDot;
@@ -125,6 +130,17 @@ bool PairCompressor::findNewPair(int layerNum)
   lit=layers[layerNum].dots.end();
   --lit;
   l=lit->first;
+  for (kit=layers[layerNum].dots.begin();kit!=lit;++kit)
+  {
+    lother.push_back(kit->first);
+    diff=lit->second.location-kit->second.location;
+    ldiffs.push_back(diff);
+    bucket=buck(diff);
+    buckets.insert(bucket);
+    buckets.insert(PBUCKETS-1-bucket);
+  }
+  for (sit=buckets.begin();sit!=buckets.end();++sit)
+    layers[layerNum].cleanBucket(*sit);
   for (kit=layers[layerNum].dots.begin();kit!=lit;++kit)
     for (jit=layers[layerNum].dots.begin();kit->second.inx==lit->second.inx && jit!=kit;++jit)
       for (iit=layers[layerNum].dots.begin();jit->second.inx==lit->second.inx && iit!=lit;++iit)
