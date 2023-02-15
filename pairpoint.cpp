@@ -116,20 +116,26 @@ bool PairCompressor::findNewPair(int layerNum)
  * two of them share a point, in which case it replaces one pair.
  */
 {
-  map<int64_t,PairDot>::iterator i,j,k,l;
+  map<int64_t,PairDot>::iterator iit,jit,kit,lit;
+  int i,j,k,l;
   PairPoint newPair;
   xy twidiff,diff;
   PairDot newDot;
   bool found=false;
-  l=layers[layerNum].dots.end();
-  --l;
-  for (k=layers[layerNum].dots.begin();k!=l;++k)
-    for (j=layers[layerNum].dots.begin();k->second.inx==l->second.inx && j!=k;++j)
-      for (i=layers[layerNum].dots.begin();j->second.inx==l->second.inx && i!=l;++i)
-	if (i->second.inx==l->second.inx)
+  lit=layers[layerNum].dots.end();
+  --lit;
+  l=lit->first;
+  for (kit=layers[layerNum].dots.begin();kit!=lit;++kit)
+    for (jit=layers[layerNum].dots.begin();kit->second.inx==lit->second.inx && jit!=kit;++jit)
+      for (iit=layers[layerNum].dots.begin();jit->second.inx==lit->second.inx && iit!=lit;++iit)
+	if (iit->second.inx==lit->second.inx)
 	{
-	  diff=l->second.location-k->second.location;
-	  twidiff=diff-j->second.location+i->second.location;
+	  i=iit->first;
+	  j=jit->first;
+	  k=kit->first;
+	  l=lit->first;
+	  diff=layers[layerNum].dots[l].location-layers[layerNum].dots[k].location;
+	  twidiff=diff-layers[layerNum].dots[j].location+layers[layerNum].dots[i].location;
 	  if (diff.length()>1e-4 && twidiff.length()<1e-6)
 	  {
 	    found=true;
@@ -139,9 +145,9 @@ bool PairCompressor::findNewPair(int layerNum)
   foundit:
   if (found)
   {
-    diff=(diff-i->second.location+j->second.location)/2;
+    diff=(diff-layers[layerNum].dots[i].location+layers[layerNum].dots[j].location)/2;
     newPair.level=layerNum+1;
-    newPair.sub=l->second.inx;
+    newPair.sub=layers[layerNum].dots[l].inx;
     newPair.sep=diff;
     newPair.lowleft=pairPoints[newPair.sub].lowleft+xy(min(diff.getx(),0.),min(diff.gety(),0.));
     newPair.upright=pairPoints[newPair.sub].upright+xy(max(diff.getx(),0.),max(diff.gety(),0.));
@@ -151,16 +157,16 @@ bool PairCompressor::findNewPair(int layerNum)
       layers.push_back(Layer());
     if (j==k) //FIXME j should go up to k, but no farther, in the loop
     {
-      newDot.location=(i->second.location+j->second.location-diff)/2;
+      newDot.location=(layers[layerNum].dots[i].location+layers[layerNum].dots[j].location-diff)/2;
       layers[layerNum+1].insert(newDot.location,newDot.inx);
       layers[layerNum].dots.erase(i);
       layers[layerNum].dots.erase(j);
     }
     else
     {
-      newDot.location=(i->second.location+j->second.location-diff)/2;
+      newDot.location=(layers[layerNum].dots[i].location+layers[layerNum].dots[j].location-diff)/2;
       layers[layerNum+1].insert(newDot.location,newDot.inx);
-      newDot.location=(k->second.location+l->second.location-diff)/2;
+      newDot.location=(layers[layerNum].dots[k].location+layers[layerNum].dots[l].location-diff)/2;
       layers[layerNum+1].insert(newDot.location,newDot.inx);
       layers[layerNum].dots.erase(i);
       layers[layerNum].dots.erase(j);
