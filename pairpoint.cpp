@@ -56,6 +56,16 @@ void Layer::insert(const xy &pnt,int32_t n)
   dots[next++]=pairDot;
 }
 
+void Layer::cleanBucket(int n)
+{
+  vector<DotDiff> newBucket;
+  int i;
+  for (i=0;i<diffs[n].size();i++)
+    if (dots.count(diffs[n][i].a) && dots.count(diffs[n][i].b))
+      newBucket.push_back(diffs[n][i]);
+  swap(diffs[n],newBucket);
+}
+
 PairCompressor::PairCompressor()
 {
   PairPoint pairPoint;

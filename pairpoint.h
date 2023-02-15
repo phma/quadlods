@@ -67,6 +67,7 @@ public:
     next=0;
   }
   void insert(const xy &pnt,int32_t n);
+  void cleanBucket(int n);
   std::map<int64_t,PairDot> dots;
   std::vector<DotDiff> diffs[PBUCKETS];
   int64_t next;
