@@ -161,7 +161,11 @@ bool PairCompressor::findNewPair(int layerNum)
   foundit:
   if (found)
   {
-    diff=(diff-layers[layerNum].dots[i].location+layers[layerNum].dots[j].location)/2;
+    //if (dist(layers[layerNum].dots[i].location,layers[layerNum].dots[j].location)>
+	//dist(layers[layerNum].dots[i].location,layers[layerNum].dots[k].location))
+      //swap(j,k);
+    diff=(layers[layerNum].dots[l].location-layers[layerNum].dots[k].location+
+	  layers[layerNum].dots[j].location-layers[layerNum].dots[i].location)/2;
     newPair.level=layerNum+1;
     newPair.sub=layers[layerNum].dots[l].inx;
     newPair.sep=diff;
