@@ -118,7 +118,7 @@ bool PairCompressor::findNewPair(int layerNum)
  */
 {
   map<int64_t,PairDot>::iterator iit,jit,kit,lit;
-  int i,j,k,l,bucket;
+  int i,j,k,l,m,n,bucket;
   vector<xy> ldiffs;
   vector<int> lother;
   set<int> buckets;
@@ -141,7 +141,36 @@ bool PairCompressor::findNewPair(int layerNum)
   }
   for (sit=buckets.begin();sit!=buckets.end();++sit)
     layers[layerNum].cleanBucket(*sit);
-  for (kit=layers[layerNum].dots.begin();kit!=lit;++kit)
+  for (m=0;m<lother.size();m++)
+  {
+    bucket=buck(ldiffs[m]);
+    for (n=0;n<layers[layerNum].diffs[bucket].size();n++)
+      if (dist(ldiffs[m],layers[layerNum].diffs[bucket][n].diff)<1e-6)
+      {
+	i=layers[layerNum].diffs[bucket][n].b;
+	j=layers[layerNum].diffs[bucket][n].a;
+	k=lother[m];
+	if (j!=l && layers[layerNum].dots[k].inx==layers[layerNum].dots[j].inx)
+	{
+	  found=true;
+	  goto foundit;
+	}
+      }
+    bucket=PBUCKETS-1-bucket;
+    for (n=0;n<layers[layerNum].diffs[bucket].size();n++)
+      if (dist(-ldiffs[m],layers[layerNum].diffs[bucket][n].diff)<1e-6)
+      {
+	i=layers[layerNum].diffs[bucket][n].a;
+	j=layers[layerNum].diffs[bucket][n].b;
+	k=lother[m];
+	if (j!=l && layers[layerNum].dots[k].inx==layers[layerNum].dots[j].inx)
+	{
+	  found=true;
+	  goto foundit;
+	}
+      }
+  }
+  /*for (kit=layers[layerNum].dots.begin();kit!=lit;++kit)
     for (jit=layers[layerNum].dots.begin();kit->second.inx==lit->second.inx && jit!=kit;++jit)
       for (iit=layers[layerNum].dots.begin();jit->second.inx==lit->second.inx && iit!=lit;++iit)
 	if (iit->second.inx==lit->second.inx)
@@ -157,7 +186,7 @@ bool PairCompressor::findNewPair(int layerNum)
 	    found=true;
 	    goto foundit;
 	  }
-	}
+	}*/
   foundit:
   if (found)
   {
