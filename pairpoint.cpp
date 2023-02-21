@@ -23,6 +23,7 @@
  */
 
 #include <cmath>
+#include <cassert>
 #include <iostream>
 #include <set>
 #include "pairpoint.h"
@@ -131,14 +132,15 @@ bool PairCompressor::findNewPair(int layerNum)
   --lit;
   l=lit->first;
   for (kit=layers[layerNum].dots.begin();kit!=lit;++kit)
-  {
-    lother.push_back(kit->first);
-    diff=lit->second.location-kit->second.location;
-    ldiffs.push_back(diff);
-    bucket=buck(diff);
-    buckets.insert(bucket);
-    buckets.insert(PBUCKETS-1-bucket);
-  }
+    if (kit->second.inx==lit->second.inx)
+    {
+      lother.push_back(kit->first);
+      diff=lit->second.location-kit->second.location;
+      ldiffs.push_back(diff);
+      bucket=buck(diff);
+      buckets.insert(bucket);
+      buckets.insert(PBUCKETS-1-bucket);
+    }
   for (sit=buckets.begin();sit!=buckets.end();++sit)
     layers[layerNum].cleanBucket(*sit);
   for (m=0;m<lother.size();m++)
@@ -170,23 +172,6 @@ bool PairCompressor::findNewPair(int layerNum)
 	}
       }
   }
-  /*for (kit=layers[layerNum].dots.begin();kit!=lit;++kit)
-    for (jit=layers[layerNum].dots.begin();kit->second.inx==lit->second.inx && jit!=kit;++jit)
-      for (iit=layers[layerNum].dots.begin();jit->second.inx==lit->second.inx && iit!=lit;++iit)
-	if (iit->second.inx==lit->second.inx)
-	{
-	  i=iit->first;
-	  j=jit->first;
-	  k=kit->first;
-	  l=lit->first;
-	  diff=layers[layerNum].dots[l].location-layers[layerNum].dots[k].location;
-	  twidiff=diff-layers[layerNum].dots[j].location+layers[layerNum].dots[i].location;
-	  if (diff.length()>1e-4 && twidiff.length()<1e-6)
-	  {
-	    found=true;
-	    goto foundit;
-	  }
-	}*/
   foundit:
   if (found)
   {
@@ -204,7 +189,7 @@ bool PairCompressor::findNewPair(int layerNum)
     pairPoints.push_back(newPair);
     if (layers.size()<=layerNum+1)
       layers.push_back(Layer());
-    if (j==k) //FIXME j should go up to k, but no farther, in the loop
+    if (j==k)
     {
       newDot.location=(layers[layerNum].dots[i].location+layers[layerNum].dots[j].location-diff)/2;
       layers[layerNum+1].insert(newDot.location,newDot.inx);
