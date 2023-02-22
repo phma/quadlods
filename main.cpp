@@ -345,10 +345,11 @@ double parseResolution(string resstr)
   return ret;
 }
 
-void plotxy(Quadlods& quad,int xdim,int ydim)
+void plotxy(Quadlods& quad,int xdim,int ydim,int inx,int allinx)
 {
   int i;
   double x,y;
+  time_t now,then;
   char buf[24];
   vector<double> point;
   Quadlods sel2;
@@ -368,6 +369,13 @@ void plotxy(Quadlods& quad,int xdim,int ydim)
     x=point[0];
     y=point[1];
     pc.insert(xy(x,y));
+    now=time(nullptr);
+    if (now!=then)
+    {
+      cout<<rint((inx+(double)i/niter)/allinx*100)<<"% \r";
+      cout.flush();
+      then=now;
+    }
   }
   ps.draw(pc);
   ps.endpage();
@@ -537,7 +545,7 @@ void testScatter()
       for (j=0;j<i;j++)
       {
 	inx=i*(i-1)/2+j;
-	plotxy(quads[0],i,j);
+	plotxy(quads[0],i,j,inx,allinx);
 	now=time(nullptr);
 	if (now!=then)
 	{
