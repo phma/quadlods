@@ -70,6 +70,7 @@ public:
   void cleanBucket(int n);
   std::map<int64_t,PairDot> dots;
   std::vector<DotDiff> diffs[PBUCKETS];
+  std::vector<int> pairs[PBUCKETS];
   int64_t next;
 };
 

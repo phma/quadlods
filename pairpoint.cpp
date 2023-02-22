@@ -186,6 +186,8 @@ bool PairCompressor::findNewPair(int layerNum)
     newPair.lowleft=pairPoints[newPair.sub].lowleft+xy(min(diff.getx(),0.),min(diff.gety(),0.));
     newPair.upright=pairPoints[newPair.sub].upright+xy(max(diff.getx(),0.),max(diff.gety(),0.));
     newDot.inx=pairPoints.size();
+    bucket=buck(diff);
+    layers[layerNum].pairs[bucket].push_back(newDot.inx);
     pairPoints.push_back(newPair);
     if (layers.size()<=layerNum+1)
       layers.push_back(Layer());
