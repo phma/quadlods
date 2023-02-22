@@ -83,21 +83,37 @@ bool PairCompressor::findOldPair(int layerNum)
   map<int64_t,PairDot>::iterator k,l;
   xy diff;
   xy location;
-  int i;
+  int i,j,bucket;
   bool found=false;
   l=layers[layerNum].dots.end();
   --l;
   for (k=layers[layerNum].dots.begin();k!=l;++k)
-    for (i=0;k->second.inx==l->second.inx && i<pairPoints.size();++i)
-      if (pairPoints[i].sub==l->second.inx)
+  {
+    if (k->second.inx==l->second.inx)
+    {
+      diff=l->second.location-k->second.location;
+      bucket=buck(diff);
+      for (j=0;j<layers[layerNum].pairs[bucket].size();j++)
       {
-	diff=l->second.location-k->second.location;
-	if ((diff-pairPoints[i].sep).length()<1.5e-6 ||
-	    (diff+pairPoints[i].sep).length()<1.5e-6)
+	i=layers[layerNum].pairs[bucket][j];
+	if (pairPoints[i].sub==l->second.inx && (diff-pairPoints[i].sep).length()<1.5e-6)
+	{
 	  found=true;
-	if (found)
 	  goto foundit;
+	}
       }
+      bucket=PBUCKETS-1-bucket;
+      for (j=0;j<layers[layerNum].pairs[bucket].size();j++)
+      {
+	i=layers[layerNum].pairs[bucket][j];
+	if (pairPoints[i].sub==l->second.inx && (diff+pairPoints[i].sep).length()<1.5e-6)
+	{
+	  found=true;
+	  goto foundit;
+	}
+      }
+    }
+  }
   foundit:
   if (found)
   {
