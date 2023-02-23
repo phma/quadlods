@@ -79,11 +79,16 @@ class PairCompressor
 public:
   PairCompressor();
   void insert(const xy &pnt);
+  void setCompress(bool c)
+  {
+    compress=c;
+  }
 private:
   bool findOldPair(int layerNum);
   bool findNewPair(int layerNum);
   std::deque<PairPoint> pairPoints;
   std::vector<Layer> layers;
+  bool compress;
   friend class PostScript;
 };
 
