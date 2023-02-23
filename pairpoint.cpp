@@ -59,6 +59,12 @@ void Layer::insert(const xy &pnt,int32_t n)
 }
 
 void Layer::cleanBucket(int n)
+/* Removes from the bucket any references to points that no longer exist.
+ * This is where compression is spending most of its time. I tried remembering
+ * which points have been deleted to speed it up, but that failed: it would
+ * clean some buckets, clear trashDots, then clean another bucket but not
+ * remove references to points that were previously in trashDots.
+ */
 {
   vector<DotDiff> newBucket;
   int i;
