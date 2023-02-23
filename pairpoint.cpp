@@ -40,7 +40,7 @@ int buck(xy pnt)
   return floor(pnt.getx()*M_PI*M_PI)+20*floor(pnt.gety()*M_PI*M_PI)+210;
 }
 
-void Layer::insert(const xy &pnt,int32_t n)
+void Layer::insert(const xy &pnt,int32_t n,bool comp)
 {
   PairDot pairDot;
   map<int64_t,PairDot>::iterator i;
@@ -48,7 +48,7 @@ void Layer::insert(const xy &pnt,int32_t n)
   pairDot.location=pnt;
   pairDot.inx=n;
   dotDiff.a=next;
-  for (i=dots.begin();i!=dots.end();++i)
+  for (i=dots.begin();comp && i!=dots.end();++i)
     if (i->second.inx==n)
     {
       dotDiff.b=i->first;
@@ -239,7 +239,7 @@ bool PairCompressor::findNewPair(int layerNum)
 void PairCompressor::insert(const xy &pnt)
 {
   int i=0;
-  layers[0].insert(pnt,0);
+  layers[0].insert(pnt,0,compress);
   while (compress && (findOldPair(i) || findNewPair(i)))
     i++;
 }
