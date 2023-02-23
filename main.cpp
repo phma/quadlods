@@ -504,7 +504,9 @@ void findclosequad()
  * where b=2a and a=2c-1.
  * Any large enough pair of twin primes is bad for Halton, and even
  * when Faure-scrambled, such pairs as 21839,21841 (close to 65536/3)
- * are bad.
+ * are bad. So are pairs whose ratio is close to 2, such as 63277,31643.
+ *
+ * 44741,63277 is a good pair for Faure; their ratio is very nearly √2.
  */
 
 void testCircle()
