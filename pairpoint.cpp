@@ -29,6 +29,24 @@
 #include "pairpoint.h"
 using namespace std;
 
+/* This module attempts to compress scatter plots by reducing pairs of points
+ * with the same displacement to single points, then pairs of pairs, and so on.
+ * It works well on unscrambled sequences, both Richtmyer and Halton. On
+ * scrambled Richtmyer, the bit fiddling spreads the difference out to a Cantor
+ * set, so it fails to compress. On Faure-scrambled Halton, it compresses
+ * better if the ratio between the two primes is close to a power of 2, which
+ * produces a pattern of diagonal lines, and worse when it is close to an odd
+ * power of √2. On power-scrambled and Tipwitch-scrambled Halton, it compresses
+ * worse as the primes get bigger. The worse it compresses, the more time it
+ * takes trying.
+ *
+ * Each uncompressed dot (each PairDot whose inx=0) takes 15.4 bytes in the
+ * PostScript file; PairDots with inx>0 take at least two bytes more. Each
+ * PairPoint takes 60 to 70 bytes. Compression reduces the total number of
+ * lines, but may replace four 15-byte lines with two 17-byte lines and a
+ * 64-byte line, making the file bigger.
+ */
+
 int buck(xy pnt)
 /* Returns a number from 0 to 399, which is the bucket that pnt goes in.
  * pnt.x and pnt.y are both in (-1,1) and nonzero. Multiplies by π², which
