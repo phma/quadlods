@@ -149,6 +149,10 @@ public:
   std::vector<mpq_class> readout();
   void setmiddle();
   void setscramble(int j);
+  int getscramble()
+  {
+    return scrambletype;
+  }
   void advance(mpz_class n);
   unsigned int seedsize();
   void seed(char *s,unsigned int n);
