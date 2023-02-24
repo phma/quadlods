@@ -370,7 +370,7 @@ void plotxy(Quadlods& quad,int xdim,int ydim,int inx,int allinx)
     case QL_SCRAMBLE_FAURE:
       x=log(sel2.getprime(0)/(double)sel2.getprime(1))/log(2);
       y=log(sel2.getprime(0)*(double)sel2.getprime(1))/log(2);
-      if (fabs(x-rint(x))>y/256)
+      if (fabs(x-rint(x))>y/512)
 	pc.setCompress(false);
       break;
     case QL_SCRAMBLE_POWER:
