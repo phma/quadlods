@@ -88,7 +88,7 @@ private:
   bool findNewPair(int layerNum);
   std::deque<PairPoint> pairPoints;
   std::vector<Layer> layers;
-  bool compress;
+  int compress;
   friend class PostScript;
 };
 

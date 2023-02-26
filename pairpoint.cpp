@@ -100,7 +100,7 @@ PairCompressor::PairCompressor()
   pairPoint.sep=xy(NAN,NAN);
   pairPoints.push_back(pairPoint);
   layers.push_back(Layer());
-  compress=true;
+  compress=65535;
 }
 
 bool PairCompressor::findOldPair(int layerNum)
@@ -258,6 +258,8 @@ void PairCompressor::insert(const xy &pnt)
 {
   int i=0;
   layers[0].insert(pnt,0,compress);
-  while (compress && (findOldPair(i) || findNewPair(i)))
+  while (i<compress && (findOldPair(i) || findNewPair(i)))
     i++;
+  if (layers[i].dots.size()>PBUCKETS)
+    compress=i;
 }
