@@ -79,10 +79,6 @@ class PairCompressor
 public:
   PairCompressor();
   void insert(const xy &pnt);
-  void setCompress(bool c)
-  {
-    compress=c;
-  }
 private:
   bool findOldPair(int layerNum);
   bool findNewPair(int layerNum);

@@ -358,27 +358,6 @@ void plotxy(Quadlods& quad,int xdim,int ydim,int inx,int allinx)
   pinx2.push_back(xdim);
   pinx2.push_back(ydim);
   sel2=select(quad,pinx2);
-  switch (sel2.getscramble())
-  {
-    case QL_SCRAMBLE_NONE:
-      break; // always compresses well
-    case QL_SCRAMBLE_THIRD:
-    case QL_SCRAMBLE_THUEMORSE:
-    case QL_SCRAMBLE_GRAY:
-      pc.setCompress(false);
-      break;
-    case QL_SCRAMBLE_FAURE:
-      x=log(sel2.getprime(0)/(double)sel2.getprime(1))/log(2);
-      y=log(sel2.getprime(0)*(double)sel2.getprime(1))/log(2);
-      if (fabs(x-rint(x))>y/512)
-	pc.setCompress(false);
-      break;
-    case QL_SCRAMBLE_POWER:
-    case QL_SCRAMBLE_TIPWITCH:
-      if (niter<sel2.getprime(0)*(double)sel2.getprime(1))
-	pc.setCompress(false);
-      break;
-  }
   ps.startpage();
   ps.setscale(0,0,1,1);
   // (2,5) and (7,2) ((2,0) and (5,2)) look splotchy at 30000, but fill in well at 100000.
