@@ -260,6 +260,6 @@ void PairCompressor::insert(const xy &pnt)
   layers[0].insert(pnt,0,compress);
   while (i<compress && (findOldPair(i) || findNewPair(i)))
     i++;
-  if (layers[i].dots.size()>PBUCKETS)
+  if (layers[i].dots.size()>100)
     compress=i;
 }
