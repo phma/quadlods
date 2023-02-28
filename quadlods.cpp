@@ -866,6 +866,40 @@ vector<double> Quadlods::dreadout()
   return ret;
 }
 
+vector<mpq_class> Quadlods::readoutUnscrambled()
+{
+  int i,p;
+  vector<mpq_class> ret;
+  for (i=0;mode==QL_MODE_RICHTMYER && i<num.size();i++)
+  {
+    ret.push_back(mpq_class((acc[i]<<1)|1,denom[i]<<1));
+    ret[i].canonicalize();
+  }
+  for (i=0;mode==QL_MODE_HALTON && i<hacc.size();i++)
+  {
+    p=nthprime(primeinx[i]);
+    ret.push_back(haccReverseScramble(hacc[i],p,QL_SCRAMBLE_NONE,sign));
+    ret[i].canonicalize();
+  }
+  return ret;
+}
+
+vector<double> Quadlods::dreadoutUnscrambled()
+{
+  int i,p;
+  vector<double> ret;
+  for (i=0;mode==QL_MODE_RICHTMYER && i<num.size();i++)
+  {
+    ret.push_back(mpq_class((acc[i]<<1)|1,denom[i]<<1).get_d());
+  }
+  for (i=0;mode==QL_MODE_HALTON && i<hacc.size();i++)
+  {
+    p=nthprime(primeinx[i]);
+    ret.push_back(haccReverseScramble(hacc[i],p,QL_SCRAMBLE_NONE,sign).get_d());
+  }
+  return ret;
+}
+
 void Quadlods::setmiddle()
 /* Set the point to the middle of the square/cube/etc. This is used in testing
  * to find the successively smaller distances between q[n] and q[n+h].

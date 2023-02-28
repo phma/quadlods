@@ -147,6 +147,7 @@ public:
     return quadlods::nthprime(getprimeinx(n));
   }
   std::vector<mpq_class> readout();
+  std::vector<mpq_class> readoutUnscrambled();
   void setmiddle();
   void setscramble(int j);
   int getscramble()
@@ -158,6 +159,7 @@ public:
   void seed(char *s,unsigned int n);
   std::vector<mpq_class> gen();
   std::vector<double> dreadout();
+  std::vector<double> dreadoutUnscrambled();
   std::vector<double> dgen();
   friend Quadlods select(Quadlods& b,std::vector<int> dimensions);
 };
