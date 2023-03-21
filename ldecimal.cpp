@@ -3,7 +3,7 @@
 /* ldecimal.cpp - lossless decimal representation     */
 /*                                                    */
 /******************************************************/
-/* Copyright 2018 Pierre Abbat.
+/* Copyright 2018,2023 Pierre Abbat.
  * This file is part of the Quadlods program.
  * 
  * The Quadlods program is free software: you can redistribute it and/or
@@ -52,6 +52,8 @@ string ldecimal(double x,double toler)
   }
   else
     iexp=DBL_DIG-1;
+  if (iexp>DBL_DIG)
+    iexp=DBL_DIG+1;
   h=-1;
   i=iexp;
   while (true)
