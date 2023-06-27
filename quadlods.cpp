@@ -668,6 +668,9 @@ void Quadlods::init(int dimensions,double resolution,int j)
  * 17: p²-p-4=0 p-1=4/p
  * Then sets num=num%denom.
  * (99/70)²-99/70=99²/70²-99*70/70²
+ *
+ * If this has already been initialized, and the mode is not changed,
+ * the previous primes remain. To clear them, initialize with dimensions=0.
  */
 {
   int i,p,newmode;
@@ -744,6 +747,7 @@ void Quadlods::init(int dimensions,double resolution,int j)
     scrambletype=QL_SCRAMBLE_TIPWITCH;
   mode=newmode;
   dimensions=abs(dimensions);
+  primeinx.resize(dimensions);
   if (mode==QL_MODE_RICHTMYER)
   {
     num.resize(dimensions);
@@ -807,6 +811,8 @@ void Quadlods::init(vector<int> dprimes,double resolution,int j)
   if (scrambletype<0 || scrambletype>QL_SCRAMBLE_TIPWITCH)
     scrambletype=QL_SCRAMBLE_TIPWITCH;
   mode=newmode;
+  if (primeinx.size()>dprimes.size())
+    primeinx.resize(dprimes.size());
   if (mode==QL_MODE_RICHTMYER)
   {
     num.resize(primeinx.size());
